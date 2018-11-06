@@ -1,0 +1,8 @@
+{
+    "/rest/*" : {
+        "target" : "https://enablement.us", 
+        "secure" : false,
+        "logLevel" : "debug" 
+        
+    }
+}

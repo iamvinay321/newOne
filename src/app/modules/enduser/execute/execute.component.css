@@ -1,0 +1,105 @@
+.form_input{
+   text-align: center;
+   width: 100%;
+}
+
+.disabled_input{
+    padding:10px;border:1px solid slategrey;
+    text-align: center;width: 40%;
+}
+.params{
+    overflow: auto;
+    justify-content: left;
+}
+::ng-deep div.cdk-overlay-pane{
+    width:max-content;
+}
+::ng-deep div.mat-autocomplete-panel.ng-star-inserted {
+    width:max-content;
+}
+
+@media only screen and (max-width: 767px){
+.params{
+    max-height: 220px
+}
+.mat-form-field-underline{
+    display: none;
+}
+}
+mat-list-item div{
+    text-align:center;
+    width:100%;    
+}
+mat-list{
+    border:1px solid #ccc;
+    border-radius: .25rem;
+    
+    width: 100%;
+    padding-top: 0;
+    font-size: 1rem;
+    line-height: 1.5;
+    height: 200px;
+}
+.scroll *{
+    height: auto;
+    text-align:center;
+}
+   .padding-input{
+       padding-left: 10px;
+       text-align: center;
+       align-content: center;
+   }
+   @media only screen and (max-width: 767px){
+    .padding-input{
+        padding-left: 10px;
+       text-align: center;
+       align-content: center;
+       width: 100%;
+    }
+   }
+   .parent{
+       text-align: center;
+       align-content: center;
+   }
+   .active{
+    background-color:rgba(0,0,0,0.7) !important;
+    color: white;
+  }
+  .iconmod{
+      margin-right: 7px;
+  }
+  ::ng-deep .mat-input-underline {
+    display: none;
+}
+
+::ng-deep .mat-form-field-wrapper{
+    padding: 0;
+    margin: 0;
+}
+.f_label{
+    margin-top: 15px;
+}
+::ng-deep .mat-input-infix{
+    background: white;
+    border:1px solid rgb(200,200,200);
+    border-radius: 3px;
+    padding-bottom: 5px;
+  }
+  .autoCompletes{
+	  position:absolute;
+  }
+  .dynamicFormContent{
+	   display: inline-block;
+    position: relative;
+    width: 100%;
+  margin-bottom:8px;
+    background-size: contain;
+	  
+  }
+  .flexLeft{
+	  float:left;
+	  width:30%;
+	  margin-left:4px;
+	height:auto;
+	z-index:auto;
+  }

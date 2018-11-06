@@ -1,0 +1,24 @@
+
+
+<div class="bodyPanel">
+	<router-outlet></router-outlet>
+</div>
+    
+
+<!-- <app-demo></app-demo> -->
+<div class="my-container">
+    <ngx-loading [show]="loading" [config]="{ }">
+        <h5>text_mgs</h5>
+    </ngx-loading>
+    <div flex fxLayout="row" *ngIf="loadingCharts" fxLayout.lt-sm="column" style="margin-top: 2rem;" fxLayout.sm="column" fxLayout.gt-sm="row">
+        <div fxFlex="20"></div>
+        <canvas id="myGanttchart" fxFlex="60"></canvas>
+        <div fxFlex="20"></div>
+      </div>
+      <div flex fxLayout="row" *ngIf="loadingCharts" fxLayout.lt-sm="column" style="margin-top: 2rem;" fxLayout.sm="column" fxLayout.gt-sm="row">
+        <div fxFlex="15"></div>  
+        <canvas id="myBarchart" fxFlex="35"></canvas>
+        <canvas id="myPie" fxFlex="35"></canvas>
+        <div fxFlex="15"></div>
+      </div>
+</div>

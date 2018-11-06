@@ -1,0 +1,69 @@
+
+#overlay {
+    position: fixed; /* Sit on top of the page content */
+ display: block; /* Hidden by default */
+    width: 100%; /* Full width (cover the whole page) */
+    height: 100%; /* Full height (cover the whole page) */
+    top: 0; 
+    left: 0;
+    right: 0;
+    bottom: 0;
+    /* Black background with opacity */
+    z-index: 2; /* Specify a stack order in case you're using a different order for other elements */
+    cursor: pointer; /* Add a pointer on hover */
+}
+.scroll *:hover{
+  
+    cursor: pointer;
+    transition:all 0.25s ease;
+}
+.scroll {
+    height: 230px; 
+    overflow-y: auto;
+    background-color: white;
+    border:1px solid lightblue;
+}
+#overlay * {
+    margin: 0;
+  
+    position: absolute;
+    top: 30%;
+    left: 40%;
+    margin-right: -50%;
+}
+.mat-nav-list
+{
+display: block;
+height: 28px;
+}
+.mat-list .mat-list-item , .mat-selection-list .mat-list-option
+{
+    display: block;
+    height: 30px;
+}
+.active{
+background-color:rgba(0,0,0,0.7) !important;
+    color: white;
+}
+.list_item:nth-child(odd) {
+    background-color:rgb(221, 221, 221);
+    text-align: center;
+}
+.list_item:nth-child(even) {
+    background-color:white;
+    text-align: center;
+}
+
+::ng-deep .mat-input-infix{
+    background: white;
+    border:1px solid rgb(200, 200, 200);
+    border-radius:3px;
+}
+::ng-deep .mat-input-underline,.mat-form-field-underline{
+    display: none;
+}
+::ng-deep .mat-input-infix>textarea{text-align:center;
+    background: white!important;
+    border:none!important;
+    border-radius: 3px!important;
+  }

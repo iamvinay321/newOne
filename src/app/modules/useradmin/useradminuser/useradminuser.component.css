@@ -1,0 +1,30 @@
+.scroll {
+    height: 230px; 
+    overflow-y: auto;
+    background-color: white;
+    border:1px solid lightblue;
+}
+.scroll *:hover{
+   
+    cursor: pointer;
+    transition:all 0.25s ease;
+}
+
+.active{
+background-color:rgb(166, 163, 187) !important;
+    color: white;
+}
+
+::ng-deep .mat-input-infix{
+    background: white;
+    border:1px solid rgb(200, 200, 200);
+    border-radius:3px;
+}
+::ng-deep .mat-input-infix>textarea{text-align:center;
+    background: white!important;
+    border:none!important;
+    border-radius: 3px!important;
+  }
+::ng-deep .mat-input-underline,.mat-form-field-underline{
+    display: none;
+}

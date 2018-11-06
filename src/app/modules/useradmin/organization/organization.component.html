@@ -1,0 +1,98 @@
+
+
+<div fxLayout="row" fxLayout.lt-sm="column">                
+      <div fxFlex="30" style="text-align: center;">
+        <strong>Upload Logo</strong>
+
+    <input type="file" style="text-align:center;"  [(ngModel)]="uploadLogo_FLD" />
+ <hr />
+<!-- ____________________________________________ -->
+<strong>Admin Email ID</strong>
+<mat-form-field style="width:100%;text-align: center;">
+  <input matInput [(ngModel)]="adminEmail_FLD" />
+</mat-form-field>
+<!-- ____________________________________________ -->
+<strong>Log Retention Period</strong>
+<mat-form-field style="width:100%;">
+  <input matInput [(ngModel)]="logRetention_FLD" />
+</mat-form-field>
+<!-- ____________________________________________ -->
+<strong>Password Validity</strong>
+<mat-form-field style="width:100%;">
+  <input matInput [(ngModel)]="valPassword_FLD" />
+</mat-form-field>
+<!-- ____________________________________________ -->
+<strong>Default Password Suffix</strong>
+<mat-form-field style="width:100%;">
+  <input matInput [(ngModel)]="defPassword_FLD" />
+</mat-form-field>
+<!-- ____________________________________________ -->
+	 </div>
+	   <div fxFlex="3" ></div>
+	   <div fxFlex="30" style="text-align: center;">
+        <strong>Duration Years</strong>
+        <mat-form-field style="width:100%;">
+          <input matInput [(ngModel)]="durationYear_FLD" />
+        </mat-form-field>
+        <!-- ____________________________________________ -->
+        <strong>Email Host</strong>
+<mat-form-field style="width:100%;">
+  <input matInput [(ngModel)]="emailHost_FLD" />
+</mat-form-field>
+<!-- ____________________________________________ -->
+<strong>Purge Period</strong>
+<mat-form-field style="width:100%;">
+  <input matInput [(ngModel)]="PurgePeriod_FLD" />
+</mat-form-field>
+<!-- ____________________________________________ -->
+<strong>Allowed Inactivity</strong>
+<mat-form-field style="width:100%;">
+  <input matInput [(ngModel)]="AllowedIn_FLD" />
+</mat-form-field>
+<!-- ____________________________________________ -->
+<strong>Log Level</strong>
+<mat-form-field style="width:100%;">
+  <input matInput [(ngModel)]="LogLevel_FLD" />
+</mat-form-field>
+<!-- ____________________________________________ -->
+	  </div>
+	    <div fxFlex="3" ></div>
+	    <div fxFlex="30" style="text-align: center;">
+          <strong>Max Records</strong>
+          <mat-form-field style="width:100%;">
+            <input matInput [(ngModel)]="maxRecords_FLD" />
+          </mat-form-field>
+          <!-- ____________________________________________ -->
+          <strong>Email Port</strong>
+<mat-form-field style="width:100%;">
+  <input matInput [(ngModel)]="emailPort_FLD" />
+</mat-form-field>
+<!-- ____________________________________________ -->
+<strong>Table Partition Period</strong>
+<mat-form-field style="width:100%;">
+  <input matInput [(ngModel)]="table_pr_FLD" />
+</mat-form-field>
+<!-- ____________________________________________ -->
+<strong>Session Expiry</strong>
+<mat-form-field style="width:100%;">
+  <input matInput [(ngModel)]="Session_FLD" />
+</mat-form-field>
+<!-- ____________________________________________ --><br />
+   
+	<div class="CustomeButtonFloat">
+											 <button title="Upload file" mat-raised-button color="primary" (click)="uploadBtnClick()">
+												<i class="fas fa-upload"></i> Upload
+											</button>
+											<button mat-raised-button color="primary" (click)="downloadFile()">
+												<i class="fas fa-download"></i> Download
+											</button>
+					</div>
+					<div class="CustomeButtonFloat">
+						<button mat-raised-button color="primary" (click)="UpdateOrganization()"><mat-icon style="vertical-align: middle;margin-right: 5px">play_for_work</mat-icon>Update</button>
+ 
+					</div>
+	</div>
+   
+		
+		</div>
+

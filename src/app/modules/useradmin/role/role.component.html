@@ -1,0 +1,64 @@
+<div fxLayout="row" fxLayout.lt-sm="column">
+  <div fxFlex="26">
+  </div>
+  <div fxFlex="3"></div>
+  <div fxFlex="48" style="text-align: center;">
+    <strong>{{Label['available_role']}}</strong>
+    <mat-list *ngIf="desktopView" class="scroll">
+      <mat-list-item class="list_item" (click)="getRollDSCR(r);dogo(r);onpselect(i);" *ngFor="let r of Roll_CD ; let i = index;"
+        [class.active]="i == selectedrole">
+        <div>{{r}}</div>
+      </mat-list-item>
+    </mat-list>
+    <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
+      <mat-select style="margin-top:10px;" placeholder="--Select--">
+        <mat-option style="text-align:center;" (click)="getRollDSCR(r);dogo(r);onpselect(i);" *ngFor="let r of Roll_CD ; let i = index;"
+          [value]="r">{{r}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <br />
+    <strong>{{Label['role']}}</strong>
+    <mat-form-field style="width:100%;">
+      <input matInput [(ngModel)]="RollR" (keyup)="addBothfield();" />
+    </mat-form-field>
+    <br />
+    <strong>{{Label['role_descripton']}}</strong>
+    <mat-form-field style="width:100%;">
+      <textarea matInput [(ngModel)]="ROll_DSC_R">
+
+    </textarea>
+    </mat-form-field>
+  </div>
+  <div fxFlex="3"></div>
+  <div fxFlex="26" style="text-align: center;">
+
+  </div>
+</div>
+
+<div fxLayout="row" fxLayout.lt-sm="column">
+  <div fxFlex="30" style="text-align: center;">
+
+  </div>
+  <div fxFlex="60">
+
+    <div class="CustomeButtonFloat">
+      <button title="Upload file" mat-raised-button color="primary" (click)="uploadBtnClick()">
+        <i class="fas fa-upload"></i> Upload
+      </button>
+      <button mat-raised-button color="primary" (click)="downloadFile()">
+        <i class="fas fa-download"></i> Download
+      </button>
+      <button mat-raised-button color="warn" [disabled]="deleteBtn" (click)="Delete()">
+        <i class="fas fa-download"></i> {{Label['dlt_btn']}}
+      </button>
+    </div>
+  
+
+  </div>
+  <div fxFlex="10">
+
+  </div>
+</div>
+<input type="file" (change)="fileChangeEvent($event ,files)" #files name="Document_File" id="Document_File" style="display:none"
+/>

@@ -1,0 +1,17 @@
+mat-checkbox{
+    display: list-item;
+    list-style: none;
+    font-size: 13px;
+}
+*{
+    font-size: 14px;
+}
+#cancel{
+    background-color: lightcoral;
+  }
+  #submit{
+    background-color: lightgreen;
+  }
+  #add{
+    background-color: lightblue;
+  }

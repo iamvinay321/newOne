@@ -1,0 +1,48 @@
+.formGroup{
+	
+}
+.formGroup input{
+	padding:8px;
+	border-radius:4px;
+	border:1px solid #b3b3b3;
+	width:100%;
+	font-size:16px;
+}
+.formLabel{
+	font-size:18px;
+	padding-top:7px;
+	font-style:bold;
+}
+.login-form {
+      width: 100%;
+	  text-align:center;
+    }
+    .login-full-width {
+		display:block;
+    }
+	  .parent{
+  text-align: center;
+}
+.parent .content {
+  font-weight:normal;
+}
+::ng-deep .mat-input-underline{
+  display: none;
+}
+.logo-img{
+  margin-top: 5px;
+  height: 50px;
+}
+::ng-deep .mat-input-placeholder{
+  color:#979797;
+  font-weight: normal!important;
+}
+.ulabel{
+  display: inline-block;
+  font-weight:bold;
+}
+::ng-deep .mat-input-infix{
+  background: white;
+  border:1px solid rgb(200,200,200);
+  border-radius: 3px;
+}

@@ -1,0 +1,44 @@
+
+          <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row">
+
+              <div fxFlex="32">
+    
+                <label style="text-align:center;width:100%;">
+                  <strong>Applications</strong>
+                </label>
+                <mat-list class="scroll">
+                  <mat-list-item class="list_item" (click)="clickme(app,$event)" *ngFor="let app of APP_CD" [class.active]="app ==selectedapp">
+                    <div> {{app}} </div>
+                  </mat-list-item>
+                </mat-list>
+              </div>
+              <div fxFlex="3"></div>
+              <div fxFlex="32">
+    
+                <label style="text-align:center;width:100%;">
+                  <strong>Processes</strong>
+                </label>
+                <mat-list class="scroll">
+                  <mat-list-item class="list_item" (click)="clickme1(app1,$event)" *ngFor="let app1 of PRCS_CD" [class.active]="app1 ==selectedprcs">
+                    <div> {{app1}} </div>
+                  </mat-list-item>
+                </mat-list>
+              </div>
+              <div fxFlex="3"></div>
+              <div fxFlex="32">
+    
+                <label style="text-align:center;width:100%;">
+                  <strong>Services</strong>
+                </label>
+                <mat-list class="scroll">
+                  <mat-list-item class="list_item" (click)="clickme2(app2,$event)" *ngFor="let app2 of SRVC_CD" [class.active]="app2 ==selectedsrvc">
+                    <div> {{app2}} </div>
+                  </mat-list-item>
+                </mat-list>
+              </div>
+            </div>
+            <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row">
+              <div fxFlex="35"></div>
+              <button fxFlex="30" (click)="sendMessage()" mat-raised-button style="color:white;background-color:darkslateblue;">Send Message</button>
+              <div fxFlex="35"></div>
+            </div>

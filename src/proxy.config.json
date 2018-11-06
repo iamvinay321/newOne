@@ -1,0 +1,6 @@
+{
+    "/rest/Process/Execute": {
+        "target": "https://enablement.online",
+        "secure": false
+      }
+}
