@@ -81,8 +81,6 @@ import { DeveloperComponent } from './modules/developer/developer.component';
 import { EnduserComponent } from './modules/enduser/enduser.component';
 import { SystemadminComponent } from './modules/systemadmin/systemadmin.component';
 import { UseradminComponent } from './modules/useradmin/useradmin.component';
-//------------artifact and non-artifact form
-import  { Input_Art_Component } from './modules/enduser/execute/Input_Art/Input_Art.component';
 const appRoutes: Routes = [
   { path: '', component: LoginComponent },
 	  {path:"Profile",component:ProfileComponent},
@@ -140,8 +138,6 @@ const appRoutes: Routes = [
   
   { path:'Forms',component:FormsComponent},
   
-  
-  { path:'Input_Art',component:Input_Art_Component},
   //{ path:'organization',component:OrganizationComponent},
 
   { path: '', component: EnduserComponent ,pathMatch:'full'},
@@ -199,8 +195,7 @@ const appRoutes: Routes = [
     DeveloperComponent,
     EnduserComponent,
     SystemadminComponent,
-    UseradminComponent,
-    Input_Art_Component
+    UseradminComponent
   
     // OrganizationComponent,
     // MembershipComponent

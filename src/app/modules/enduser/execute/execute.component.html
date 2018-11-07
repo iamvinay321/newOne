@@ -8,9 +8,10 @@
       <!-- App hide when the array of value <2 -->
       <div fxFlex="45">
         <!-- <div *ngIf="Application_box"> -->
-        <label style="text-align:center;width:100%;">
+        <!-- <label style="text-align:center;width:100%;">
           <strong>{{Label['APP_CD']}}</strong>
-        </label>
+        </label> -->
+        <h3 class="CenterAlign">{{Label['APP_CD']}}</h3>
         <mat-list *ngIf="desktopView" class="scroll">
           <mat-list-item class="list_item" (click)="getProcessCD(app);fooo(app)" *ngFor="let app of APP_CD['APP_CD']" [class.active]="app == selectedapp">
             <div> {{app}}</div>
@@ -34,9 +35,10 @@
       <div fxFlex="45">
 
 
-        <label style="text-align:center;width:100%;">
+        <!-- <label style="text-align:center;width:100%;">
           <strong>{{Label['PRCS_CD']}}</strong>
-        </label>
+        </label> -->
+        <h3 class="CenterAlign">{{Label['PRCS_CD']}}</h3>
         <mat-list *ngIf="desktopView" class="scroll">
           <mat-list-item class="list_item" (click)="getServiceCode(pro);fooo1(pro);createDyanamicForm();" *ngFor="let pro of PRC_CD['PRCS_CD'];"
             [class.active]="pro == selectedprcs">
@@ -85,7 +87,7 @@
 </div>
 <!-- display form auto layout -->
 	<div class="dynamicFormContent">
-      <h5 style="text-align: center;">{{Label['Parameters']}}</h5><hr />
+      <h3 style="text-align: center;" *ngIf="Data!='' &&  Data!=undefined">{{Label['Parameters']}}</h3><hr />
     
       <div class="padding-input flexLeft" *ngFor="let pr of Data">
 
