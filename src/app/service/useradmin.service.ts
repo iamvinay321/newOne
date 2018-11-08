@@ -130,6 +130,12 @@ export class UseradminService {
  public reduceFilePath(pathName:string) : any{
 	 return pathName.split(" ").join("-").replace(".","");
   }
+  /*
+  Remove the extra domain sufix 
+  */
+  private removeSubDomain(domain:string ) : string {
+    return domain.split("/Enablement").join("");
+  }
  /*
   Upload the file on API 
   */
@@ -144,7 +150,7 @@ export class UseradminService {
 	formData.append('Source_File', currentFile);
   formData.append("FileInfo", JSON.stringify(file));
   
-    let obj=this.https.post("https://"+ this.domain_name +"/FileAPIs/api/file/v1/upload", formData);
+    let obj=this.https.post("https://"+ this.removeSubDomain(this.domain_name) +"/FileAPIs/api/file/v1/upload", formData);
 	this.uploadFileSendInfo(fileName,screen);
 		return obj;
   }
@@ -181,7 +187,7 @@ export class UseradminService {
 
     formData.append("FileInfo", JSON.stringify(file));
    
-    this.http.post("https://"+this.domain_name+"/FileAPIs/api/file/v1/download", 
+    this.http.post("https://"+this.removeSubDomain(this.domain_name)+"/FileAPIs/api/file/v1/download", 
 	formData,{responseType:ResponseContentType.Blob}).
 	subscribe(data =>{
 		  var a = document.createElement("a");

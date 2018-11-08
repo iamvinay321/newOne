@@ -94,7 +94,13 @@ mat-list{
     width: 100%;
   margin-bottom:8px;
     background-size: contain;
+    margin-left:auto;
+    margin-right: auto;
+  
 	  
+  }
+  .dynamicContent{
+      margin-left:10%;
   }
   .flexLeft{
   display: table-row;

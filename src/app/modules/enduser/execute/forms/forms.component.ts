@@ -8,7 +8,7 @@ import { Globals } from './../../../../service/globals';
 import { Headers, RequestMethod, RequestOptions } from '@angular/http';
 import { FileUrls,FileUrlProcessing } from './POJO';
 import  { Http} from '@angular/http';
-
+import { FormBuild } from './FormBuild';
 @Component({
   selector: 'app-forms',
   templateUrl: './forms.component.html',
@@ -100,10 +100,13 @@ export class FormsComponent implements OnInit,FileUrlProcessing {
    }
   V_SRC_CD = this.StorageSessionService.getSession("agency");
   V_USR_NM = this.StorageSessionService.getSession("email");
+  
+  public formBuild:FormBuild=new FormBuild();
   getFormData() {
     this.Form_Data = this.dataStored.getCookies('report_table');
     console.info("The form data stored in local storage: ");
     console.log(this.Form_Data);
+    this.formBuild.buildFormData(this);
     this.result = this.Form_Data["RESULT"][0];
     if (this.result == "INPUT_ARTFCT_TASK") {
       this.PVPS = this.Form_Data['PVP'][0];

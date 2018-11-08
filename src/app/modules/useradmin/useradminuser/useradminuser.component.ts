@@ -85,7 +85,7 @@ export class UseradminuserComponent implements OnInit {
     this.userAdminService.fileUpload(fileList.item(0), "UserDL.xlsx", "user").subscribe(
       res => {
         console.log(res);
-        setTimeout(()=>{    //<<<---    using ()=> syntax
+        setTimeout(()=>{   
           this.getUser();
      }, 3000);
     },

@@ -72,7 +72,10 @@ selectedrole:Number;
         console.log("File uploaded success, the response of file upload :")
         console.log(res);
         // called this method after file uploaded success
-        this.getRoll();
+        setTimeout(()=>{   
+          this.getRoll();
+     }, 3000);
+       
       }
       ,
       error=>{

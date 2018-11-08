@@ -64,7 +64,10 @@ export class UseradmingroupComponent implements OnInit {
     this.data.fileUpload(fileList.item(0), "GroupDL.xlsx", "group").subscribe(
       res => {
         console.log(res);
-        this.AvailableGroup();
+        setTimeout(()=>{   
+          this.AvailableGroup();
+     }, 3000);
+       
       }
       ,
       error => {

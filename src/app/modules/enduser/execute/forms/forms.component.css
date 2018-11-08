@@ -38,16 +38,20 @@
   color: rgb(178, 169, 240);
 }
 
-
+.TableForm{
+  max-height: 700px;
+  width: auto;
+  overflow: hidden;
+}
 .mat-table{
   max-height: 700px;
   width: auto;
   overflow: hidden;
   }
 .mat-header-row {
-  min-height: 20px;
-  height: 30px;
-  padding-top:5px;
+ 
+  height: auto;
+
   margin-bottom:5px; 
   width:max-content;
   overflow: hidden;
@@ -57,16 +61,16 @@
 }
 .mat-row{
   overflow: hidden;
-  height: 55px;
+  height: auto;
   width: max-content;
 }
-/* .mat-header-cell{
+.mat-header-cell{
   display: block!important; 
-  padding: 10px;
+  
   color:rgba(26, 17, 17, 0.973);
-  width: 210px;
+  width:auto;
   font-size: 16px!important;
-} */
+}
 
 
 .mat-input-element{
@@ -116,13 +120,10 @@ mat-checkbox{
 @media only screen and (max-width: 767px){
 
 
-  /* .mat-header-cell {
+  .mat-header-cell {
       border: 1px dashed rgb(190, 190, 190);
-      height: 55px;      
-      vertical-align: middle;
-      color: white;
-      padding-top:10px;
-      margin-bottom:5px; 
+      height:auto;      
+      vertical-align: middle;     
       font-size: 16px!important;
   }
   .mat-header-row {
@@ -133,25 +134,22 @@ mat-checkbox{
     top: 0;
     left: 0;
    
-  }  */
+  } 
   mat-cell{
     background-color: transparent;
   }
   .mat-cell {
-    height: 55px;
-    border: 1px solid rgb(190, 190, 190);
+    height:auto;
    padding-top: 15px;
     vertical-align: middle;
     
   }
-  ng-container{
-    background-color: red;
-  }
-  /* .mat-sort-header-container {
+
+  .mat-sort-header-container {
     display: flex;
     color:rgb(218, 218, 218);
     cursor: pointer;
     justify-content: flex-end;
-  } */
-   }
-  
+  }
+   
+}  

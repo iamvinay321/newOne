@@ -1,9 +1,7 @@
 
         <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="row">
-          <div class="col-md-4">
-            <label style="text-align: center;width:100%;">
-              <strong>{{Label['APP_CD']}}</strong>
-            </label>
+          <div  fxFlex="30">
+          <h3 class="center">{{Label['APP_CD']}}</h3>
 
             <!---  select application -->
             <mat-list *ngIf="desktopView" class="scroll">
@@ -18,12 +16,10 @@
             </mat-form-field>
 
           </div>
-
+          <div  fxFlex="3"></div>
           <!-- ___________________________________SELECT PROCESS CD -->
-          <div class="col-md-4" *ngIf="process_box">
-            <label style="text-align: center;width:100%;">
-              <strong>{{Label['PRCS_CD']}}</strong>
-            </label>
+          <div  fxFlex="30"  *ngIf="process_box">
+            <h3 class="center">{{Label['PRCS_CD']}}</h3>
 
             <!--  select process -->
             <mat-list *ngIf="desktopView" class="scroll">
@@ -37,12 +33,10 @@
               </mat-select>
             </mat-form-field>
           </div>
-
-          <div class="col-md-4" *ngIf="action_box">
+          <div  fxFlex="3"></div>
+          <div  fxFlex="30"  *ngIf="action_box">
             <!-- select status -->
-            <label style="text-align: center;width:100%;">
-              <strong>{{Label['Status']}}</strong>
-            </label>
+            <h3 class="center">{{Label['Status']}}</h3>
             <mat-list *ngIf="desktopView" class="scroll">
               <mat-list-item class="list_item" (click)="fooo2(act)" *ngFor="let act of Action" [class.active]="act == selectedplat2">
                 <div> {{act}}</div>
@@ -57,95 +51,84 @@
         </div>
         <!-- <button mat-raised-button style="float:right;" (click)="find_process()">Find</button>  -->
         <!-- ___________________________TABLE________________________________________________________ -->
-
-
-        <mat-card style="margin-top:8px;border:none;box-shadow:none;background-color: rgb(242, 242, 242);" *ngIf="display_matcard ">
-          <mat-card-content>
-            <div *ngIf="display_dynamic_paramter">
-              <h5 style="text-align: center;">{{Label['Parameters']}}</h5>
-              <hr />
-              <div class="row params">
-
-                <div class="col-md-4" class="padding-input" *ngFor="let pr of Data">
-
-                  <!-- <label class="f_label">{{pr.placeholder}}</label>
-                  <mat-form-field class="form_input">
-                    <input matInput [name]="pr.name" [value]="pr.value" [matAutocomplete]="auto" (click)="getDropDownListValue(pr.name)" (keyup)="Update_value($event.target.value,pr.placeholder)"
-                      [(ngModel)]="pr.value" (blur)="add(pr)" class="f_inp">
-
-                    <mat-autocomplete #auto="matAutocomplete">
-                      <mat-option style="text-align:center;"  (click)="Update_value(item ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
-                        {{ item }}
-                      </mat-option>
-                    </mat-autocomplete>
-                  </mat-form-field> -->
-
-                  <ng-container *ngIf="pr.type=='date'">
-                    <label class="f_label">{{pr.placeholder}}</label>
-                    <mat-form-field class="form_input">
-                      <input [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value"
-                        matInput [matDatepicker]="picker" class="f_inp">
-                      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                      <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>
-                  </ng-container>
-                  <ng-container *ngIf="pr.type=='radio'">
-                    <mat-radio-button [value]="pr.name" style="background-color: #f4f6f7">{{pr.placeholder}}</mat-radio-button>
-                  </ng-container>
-                  <ng-container *ngIf="pr.type=='checkbox'">
-                    <mat-checkbox [value]="pr.name" style="background-color: #f4f6f7">{{pr.placeholder}}</mat-checkbox>
-                  </ng-container>
-                  <ng-container *ngIf="pr.type=='time'">
-                    <label class="f_label">{{pr.placeholder}}</label>
-                    <mat-form-field class="form_input">
-                      <input matInput [type]="pr.type" [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)"
-                        [(ngModel)]="pr.value" class="f_inp">
-                    </mat-form-field>
-                  </ng-container>
-                  <ng-container *ngIf="pr.type=='datetime'">
-                    <label class="f_label">{{pr.placeholder}}</label>
-                    <mat-form-field class="form_input" style="background-color: #f4f6f7">
-                      <input matInput [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value"
-                        [owlDateTimeTrigger]="fdate" [owlDateTime]="fdate">
-                      <owl-date-time [attr.id]="pr.name"></owl-date-time>
-                    </mat-form-field>
-                  </ng-container>
-                  <ng-container *ngIf="pr.type=='password'">
-                    <label class="f_label">{{pr.placeholder}}</label>
-                    <mat-form-field class="form_input">
-                      <input matInput [type]="pr.type" [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)"
-                        [(ngModel)]="pr.value" class="f_inp">
-                    </mat-form-field>
-                  </ng-container>
-                  <ng-container *ngIf="pr.type=='range'">
-                    <label class="f_label">{{pr.placeholder}}</label>
-                    <mat-slider [(ngModel)]="pr.value" value="1" step="1" min="1" max="100" (keyup)="Update_value($event.target.value,pr.placeholder)"
-                      style="background-color: #f4f6f7"></mat-slider>
-                  </ng-container>
-                  <ng-container *ngIf="pr.type=='color'">
-                    <label class="f_label">{{pr.placeholder}}</label>
-                    <input [(colorPicker)]="_backgroundColor" [style.background]="_backgroundColor" [(ngModel)]="pr.value" class="f_inp">
-                  </ng-container>
-                  <ng-container *ngIf="pr.type=='input'">
-                    <label class="f_label">{{pr.placeholder}}</label>
-                    <mat-form-field class="form_input">
-                      <input matInput [name]="pr.name" [value]="pr.value" [matAutocomplete]="auto" (click)="getDropDownListValue(pr.name)" (keyup)="Update_value($event.target.value,pr.placeholder)"
-                        [(ngModel)]="pr.value" class="f_inp">
-
-                      <mat-autocomplete #auto="matAutocomplete">
-                        <mat-option style="text-align:center;" (click)="Update_value(item ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue"
-                          [value]="item">
-                          {{ item }}
-                        </mat-option>
-                      </mat-autocomplete>
-                    </mat-form-field>
-                  </ng-container>
-
-                </div>
-                <!--inputs:['parentapp','parentpro'] -->
-
-              </div>
+     
+        <div class="dynamicFormContent">
+            <h3 style="text-align: center;" *ngIf="Data!='' &&  Data!=undefined">{{Label['Parameters']}}</h3><hr />
+            <div class="dynamicContent">
+              <div class="padding-input flexLeft" *ngFor="let pr of Data">
+      
+                <ng-container *ngIf="pr.type=='date'">
+                  <label class="f_label">{{pr.placeholder | removeWt}}}</label>
+                   <mat-form-field class="form_input">
+                       <input [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" matInput [matDatepicker]="picker" class="f_inp">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
+               </ng-container>
+               <ng-container *ngIf="pr.type=='radio'">
+                 <mat-radio-button [value]="pr.name" style="background-color: #f4f6f7">{{pr.placeholder | removeWt}}}</mat-radio-button>
+               </ng-container>
+               <ng-container *ngIf="pr.type=='checkbox'">
+                 <mat-checkbox [value]="pr.name" style="background-color: #f4f6f7">{{pr.placeholder | removeWt}}}</mat-checkbox>
+                </ng-container>
+               <ng-container *ngIf="pr.type=='time'">
+                 <label class="f_label">{{pr.placeholder | removeWt}}}</label>
+                   <mat-form-field class="form_input">
+                 <input matInput [type]="pr.type" [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" class="f_inp">
+               </mat-form-field>
+             </ng-container>
+               <ng-container *ngIf="pr.type=='datetime'">
+                 <label class="f_label">{{pr.placeholder | removeWt}}}</label>
+                   <mat-form-field class="form_input" style="background-color: #f4f6f7">
+                   <input matInput [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" [owlDateTimeTrigger]="fdate" [owlDateTime]="fdate">
+                   <owl-date-time [attr.id]="pr.name"></owl-date-time>
+                   </mat-form-field>
+               </ng-container>
+               <ng-container *ngIf="pr.type=='password'">
+                 <label class="f_label">{{pr.placeholder | removeWt}}</label>
+                   <mat-form-field class="form_input">
+                   <input matInput [type]="pr.type"  [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" class="f_inp">
+                 </mat-form-field>
+                 </ng-container>
+                 <ng-container *ngIf="pr.type=='range'">
+                   <label class="f_label">{{pr.placeholder | removeWt}}</label>
+                     <mat-slider [(ngModel)]="pr.value" value="1" step="1" min="1" max="100" (keyup)="Update_value($event.target.value,pr.placeholder)" style="background-color: #f4f6f7"></mat-slider>
+                 </ng-container>
+                   <ng-container *ngIf="pr.type=='color'">
+                       <label class="f_label">{{pr.placeholder | removeWt}}</label>
+                       <input [(colorPicker)]="_backgroundColor" [style.background]="_backgroundColor" [(ngModel)]="pr.value" class="f_inp">
+                   </ng-container>
+               <ng-container *ngIf="pr.type=='input'">
+                 <label class="f_label">{{pr.placeholder | removeWt}}</label>
+               <!-- <mat-form-field class="form_input">
+                 <input matInput [name]="pr.name" (value)="pr.value" [matAutocomplete]="auto" (click)="getDropDownListValue(pr.name)"
+                   (keyup)="Update_value($event.target.value,pr.placeholder)"  [(ngModel)]="pr.value" class="f_inp">
+       
+                 <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
+                   <mat-option style="text-align:center;"  (click)="Update_value($event.target.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
+                     {{ item }}
+                   </mat-option>
+                 </mat-autocomplete>
+               </mat-form-field> -->
+               <mat-form-field class="form_input">
+                <input matInput  [name]="pr.name" (value)="pr.value" #values [matAutocomplete]="auto"  (click)="makeFilterValueEmpty();getDropDownListValue(pr.name)"
+                (keyup)="keyUpEventActive($event.target.value,pr.placeholder)"
+                (mouseout)="mouseOutEventActive($event.target.value,pr.placeholder)"
+                [(ngModel)]="pr.value" class="f_inp glo_input">
+                  <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
+                    <mat-option style="text-align:center;"  (click)="updateParameterValue(item,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
+                      {{ item }}
+                    </mat-option>
+                  </mat-autocomplete>
+               </mat-form-field>
+              
+             </ng-container>
+         
+             </div>
             </div>
+           
+          </div>
+     
 
             <div *ngIf="display_process_table">
               <mat-form-field *ngIf="show_filter_input">
@@ -210,8 +193,7 @@
               <app-repeat-process [parentapp]="selectedplat" [parentpro]="selectedplat1"></app-repeat-process>
               <hr />
             </div>
-          </mat-card-content>
-        </mat-card>
+       
 
         <!-- ______________________________________________________CLOSE TABLE________________________________ -->
         <div class="row">

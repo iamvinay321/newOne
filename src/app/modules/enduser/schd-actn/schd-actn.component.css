@@ -54,7 +54,7 @@ mat-row.mat-row{
   align-content: center;
 }
 
-mat-list-item div{
+/* mat-list-item div{
     text-align:center;
     width:100%;    
   }
@@ -76,7 +76,7 @@ mat-list-item div{
   .active{
     background-color:rgba(0,0,0,0.7) !important;
     color: white;
-  }
+  } */
 mat-sort-header-sorted {
   color: black;
 }
@@ -166,4 +166,35 @@ justify-content: center;
   align-content: center;
 }
 
+}
+
+.dynamicFormContent{
+  display: inline-block;
+  position: relative;
+  width: 100%;
+margin-bottom:8px;
+  background-size: contain;
+  margin-left:auto;
+  margin-right: auto;
+
+  
+}
+.dynamicContent{
+    margin-left:10%;
+}
+.flexLeft{
+display: table-row;
+float: left;
+width:250px;
+margin-left:5px;
+position: relative;
+}
+.center{
+  text-align: center;
+  margin-left:auto;
+  margin-right: auto;
+}
+.scroll *{
+  height: auto;
+  text-align:center;
 }

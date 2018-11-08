@@ -785,7 +785,7 @@ export class ExecuteComponent implements OnInit , ReportGenerate {
         console.log(this.report);
         console.info("The URL to redirecting form is :");
         console.log(this.report.RESULT);
-        if (this.report.RESULT[0] == "INPUT_ARTFCT_TASK" || this.report.V_EXE_CD[0] == "V_EXE_CD" ||this.report.V_EXE_CD[0] =="NONREPEATABLE_MANUAL_TASK" )
+        if (this.report.RESULT[0] == "INPUT_ARTFCT_TASK" || this.report.RESULT[0] == "FORM"|| this.report.V_EXE_CD[0] == "V_EXE_CD" ||this.report.V_EXE_CD[0] =="NONREPEATABLE_MANUAL_TASK" )
           this.Router.navigateByUrl('Forms');
         else
           this.Router.navigateByUrl('ReportTable');
