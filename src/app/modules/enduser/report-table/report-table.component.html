@@ -1,7 +1,11 @@
 <div *ngIf="progress" id="overlay">
   <mat-spinner></mat-spinner>
 </div>
-<!-- Chart toggle button  -->
+<!-- <div>
+  <h2>Bitcoin Price</h2>
+  <p>1 BTC = {{ price }} {{ currency }}</p>
+</div> -->
+<!-- _____________________Toggle Between charts and table___________________ -->
 <div fxHide="true" fxShow.gt-sm="true">
   <div flex fxLayout="row">
     <div fxFlex="32"></div>
@@ -21,7 +25,6 @@
     <div fxFlex="32"></div>
   </div>
 </div>
-<!-- /fff------------------ chart toggle button close -------------/ -->
 <div fxHide="true" fxShow.xs="true" fxShow.sm="true">
   <div flex fxLayout="row">
     <div fxFlex="32"></div>
@@ -40,27 +43,24 @@
 </div>
 <div fxLayout="row" fxLayoutAlign="center center">
   <div fxLayout="column" style="width:230px">
-    <!-- <div fxLayout="row" fxLayoutAlign="space-evenly">
+    <div fxLayout="row" fxLayoutAlign="space-evenly">
       <label>Table</label>
       <label>Charts</label>
       <label>Both</label>
-    </div> -->
+    </div>
     <div fxLayout="row" fxLayoutAlign="space-evenly">
-      <!-- <mat-radio-group style="margin-left: 20px">
-        <mat-radio-button (click)="showhide('showtable');" *ngIf="radState.tableState" value="showtable">Table</mat-radio-button>
-        <mat-radio-button (click)="showhide('showchart');" *ngIf="radState.showChart" value="showchart" style="padding:0 31px 0 36px">Charts</mat-radio-button>
-        <mat-radio-button checked="true" (click)="showhide('showboth');" value="showboth">Both</mat-radio-button>
-      </mat-radio-group> -->
-      <button  (click)="showhide('showtable');" *ngIf="!radState.tableState">Table</button>
-      <button (click)="showhide('showchart');" *ngIf="!radState.showChart" >Chart</button>
-      <button (click)="showhide('showboth');">Both</button>
+      <mat-radio-group style="margin-left: 20px">
+        <mat-radio-button (click)="showhide('showtable');" value="showtable"></mat-radio-button>
+        <mat-radio-button (click)="showhide('showchart');" value="showchart" style="padding:0 31px 0 36px"></mat-radio-button>
+        <mat-radio-button checked="true" (click)="showhide('showboth');" value="showboth"></mat-radio-button>
+      </mat-radio-group>
     </div>
   </div>
 </div>
 
 <!-- ________________________________________________________________________ -->
-<div flex fxLayout="row" *ngIf="radState.tableState"  class="example-container mat-elevation-z8" fxShow="true" fxHide.xs="true" style="position: relative;"
-  >
+<div flex fxLayout="row" class="example-container mat-elevation-z8" fxShow="true" fxHide.xs="true" style="position: relative;"
+  *ngIf="disptable">
   <mat-card id="mat_card_">
     <mat-card-content>
 
@@ -84,7 +84,7 @@
   </mat-card>
 </div>
 
-<div *ngIf="radState.tableState" class="example-container mat-elevation-z8"  fxHide="true" fxShow.xs="true">
+<div class="example-container mat-elevation-z8" fxHide="true" fxShow.xs="true" *ngIf="disptable">
   <mat-card id="mat_card_">
     <mat-card-content>
       <mat-table #table [dataSource]="dataSource" matSort>
@@ -110,7 +110,7 @@
       </div> 
     </div>  -->
 <!-- --------------------Chart------------------------- -->
-<div *ngIf="radState.showChart" flex fxLayout="row" style="display:none;" fxLayout.lt-sm="column" fxLayoutAlign="center">
+<div flex fxLayout="row" fxLayout.lt-sm="column" fxLayoutAlign="center" *ngIf="dispchart">
   <div fxFlex="75">
     <mat-tab-group>
       <mat-tab>

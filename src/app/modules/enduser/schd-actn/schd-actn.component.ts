@@ -1,6 +1,6 @@
 import { async } from '@angular/core/testing';
 import { AfterViewInit, ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
-import {Globals} from './../../../service/globals';
+import { Globals } from './../../../service/globals';
 import { HttpClientModule, HttpClient, HttpHeaders } from '@angular/common/http';
 import { Http, Response, Headers } from '@angular/http';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router'
@@ -20,7 +20,6 @@ import { StorageSessionService } from '../../../service/storage-session.service'
 import { ConfigServiceService } from '../../../service/config-service.service';
 import { UseradminService } from '../../../service/useradmin.service';
 
-
 @Component({
   selector: 'app-schd-actn',
   templateUrl: './schd-actn.component.html',
@@ -30,26 +29,25 @@ import { UseradminService } from '../../../service/useradmin.service';
 
 export class SchdActnComponent implements OnInit, AfterViewInit {
   onpselect: Function;
-  screenHeight=0;
-  screenWidth=0;
-  mobileView=false;
-  desktopView=true;
+  screenHeight = 0;
+  screenWidth = 0;
+  mobileView = false;
+  desktopView = true;
   @HostListener('window:resize', ['$event'])
-    onResize(event?) {
-      this.screenHeight = window.innerHeight;
-      this.screenWidth = window.innerWidth;
-      if(this.screenWidth<=767)
-      {
-        this.mobileView=true;
-        this.desktopView=false;
-      }else{
-        this.mobileView=false;
-        this.desktopView=true;
-      }
+  onResize(event?) {
+    this.screenHeight = window.innerHeight;
+    this.screenWidth = window.innerWidth;
+    if (this.screenWidth <= 767) {
+      this.mobileView = true;
+      this.desktopView = false;
+    } else {
+      this.mobileView = false;
+      this.desktopView = true;
+    }
   }
   constructor(private Router: Router,
     private http: HttpClient,
-    private globals:Globals,
+    private globals: Globals,
     public app: AppComponent,
     private https: Http,
     private _http: HttpClient,
@@ -62,7 +60,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
     }
     this.onResize();
   }
-  domain_name=this.globals.domain_name; private apiUrlGet = "https://"+this.domain_name+"/rest/E_DB/SP?";
+  domain_name = this.globals.domain_name; private apiUrlGet = "https://" + this.domain_name + "/rest/E_DB/SP?";
   //____________________________________CLOSE SESSION_________________________________
   //_____________________________________VARIABLE
   App_CD_data = [];
@@ -81,7 +79,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
 
   process_box: boolean = false;
   action_box: boolean = false;
- 
+
   Label: any[] = [];
 
   // save_shedule_btn: boolean = true;
@@ -89,8 +87,8 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
   ParametrValue: any[] = [];
   ParameterName: any[] = [];
   Data: any[] = [];
-  tp={};
-  kl=0;
+  tp = {};
+  kl = 0;
   displayedColumns = ['#', 'name', 'status', 'lastrun', 'nextrun', 'details'];
   dataSource = new MatTableDataSource();
   Action: any = [];
@@ -99,21 +97,21 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
       res => {
         this.App_CD_data = res.json();
         console.log(res);
-        if(this.app.START==false && this.ApplicationCD.length>0 && this.app.selected_APPLICATION!='ALL')
-          if(this.mobileView)
-            this.getProcessCD({value:this.ApplicationCD});  
+        if (this.app.START == false && this.ApplicationCD.length > 0 && this.app.selected_APPLICATION != 'ALL')
+          if (this.mobileView)
+            this.getProcessCD({ value: this.ApplicationCD });
           else
             this.getProcessCD(this.ApplicationCD);
       });
   }
   getProcessCD(u) {
-    if(this.mobileView)
-      u=u.value;
+    if (this.mobileView)
+      u = u.value;
     this.ApplicationCD = u;
-    this.app.selected_APPLICATION=u;
+    this.app.selected_APPLICATION = u;
     this.selectedplat = u;
     this.selectedplat1 = null;
-    this.selectedplat2=null;
+    this.selectedplat2 = null;
     this.Action = [];
     this.innerTableDT = [];
     this.Data = [];
@@ -122,12 +120,12 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
     //enable the scheduler btn 
     // this.find_process(u, this.ProcessCD, "All");
     this.process_box = true;
-    if(this.app.START==false && this.ProcessCD.length>0 && this.app.selected_PROCESS!='ALL')
-      if(this.mobileView)
-        this.fooo1({value:this.ProcessCD});  
+    if (this.app.START == false && this.ProcessCD.length > 0 && this.app.selected_PROCESS != 'ALL')
+      if (this.mobileView)
+        this.fooo1({ value: this.ProcessCD });
       else
         this.fooo1(this.ProcessCD);
-    
+
   }
   //_________________________________FIND PROCESS__________________________________________
   table = "";
@@ -145,7 +143,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
       let ps_r: boolean;
 
       console.log(data);
-      
+
       this.F1 = data.SRVC_CD;
       console.log(this.F1);
       console.log(this.F1.length);
@@ -207,13 +205,13 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
       console.log("i" + i);
       console.log(key);
       if (v == key) {
-    //     var index = this.Process_key.indexOf(v);
- 
-    // if (index > -1) {
-      this.Process_key.splice(i, 1);
-    //}
-       //this.Process_key = this.Process_key.filter(function(e) { return e !== v })
-         //this.Process_key.slice(i);
+        //     var index = this.Process_key.indexOf(v);
+
+        // if (index > -1) {
+        this.Process_key.splice(i, 1);
+        //}
+        //this.Process_key = this.Process_key.filter(function(e) { return e !== v })
+        //this.Process_key.slice(i);
       }
     });
     console.log(this.Process_key);
@@ -233,7 +231,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
       "Operation": [P_OP]
     };
     console.log(body);
-    this.https.post("https://"+this.domain_name+"/rest/Hold/ScheduleAction", body).subscribe(
+    this.https.post("https://" + this.domain_name + "/rest/Hold/ScheduleAction", body).subscribe(
       res => {
         console.log(res.json());
 
@@ -289,10 +287,10 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
   Roll_cd: any[] = [];
 
   ngOnInit() {
-    if(this.app.selected_APPLICATION!='ALL' && !this.app.START)
-      this.ApplicationCD=this.app.selected_APPLICATION;
-    if(this.app.selected_PROCESS!='ALL' && !this.app.START)
-      this.ProcessCD=this.app.selected_PROCESS;
+    if (this.app.selected_APPLICATION != 'ALL' && !this.app.START)
+      this.ApplicationCD = this.app.selected_APPLICATION;
+    if (this.app.selected_PROCESS != 'ALL' && !this.app.START)
+      this.ProcessCD = this.app.selected_PROCESS;
     this.data2.getJSON().subscribe(data2 => {
 
       this.Label = data2.json();
@@ -306,9 +304,10 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
   selectedplat: any;
   selectedplat1: any;
   selectedplat2: any;
-  display_dynamic_paramter: boolean=false;
-  display_process_table: boolean=false;
-  display_matcard:boolean=false;
+  display_dynamic_paramter: boolean = false;
+  ref:any= {};
+  display_process_table: boolean = false;
+  display_matcard: boolean = false;
   Resume_btn: boolean = false;
   Kill_btn: boolean = false;
   Pause_btn: boolean = false;
@@ -316,22 +315,22 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
   show_filter_input: boolean = false;
   checkbox_color_value = "";
   fooo1(u) {
-    if(this.mobileView)
-      u=u.value;
-    this.selectedplat2=null;
+    if (this.mobileView)
+      u = u.value;
+    this.selectedplat2 = null;
     this.ProcessCD = u;
     this.selectedplat1 = u;
     this.Action = [];
     this.innerTableDT = [];
     this.Data = [];
-    this.action_box=true;
-    
+    this.action_box = true;
+
     this.find_process(this.ApplicationCD, this.ProcessCD, "All");
   }
   fooo2(u) {
-    if(this.mobileView)
-      u=u.value;
-    this.display_matcard=true;
+    if (this.mobileView)
+      u = u.value;
+    this.display_matcard = true;
     this.form_dl_data[0] = {
       APP_CD: this.ApplicationCD,
       PRC_CD: this.ProcessCD
@@ -340,11 +339,11 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
 
     console.log(this.form_dl_data);
     this.StorageSessionService.setSession("Exe_data", this.form_dl_data[0]);
-    
+
     this.selectedplat2 = u;
     if (u == "Setup a New Schedule") {
       this.display_process_table = false;
-      
+
       this.innerTableDT = [];
       this.Resume_btn = false;
       this.Kill_btn = false;
@@ -399,7 +398,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
   //   this.repeat_btn = false;
   // }
   //---------------navigate to scheduler repeat after page
-  
+
   // repeat_btn: boolean = true;
   repeatURL() {
 
@@ -418,8 +417,17 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
 
   //---------------------------------
   show_btn_save_schedule() {
-    this.https.get(this.apiUrlGet + "V_APP_CD=" + this.ApplicationCD + "&V_PRCS_CD=" + this.ProcessCD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=ProcessParameters&Verb=GET").subscribe(
+    //--------------Reuse from ConfigService: ABHISHEK ABHINAV----------------//
+    this.https.get(this.apiUrlGet + "V_APP_CD=" + this.ApplicationCD + "&V_PRCS_CD=" + this.ProcessCD + "&V_SRC_CD=" + this.V_SRC_CD + "&ResetOptimised=" + false + "&Lazyload=" + false + "&REST_Service=ProcessParameters&Verb=GET").subscribe(
       res => {
+        var FormData= res.json();
+        this.ref={disp_dyn_param:false};
+        var got_res = this.data.exec_schd_restCall(FormData,this.ref);
+        this.Data= got_res.Data;
+        this.kl= got_res.K;
+    /*this.https.get(this.apiUrlGet + "V_APP_CD=" + this.ApplicationCD + "&V_PRCS_CD=" + this.ProcessCD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=ProcessParameters&Verb=GET").subscribe(
+      res => {
+        console.log(this.apiUrlGet + "V_APP_CD=" + this.ApplicationCD + "&V_PRCS_CD=" + this.ProcessCD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=ProcessParameters&Verb=GET");
         console.log(res.json());
         this.FormData = res.json();
         this.ParametrValue = this.FormData['PARAM_VAL'];
@@ -427,17 +435,17 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
         let arr: string;
 
         for (let i = 0; i < this.ParametrValue.length; i++) {
-          if(this.ParameterName[i].includes('Date')&& !(this.ParameterName[i].includes('DateTime'))){
+          if (this.ParameterName[i].includes('Date') && !(this.ParameterName[i].includes('DateTime'))) {
             this.Data[i] = {
               type: 'date',
               name: this.ParameterName[i],
               value: this.ParametrValue[i],
               placeholder: this.ParameterName[i].split('_').join(' '),
-  
+
             };
 
           }
-          else if(this.ParameterName[i].charAt(0)=='?'){
+          else if (this.ParameterName[i].charAt(0) == '?') {
             this.Data[i] = {
               type: 'radio',
               name: this.ParameterName[i],
@@ -445,7 +453,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
               placeholder: this.ParameterName[i].split('_').join(' '),
             };
           }
-          else if(this.ParameterName[i].charAt(this.ParameterName[i].length-1)=='?'){
+          else if (this.ParameterName[i].charAt(this.ParameterName[i].length - 1) == '?') {
             this.Data[i] = {
               type: 'checkbox',
               name: this.ParameterName[i],
@@ -453,7 +461,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
               placeholder: this.ParameterName[i].split('_').join(' '),
             };
           }
-          else if(this.ParameterName[i].includes('Time') && !(this.ParameterName[i].includes('DateTime'))){
+          else if (this.ParameterName[i].includes('Time') && !(this.ParameterName[i].includes('DateTime'))) {
             this.Data[i] = {
               type: 'time',
               name: this.ParameterName[i],
@@ -461,7 +469,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
               placeholder: this.ParameterName[i].split('_').join(' '),
             };
           }
-          else if(this.ParameterName[i].includes('DateTime')){
+          else if (this.ParameterName[i].includes('DateTime')) {
             this.Data[i] = {
               type: 'datetime',
               name: this.ParameterName[i],
@@ -469,7 +477,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
               placeholder: this.ParameterName[i].split('_').join(' '),
             };
           }
-          else if(this.ParameterName[i].includes('Password')){
+          else if (this.ParameterName[i].includes('Password')) {
             this.Data[i] = {
               type: 'password',
               name: this.ParameterName[i],
@@ -477,7 +485,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
               placeholder: this.ParameterName[i].split('_').join(' '),
             };
           }
-          else if(this.ParameterName[i].includes('Range')){
+          else if (this.ParameterName[i].includes('Range')) {
             this.Data[i] = {
               type: 'range',
               name: this.ParameterName[i],
@@ -485,7 +493,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
               placeholder: this.ParameterName[i].split('_').join(' '),
             };
           }
-          else if(this.ParameterName[i].includes('Color')){
+          else if (this.ParameterName[i].includes('Color')) {
             this.Data[i] = {
               type: 'color',
               name: this.ParameterName[i],
@@ -493,41 +501,42 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
               placeholder: this.ParameterName[i].split('_').join(' '),
             };
           }
-          else{
+          else {
             this.Data[i] = {
               type: 'input',
               name: this.ParameterName[i],
               value: this.ParametrValue[i],
               placeholder: this.ParameterName[i].split('_').join(' '),
-  
+
             };
           }
 
-          if(this.ParametrValue.length > 0)
-          this.display_dynamic_paramter = true;
-          this.kl=i;
-        }
-        
+          if (this.ParametrValue.length > 0)
+            this.display_dynamic_paramter = true;
+          this.kl = i;
+        }*/
 
-     for(let i=0;i<=this.kl;i++){
-      if(this.Data[i].value!="" && this.Data[i].value!=null){
-        this.tp[this.Data[i].name]=this.Data[i].value;
-      }
-    }
-    console.log(this.tp);
+        
+        for (let i = 0; i <= this.kl; i++) {
+          
+          if (this.Data[i].value != "" && this.Data[i].value != null) {
+            this.tp[this.Data[i].name] = this.Data[i].value;
+          }
+        }
+        console.log(this.tp);
 
 
       }
     );
     // this.save_shedule_btn = false;
   }
-  
+
   FilterAutoValue: any;
   Update_value(v: any, n) { //v=value and n=paramter name
     this.FilterAutoValue = v;
     let ag = this.StorageSessionService.getSession('agency');
     let ur = this.StorageSessionService.getSession('email');
-    this.http.get("https://"+this.domain_name+"/rest/E_DB/SP?V_APP_CD=" + this.ApplicationCD + "&V_PRCS_CD=" + this.ProcessCD + "&V_SRC_CD=" + ag + "&V_USR_NM=" + ur + "&V_PARAM_NM=" + n + "&V_PARAM_VAL=" + v + "&REST_Service=ProcessParameters&Verb=PATCH").subscribe(
+    this.http.get("https://" + this.domain_name + "/rest/E_DB/SP?V_APP_CD=" + this.ApplicationCD + "&V_PRCS_CD=" + this.ProcessCD + "&V_SRC_CD=" + ag + "&V_USR_NM=" + ur + "&V_PARAM_NM=" + n + "&V_PARAM_VAL=" + v + "&REST_Service=ProcessParameters&Verb=PATCH").subscribe(
       res => {
 
       }
@@ -549,7 +558,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
 
 
   }
- 
+
 
   //---------------------------
   ngAfterViewInit() {
@@ -563,16 +572,15 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
     filterValue = filterValue.toLowerCase(); // MatTableDataSource defaults to lowercase matches
     this.dataSource.filter = filterValue;
   }
-  
-  add(aa){
-    console.log(aa.name+aa.value);
-    if(aa.name in this.tp )
-    {this.tp[aa.name]=aa.value;}
-    else{
-      this.tp[aa.name]=aa.value;
+
+  add(aa) {
+    console.log(aa.name + aa.value);
+    if (aa.name in this.tp) { this.tp[aa.name] = aa.value; }
+    else {
+      this.tp[aa.name] = aa.value;
     }
     console.log(this.tp);
-    this.StorageSessionService.setCookies("tp",this.tp);
+    this.StorageSessionService.setCookies("tp", this.tp);
   }
 }
 export interface PeriodicElement {

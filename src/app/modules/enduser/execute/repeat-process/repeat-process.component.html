@@ -51,7 +51,7 @@
         <div flex fxLayout="row" fxLayoutAlign="center">
             <div fxFlex="100" style=" width: 100%;">
                 <mat-list class="scroll">
-                    <mat-list-item class="list_item" (click)="changeView(cn);fooo(cn)" *ngFor="let cn of Select_candence_option" [class.active]="cn == fo1">
+                    <mat-list-item  class="list_item" (click)="changeView(cn);fooo(cn)" *ngFor="let cn of Select_candence_option" [class.active]="cn == fo1">
                         <div> {{cn}}</div>
                     </mat-list-item>
                 </mat-list>
@@ -65,7 +65,7 @@
         </label>&nbsp;
         <div fxFlex="100">
             <mat-radio-group class="example-radio-group" [(ngModel)]="candence_choice">
-                <mat-radio-button class="example-radio-button" (click)="changeView(cn);fooo(cn)" *ngFor="let cn of Select_candence_option"
+                <mat-radio-button style="margin-left:15px;" class="example-radio-button" (click)="changeView(cn);fooo(cn)" *ngFor="let cn of Select_candence_option"
                     [value]="cn">
                     {{cn}}
                 </mat-radio-button>
@@ -74,7 +74,7 @@
         </div>
     </div>
     <div fxFlex="5"></div>
-    <div fxFlex="15" *ngIf="Minute_block">
+    <div fxFlex="15">
         <mat-form-field style="width:80px;resize: none" [floatLabel]="'always'">
             <input matInput placeholder="Repeat After" type="number" [(ngModel)]="Repeat_after" min="1" max="86400" />
         </mat-form-field>

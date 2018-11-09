@@ -79,26 +79,19 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     //this.updatechart();
     this.cd.detectChanges();
   }
-  radState:radioBtnState=new radioBtnState();
   showhide(abc) {
     switch (abc) {
       case 'showtable':
         this.disptable = true;
         this.dispchart = false;
-        this.radState.tableState=true;
-        this.radState.showChart=false;
         break;
       case 'showchart':
         this.disptable = false;
         this.dispchart = true;
-        this.radState.showChart=true;
-        this.radState.tableState=false;
         break;
       case 'showboth':
         this.disptable = true;
         this.dispchart = true;
-        this.radState.tableState=true;
-        this.radState.showChart=true;
         break;
     }
   }
@@ -175,9 +168,6 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   public doughnutChartType: string = 'doughnut';
 
   //_________________________CHART FUNCTIONS________________________________________
-
-
-  
   updateLineChart() {
     var unit = this._yaxisCB;
     
@@ -528,12 +518,20 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.dispchart = true;
     this.disptable = true;
     this.getReportData();
+
+
     this.Table_of_Data3 = this.Table_of_Data2[0];
+
+
     this.Table_of_Data5 = JSON.parse(this.Table_of_Data1[0]);
+    //console.log(this.Table_of_Data5);
     var keyy = [];
     keyy = Object.keys(this.Table_of_Data5);
     var vals = [];
     vals = Object.values(this.Table_of_Data5);
+    //console.log(keyy);
+    //console.log(vals);
+
     for (let j = 0; j < vals.length; j++) {
       while (vals[j].indexOf(" ") != -1) {
         vals[j].splice(vals[j].indexOf(" "), 1, "----");
@@ -561,9 +559,11 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
       this.Table_of_Data4[i] = rowData;
       //console.log(this.Table_of_Data4);
     }
+
     for (let j = 0; j <= this.columnsToDisplay.length; j++) {
       this.http.get<data>("https://" + this.domain_name + "/rest/E_DB/SP?FieldName=" + this.columnsToDisplay[j] + "&REST_Service=Field_Description&Verb=GET")
         .subscribe(res => {
+
           var name = res.Field_Name;
           var tip = res.Description_Text;
           var i;
@@ -578,15 +578,36 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
   ExecuteAgain() {
     this.Execute_Now();
+
   }
-  /*
-  redirect the user to back in execute screen
-  */
   Redirect_to_user() {
+    //   var timezone = new Date();
+
+    //   var Intermediatetimezone = timezone.toString()
+    //   let body = {
+    //     "V_USR_NM":this.V_USR_NM,
+    //     "V_PRCS_TXN_ID":this.PRCS_TXN_ID,
+    //     "V_SRC_ID":this.SRC_ID,
+    //     "V_APP_ID":this.APP_ID,
+    //     "V_PRCS_ID":this.PRCS_ID,
+    //     "V_SRVC_ID":this.SRVC_ID,
+    //     "V_RELEASE_RSN":"Cancelled Navigation "+this.SRVC_CD,
+    //     "V_OPERATION":"MANUALDELETE",
+    //     "TimeZone":Intermediatetimezone,
+    //     "REST_Service":"Form_Report",
+    //     "Verb":"PUT"
+    //   };
+    //   //console.log(body);
+    //    this.https.put("https://"+this.domain_name+"/rest/Process/Submit/FormSubmit", body).subscribe(
+    //     res => {
+    //       //console.log(res);
+
+    //  });
     this.route.navigateByUrl("End_User");
   }
 
   showhidecol(col) {
+
     if (this.columnsToDisplay.includes(col)) {
       var index = this.columnsToDisplay.indexOf(col);
       if (index > -1) {
@@ -611,16 +632,19 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
     this.https.post("https://" + this.domain_name + "/rest/Process/Report", body).subscribe(
       res => {
+
+        //console.log(res.json());
         this.Execute_res_data = res.json();
+        //console.log(this.Execute_res_data);
+
         this.GenerateReportTable();
       }
     );
   }
-  /*
-    Allow the user to click on execute and show 
-    the report table 
-  */
   GenerateReportTable() {
+    //console.log("in GenerateReportTable");
+
+    //"&V_DSPLY_WAIT_SEC=100&V_MNL_WAIT_SEC=180&REST_Service=Report&Verb=GET
     let body = {
       V_SRC_ID: this.Execute_res_data['V_SRC_ID'],
       V_UNIQUE_ID: this.Execute_res_data['V_UNIQUE_ID'],
@@ -636,7 +660,9 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.https.post(this.aptUrlPost_report, body)
       .subscribe(
         res => {
+          //console.log(res.json());
           this.dataStored.setCookies("report_table", res.json());
+
         }
       );
     this.progress = false;
@@ -644,11 +670,8 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   }
   dialogOpen=false;
   dialogRef:any;
-  /*
-    Show the ganttChart when user click on toggle button of gantt chart
-  */
   ganttChart(){
-    console.log("Gantt Chart opening...........:");
+    console.log("Gantt Chart");
     if(!this.dialogOpen){
       this.dialogOpen=true;
       this.dialogRef= this.dialog.open(DialogChartsComponent,{
@@ -663,12 +686,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     }
     
   }
-/*
-  Close the ganttChart 
-*/
-/*
-Bar chart 
-*/
+
   barChart(){
     console.log("Bar Chart");
     if(!this.dialogOpen){
@@ -684,9 +702,7 @@ Bar chart
       
     }
   }
-/*
-  pieChart
-*/
+
   pieChart(){
     console.log("Pie Chart");
     if(!this.dialogOpen){
@@ -710,9 +726,4 @@ export interface data {
   Field_Name: string[];
   Description_Text: string[];
 
-}
-export class radioBtnState{
-  tableState:boolean=true;
-  showChart:boolean=false;
-  botChart:boolean=true;
 }

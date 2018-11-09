@@ -1,6 +1,7 @@
 import { Injectable} from '@angular/core';
 @Injectable()
 export class Form_data {
+
     SL_APP_CD:string="";
     SL_PRC_CD:string="";
             constructor( SL_APP_CD:string, SL_PRC_CD:string){

@@ -7,10 +7,13 @@ import { Chart } from 'chart.js';
 import { DialogScheduleComponent } from './dialog-schedule/dialog-schedule.component';
 import { WebSocketService } from '../../../service/web-socket.service';
 import { GetMessageService } from '../../../service/get-message.service';
+//import { FieldConfig } from '../../dynamic-form/models/field-config.interface';
+//import { DynamicFormComponent } from '../../dynamic-form/containers/dynamic-form/dynamic-form.component';
 import { FormBuilder } from '@angular/forms';
 import { HostListener } from "@angular/core";
 import { Injectable } from '@angular/core';
 import { EnduserComponent } from '../enduser.component';
+
 import { Form_data } from './Form_data';
 import { StorageSessionService } from '../../../service/storage-session.service';
 import { ConfigServiceService } from '../../../service/config-service.service';
@@ -19,8 +22,13 @@ import { RollserviceService } from '../../../service/rollservice.service';
 import { Observable } from 'rxjs/Observable';
 import { Globals } from './../../../service/globals';
 import { MatTableDataSource } from '@angular/material';
-import { unescape } from 'querystring';
-import { ReportData ,ReportGenerate } from './APP_DATA';
+
+export class ReportData {
+  public RESULT: string;
+  public V_EXE_CD:string[];
+  constructor() {
+  }
+}
 @Injectable()
 @Component({
   selector: 'app-execute',
@@ -29,7 +37,7 @@ import { ReportData ,ReportGenerate } from './APP_DATA';
 
 })
 @Injectable()
-export class ExecuteComponent implements OnInit , ReportGenerate {
+export class ExecuteComponent implements OnInit {
 
   domain_name = this.globals.domain_name; private apiUrlGet = "https://" + this.domain_name + "/rest/E_DB/SP?";
   private aptUrlPost_report = "https://" + this.domain_name + "/rest/Process/Report";
@@ -73,7 +81,6 @@ export class ExecuteComponent implements OnInit , ReportGenerate {
     private globals: Globals
   ) {
     this.onResize();
-    this.getAppCode();
   }
   selectedEmoji: string;
   openEmojiDialog() {
@@ -120,16 +127,12 @@ export class ExecuteComponent implements OnInit , ReportGenerate {
   deployService = [];
   countonerror = [];
   //-------Balraj Code--------
-  result = {}
-  currentKey: any;
-  currentVal: any;
-
   // =========== CHARTS FLAGS ( Toggle these to display or hide charts at loading page )=========
-  show_PIE: boolean = false;
-  show_BAR: boolean = false;
-  show_Gantt: boolean = false;
-  show_ALL: boolean = false;
-  show_SM_PIE: boolean = false;
+  show_PIE:boolean = false;
+  show_BAR:boolean = false;
+  show_Gantt:boolean = false;
+  show_ALL:boolean = false;
+  show_SM_PIE:boolean = false;
   // ==================================
 
   //-------Balraj Code--------
@@ -176,8 +179,7 @@ export class ExecuteComponent implements OnInit , ReportGenerate {
   }
   //_____________________________1_____________________
   getAppCode() {
-
-    this.https.get(this.apiUrlGet + "V_CD_TYP=APP&V_SRC_CD=" + this.V_SRC_CD + "&SCREEN=PROFILE&REST_Service=Masters&Verb=GET").subscribe(res => {
+    this.data.getAppCode(this.V_SRC_CD).subscribe(res => {
       this.APP_CD = res.json();
       //this.app.APP_CD_GLOBAL=this.APP_CD;
       //------------get lenght 
@@ -201,31 +203,6 @@ export class ExecuteComponent implements OnInit , ReportGenerate {
       }
 
     });
-
-    // this.data.getAppCode().subscribe(res => {
-    //   this.APP_CD = res.json();
-    //   //this.app.APP_CD_GLOBAL=this.APP_CD;
-    //   //------------get lenght 
-    //   console.log(this.APP_CD);
-
-    //   if (this.APP_CD['APP_CD'].length == 1) {
-    //     //hide the application select box
-    //     this.SL_APP_CD = this.APP_CD['APP_CD'][0];
-    //     // this.Application_box=false;
-    //     // this.Application_label=true;
-
-    //   }
-    //   //console.log("START= "+this.app.START+"; selectedapp="+this.selectedapp);
-    //   if (this.selectedapp != null && this.app.START == false && this.app.selected_APPLICATION != 'ALL') {
-    //     //console.log("calling getProcess");
-    //     this.SL_APP_CD = this.selectedapp;
-    //     if (this.desktopView)
-    //       this.getProcessCD(this.selectedapp);
-    //     else if (this.mobileView)
-    //       this.getProcessCD({ value: this.selectedapp });
-    //   }
-
-    // });
   }
   //___________________________close 2______________________
   //__________________________________________2__________________
@@ -249,7 +226,7 @@ export class ExecuteComponent implements OnInit , ReportGenerate {
       this.Data = [];
       // this.Process_box=true;
       // this.Process_label=false;
-      this.https.get(this.apiUrlGet+"V_APP_CD="+V_APP_CD+"&V_SRC_CD="+this.V_SRC_CD+"&V_USR_NM="+this.V_USR_NM+"&REST_Service=AppProcesses&Verb=GET").subscribe(res => {
+      this.https.get(this.apiUrlGet + "V_APP_CD=" + V_APP_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=AppProcesses&Verb=GET").subscribe(res => {
         this.PRC_CD = res.json();
         //this.app.PRC_CD_GLOBAL=this.PRC_CD;
         //console.log(this.PRC_CD);
@@ -275,7 +252,12 @@ export class ExecuteComponent implements OnInit , ReportGenerate {
   p: number;
   q: number;
   c: number;
-  getServiceCode(V_PRCS_CD) {
+  getServiceCode(...args:any[]) {
+    var V_PRCS_CD = null;
+    if(args.length>0)
+      V_PRCS_CD= args[0];
+    if(args.length>1)
+      this.SL_APP_CD= args[1];
     // if(this.get_cxn==false){
     if (this.mobileView)
       V_PRCS_CD = V_PRCS_CD.value;
@@ -423,20 +405,29 @@ export class ExecuteComponent implements OnInit , ReportGenerate {
 
   }
   b = false;
-  ParametrValue: any[];
-  ParameterName: any[];
-  FormData: any[];
+  result: any = {};
   Data: any[] = [];
   Data1: any[] = [];
   myFormData;
   searchResult: any[];
-
-  createDyanamicForm() {
+  Execute_AP_PR(...schd_args:any[]) {
+    //-----------------schd_args implemented for reuse from schedule component: ABHISHEK ABHINAV--------------------------------//
+    if(schd_args.length>0){
+      this.SL_APP_CD= schd_args[0];
+    }
+    if(schd_args.length>1){
+      this.SL_PRC_CD= schd_args[1];
+    }
 
     this.b = false;
     this.Data = [];
-    this.currentKey = [];
-    this.currentVal = [];
+    
+    var currentKey;
+    var currentVal;
+    var ParametrValue: any[];
+    var ParameterName: any[];
+    var FormData: any[];
+    var result: any = {};
 
     //this.https.get(this.apiUrlGet + "V_APP_CD=" + this.SL_APP_CD + "&V_PRCS_CD=" + this.SL_PRC_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=ProcessParameters&Verb=GET").subscribe(
 
@@ -445,268 +436,217 @@ export class ExecuteComponent implements OnInit , ReportGenerate {
     this.https.get(this.apiUrlGet + "V_APP_CD=" + this.SL_APP_CD + "&V_PRCS_CD=" + this.SL_PRC_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&ResetOptimised=" + this.ResetOptimised + "&Lazyload=" + this.Lazyload + "&REST_Service=ProcessParameters&Verb=GET").subscribe(
       res => {
         console.log(res.json());
-        this.FormData = res.json();
-        this.ParametrValue = this.FormData['PARAM_VAL'];
-        this.ParameterName = this.FormData['PARAM_NM'];
+        console.log(this.apiUrlGet + "V_APP_CD=" + this.SL_APP_CD + "&V_PRCS_CD=" + this.SL_PRC_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&ResetOptimised=" + this.ResetOptimised + "&Lazyload=" + this.Lazyload + "&REST_Service=ProcessParameters&Verb=GET");
+        FormData = res.json();
+        var ref={disp_dyn_param:false}
+        var got_res = this.data.exec_schd_restCall(FormData,ref);
+        this.result= got_res.Result;
+        this.Data= got_res.Data;
+        this.b= got_res.B;
+        this.k= got_res.K;
+      });
+        /*
+        ParametrValue = FormData['PARAM_VAL'];
+        ParameterName = FormData['PARAM_NM'];
 
 
-        for (let i = 0; i < this.ParametrValue.length; i++) {
+        for (let i = 0; i < ParametrValue.length; i++) {
           //-----------Balraj Code---------
-          this.currentVal = this.ParametrValue[i].split(',');
-          this.currentKey = this.ParameterName[i];
-          this.result[this.currentKey] = this.currentVal;
-          console.log(this.result);
-
-          if (this.ParameterName[i].includes('Date') && !(this.ParameterName[i].includes('DateTime'))) {
+          currentVal = ParametrValue[i].split(',');
+          currentKey = ParameterName[i];
+          console.log(currentKey);
+          result[currentKey] = currentVal;
+          if (ParameterName[i].includes('Date') && !(ParameterName[i].includes('DateTime'))) {
             this.Data[i] = {
               type: 'date',
-              name: Object.keys(this.result)[i],
-              value: Object.values(this.result)[i][0],
-              placeholder: Object.keys(this.result)[i]
+              name: Object.keys(result)[i],
+              value: Object.values(result)[i][0],
+              placeholder: Object.keys(result)[i]
 
             };
 
           }
-          else if (this.ParameterName[i].charAt(0) == '?') {
+          else if (ParameterName[i].charAt(0) == '?') {
             this.Data[i] = {
               type: 'radio',
-              name: Object.keys(this.result)[i],
-              value: Object.values(this.result)[i][0],
-              placeholder: Object.keys(this.result)[i]
+              name: Object.keys(result)[i],
+              value: Object.values(result)[i][0],
+              placeholder: Object.keys(result)[i]
             };
           }
-          else if (this.ParameterName[i].charAt(this.ParameterName[i].length - 1) == '?') {
+          else if (ParameterName[i].charAt(ParameterName[i].length - 1) == '?') {
             this.Data[i] = {
               type: 'checkbox',
-              name: Object.keys(this.result)[i],
-              value: Object.values(this.result)[i][0],
-              placeholder: Object.keys(this.result)[i]
+              name: Object.keys(result)[i],
+              value: Object.values(result)[i][0],
+              placeholder: Object.keys(result)[i]
             };
           }
-          else if (this.ParameterName[i].includes('Time') && !(this.ParameterName[i].includes('DateTime'))) {
+          else if (ParameterName[i].includes('Time') && !(ParameterName[i].includes('DateTime'))) {
             this.Data[i] = {
               type: 'time',
-              name: Object.keys(this.result)[i],
-              value: Object.values(this.result)[i][0],
-              placeholder: Object.keys(this.result)[i]
+              name: Object.keys(result)[i],
+              value: Object.values(result)[i][0],
+              placeholder: Object.keys(result)[i]
             };
           }
-          else if (this.ParameterName[i].includes('DateTime')) {
+          else if (ParameterName[i].includes('DateTime')) {
             this.Data[i] = {
               type: 'datetime',
-              name: Object.keys(this.result)[i],
-              value: Object.values(this.result)[i][0],
-              placeholder: Object.keys(this.result)[i]
+              name: Object.keys(result)[i],
+              value: Object.values(result)[i][0],
+              placeholder: Object.keys(result)[i]
             };
           }
-          else if (this.ParameterName[i].includes('Password')) {
+          else if (ParameterName[i].includes('Password')) {
             this.Data[i] = {
               type: 'password',
-              name: Object.keys(this.result)[i],
-              value: Object.values(this.result)[i][0],
-              placeholder: Object.keys(this.result)[i]
+              name: Object.keys(result)[i],
+              value: Object.values(result)[i][0],
+              placeholder: Object.keys(result)[i]
             };
           }
-          else if (this.ParameterName[i].includes('Range')) {
+          else if (ParameterName[i].includes('Range')) {
             this.Data[i] = {
               type: 'range',
-              name: Object.keys(this.result)[i],
-              value: Object.values(this.result)[i][0],
-              placeholder: Object.keys(this.result)[i]
+              name: Object.keys(result)[i],
+              value: Object.values(result)[i][0],
+              placeholder: Object.keys(result)[i]
             };
           }
-          else if (this.ParameterName[i].includes('Color')) {
+          else if (ParameterName[i].includes('Color')) {
             this.Data[i] = {
               type: 'color',
-              name: Object.keys(this.result)[i],
-              value: Object.values(this.result)[i][0],
-              placeholder: Object.keys(this.result)[i]
+              name: Object.keys(result)[i],
+              value: Object.values(result)[i][0],
+              placeholder: Object.keys(result)[i]
             };
           }
           else {
             this.Data[i] = {
               type: 'input',
-              name: Object.keys(this.result)[i],
-              value: Object.values(this.result)[i][0],
-              placeholder: Object.keys(this.result)[i]
+              name: Object.keys(result)[i],
+              value: Object.values(result)[i][0],
+              placeholder: Object.keys(result)[i]
             };
-          }
+          }*/
           //---------Balraj Code--------
 
-          // if(this.ParameterName[i].includes('Date')&& !(this.ParameterName[i].includes('DateTime'))){
+          // if(ParameterName[i].includes('Date')&& !(ParameterName[i].includes('DateTime'))){
           //   this.Data[i] = {
           //     type: 'date',
-          //     name: this.ParameterName[i],
-          //     value: this.ParametrValue[i],
-          //     placeholder: this.ParameterName[i].split('_').join(' '),
+          //     name: ParameterName[i],
+          //     value: ParametrValue[i],
+          //     placeholder: ParameterName[i].split('_').join(' '),
 
           //   };
 
           // }
-          // else if(this.ParameterName[i].charAt(0)=='?'){
+          // else if(ParameterName[i].charAt(0)=='?'){
           //   this.Data[i] = {
           //     type: 'radio',
-          //     name: this.ParameterName[i],
-          //     value: this.ParametrValue[i],
-          //     placeholder: this.ParameterName[i].split('_').join(' '),
+          //     name: ParameterName[i],
+          //     value: ParametrValue[i],
+          //     placeholder: ParameterName[i].split('_').join(' '),
           //   };
           // }
-          // else if(this.ParameterName[i].charAt(this.ParameterName[i].length-1)=='?'){
+          // else if(ParameterName[i].charAt(ParameterName[i].length-1)=='?'){
           //   this.Data[i] = {
           //     type: 'checkbox',
-          //     name: this.ParameterName[i],
-          //     value: this.ParametrValue[i],
-          //     placeholder: this.ParameterName[i].split('_').join(' '),
+          //     name: ParameterName[i],
+          //     value: ParametrValue[i],
+          //     placeholder: ParameterName[i].split('_').join(' '),
           //   };
           // }
-          // else if(this.ParameterName[i].includes('Time') && !(this.ParameterName[i].includes('DateTime'))){
+          // else if(ParameterName[i].includes('Time') && !(ParameterName[i].includes('DateTime'))){
           //   this.Data[i] = {
           //     type: 'time',
-          //     name: this.ParameterName[i],
-          //     value: this.ParametrValue[i],
-          //     placeholder: this.ParameterName[i].split('_').join(' '),
+          //     name: ParameterName[i],
+          //     value: ParametrValue[i],
+          //     placeholder: ParameterName[i].split('_').join(' '),
           //   };
           // }
-          // else if(this.ParameterName[i].includes('DateTime')){
+          // else if(ParameterName[i].includes('DateTime')){
           //   this.Data[i] = {
           //     type: 'datetime',
-          //     name: this.ParameterName[i],
-          //     value: this.ParametrValue[i],
-          //     placeholder: this.ParameterName[i].split('_').join(' '),
+          //     name: ParameterName[i],
+          //     value: ParametrValue[i],
+          //     placeholder: ParameterName[i].split('_').join(' '),
           //   };
           // }
-          // else if(this.ParameterName[i].includes('Password')){
+          // else if(ParameterName[i].includes('Password')){
           //   this.Data[i] = {
           //     type: 'password',
-          //     name: this.ParameterName[i],
-          //     value: this.ParametrValue[i],
-          //     placeholder: this.ParameterName[i].split('_').join(' '),
+          //     name: ParameterName[i],
+          //     value: ParametrValue[i],
+          //     placeholder: ParameterName[i].split('_').join(' '),
           //   };
           // }
-          // else if(this.ParameterName[i].includes('Range')){
+          // else if(ParameterName[i].includes('Range')){
           //   this.Data[i] = {
           //     type: 'range',
-          //     name: this.ParameterName[i],
-          //     value: this.ParametrValue[i],
-          //     placeholder: this.ParameterName[i].split('_').join(' '),
+          //     name: ParameterName[i],
+          //     value: ParametrValue[i],
+          //     placeholder: ParameterName[i].split('_').join(' '),
           //   };
           // }
-          // else if(this.ParameterName[i].includes('Color')){
+          // else if(ParameterName[i].includes('Color')){
           //   this.Data[i] = {
           //     type: 'color',
-          //     name: this.ParameterName[i],
-          //     value: this.ParametrValue[i],
-          //     placeholder: this.ParameterName[i].split('_').join(' '),
+          //     name: ParameterName[i],
+          //     value: ParametrValue[i],
+          //     placeholder: ParameterName[i].split('_').join(' '),
           //   };
           // }
           // else{
           //   this.Data[i] = {
           //     type: 'input',
-          //     name: this.ParameterName[i],
-          //     value: this.ParametrValue[i],
-          //     placeholder: this.ParameterName[i].split('_').join(' '),
+          //     name: ParameterName[i],
+          //     value: ParametrValue[i],
+          //     placeholder: ParameterName[i].split('_').join(' '),
 
           //   };
           // }
 
-          this.k = i;
-        }
-        (this.ParametrValue.length > 0) ? this.b = true : this.b = false;
+          
+
+        
         //console.log("Parameter names :"+this.Data);
         //console.log("Parameter names :"+this.Data['value']);
-      }
 
-    );
-
-    console.info("Dynamic form :");
-    console.log(this.Data);
-   for(let i=0;i<=this.Data.length;i++){
-          this.Data['name'][i]=this.Data['name'][i].split("_").join(" ");
-   }
   }
-  /*
-	Filter the drop down autocomplete list 
-  */
   FilterAutoValue: any;
-  private mouse: MouseState = new MouseState();
   Update_value(v: any, n: any) { //v=value and n=paramter name
-    if (this.mouse.mouseClick && this.mouse.mouseOut && this.mouse.parameterName != undefined && this.mouse.parameterValue != undefined) {
-      console.log("both event fired");
-      console.log("Parameter name :" + this.mouse.parameterName);
-      console.log("Parameter value :" + this.mouse.parameterValue);
-      this.http.get(this.apiUrlGet + "V_APP_CD=" + this.SL_APP_CD + "&V_PRCS_CD=" + this.SL_PRC_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_PARAM_NM=" + n + "&V_PARAM_VAL=" + v + "&REST_Service=ProcessParameters&Verb=PATCH").subscribe(
-        res => {
-          console.log(res);
-        }
-      );
-
-      this.mouse.mouseClick = false;
-      this.mouse.mouseOut = false;
-    }
-    //   if(this.mouseOutState){
-    //     console.log(v);
-    //    this.FilterAutoValue = v;
-    //   this.http.get(this.apiUrlGet + "V_APP_CD=" + this.SL_APP_CD + "&V_PRCS_CD=" + this.SL_PRC_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_PARAM_NM=" + n + "&V_PARAM_VAL=" + v + "&REST_Service=ProcessParameters&Verb=PATCH").subscribe(
-    //     res => {
-    //       //  console.log(res);
-    //     }
-    //   );
-    //   this.mouseOutState=false;
-    //   this.mouseClickState=false;
-    // }
+    this.FilterAutoValue = v;
+    this.http.get(this.apiUrlGet + "V_APP_CD=" + this.SL_APP_CD + "&V_PRCS_CD=" + this.SL_PRC_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_PARAM_NM=" + n + "&V_PARAM_VAL=" + v + "&REST_Service=ProcessParameters&Verb=PATCH").subscribe(
+      res => {
+        console.log(res);
+      }
+    );
   }
-  /*
-    Update the dynami input value when the user click on 
-    autocomplete dropdown list item 
-  */
-  updateParameterValue(parameterValue: any, parameterName: any) {
-    this.mouse.mouseClick = true;
-    this.mouse.mouseOut = true;
-    console.log("autolist click parameter vlaue :" + parameterValue);
-    console.log("autolist click parameter name :" + parameterName);
-    this.Update_value(parameterValue, parameterName);
-  }
-
-  keyUpEventActive(parameterValue: any, parameterName: any) {
-    this.FilterAutoValue = parameterValue;
-    this.mouse.parameterName = parameterName;
-    console.log("parameter name :" + this.mouse.parameterName)
-
-    this.mouse.parameterValue = parameterValue;
-    console.log("parameter value " + this.mouse.parameterValue);
-    //  this.getDropDownListValue(parameterValue);
-  }
-  /*
-    When the user click on input tag
-  */
-  makeFilterValueEmpty() {
-    this.searchResult = [];
-    this.mouse.mouseClick = true;
-  }
-  /*
-    When user mouse out on the input 
-  */
-  mouseOutEventActive(value: any, name: any) {
-    this.mouse.mouseOut = true;
-    this.Update_value(value, name);
-  }
-  /*
-	Get the drop down list autocomplete 
-	in dynamic form 
-  */
   filteredOptions: Observable<string[]>;
   getDropDownListValue(e: any) {
-    //  this.searchResult = [];
-    // console.log(this.result[e]);
+
+    //---------Balraj Code--------
+    this.searchResult = [];
+    console.log(this.result[e]);
+
     this.searchResult = Object.values(this.result[e]);
-    //  this.http.get(this.apiUrlGet + "V_SRC_CD=" + this.V_SRC_CD + "&V_APP_CD=" + this.SL_APP_CD + "&V_PRCS_CD=" + this.SL_PRC_CD + "&V_PARAM_NM=" + e + "&V_SRVC_CD="+this.SL_SRVC_CD+"&REST_Service=ProcessParametersOptions&Verb=GET")
-    //    .subscribe(
-    //      res => {
+    //---------Balraj Code--------
+
+
+    // this.http.get(this.apiUrlGet + "V_SRC_CD=" + this.V_SRC_CD + "&V_APP_CD=" + this.SL_APP_CD + "&V_PRCS_CD=" + this.SL_PRC_CD + "&V_PARAM_NM=" + e + "&V_SRVC_CD="+this.SL_SRVC_CD+"&REST_Service=ProcessParametersOptions&Verb=GET")
+    //   .subscribe(
+    //     res => {
     //       console.log(res[e]);
     //       this.searchResult = res[e];
     //       this.app.loading = false;
+
+
     //     }
-    //    );
+    //   );
+
+
   }
 
   //____________CLOSE APP CODE FUN
@@ -719,47 +659,43 @@ export class ExecuteComponent implements OnInit , ReportGenerate {
     //console.log(this.ts);
     this.StorageSessionService.setCookies("ts", this.ts);
   }
-  /*
-  Calling this method when user click on execute button to 
-  and its will return the report required data and we should have to pass
-  that daa in generate report method 
-  */
   Execute_res_data: any[];
-  //@override ReportGenerate interface
-  executeNow() {
-    console.info("executing the form and generating report ");
+  Execute_Now() {
     let body = {
       "V_APP_CD": this.SL_APP_CD,
       "V_PRCS_CD": this.SL_PRC_CD,
       "V_SRVC_CD": 'START',
       "V_SRC_CD": this.V_SRC_CD,
       "V_USR_NM": this.V_USR_NM
+
     };
-    console.log("The payload that are you sending :");
-    console.log(body);
+
     Object.assign(body, this.ts)
+    console.log(body);
+
     this.https.post("https://" + this.domain_name + "/rest/Process/Start", body).subscribe(
       res => {
-        console.log("Response of execute :");
-        console.log(res.json());
+
+        //console.log(res);
+        //console.log(res.json());
         this.Execute_res_data = res.json();
         this.StorageSessionService.setCookies("executeresdata", this.Execute_res_data);
+        //console.log(this.Execute_res_data);
         this.PFrame.display_page = false;
-        this.generateReportTable();
+        //console.log(this.Execute_res_data);
+        this.GenerateReportTable();
       }
     );
+
+
   }
-  /*
-    Generate the final report call when user click on execute now 
-    button 
-    
-  */
-  //@override ReportGenerate interface
-  public report: ReportData = new ReportData;
-  //@override ReportGenerate interface
-  generateReportTable(): void {
-    console.info("Generating report ");
+   //@override ReportGenerate interface
+   public report: ReportData = new ReportData;
+  GenerateReportTable() {
+    //console.log("in GenerateReportTable");
     this.app.loadingCharts = true;
+    // this.app.text_mgs = 'Loading Table..';
+    //"&V_DSPLY_WAIT_SEC=100&V_MNL_WAIT_SEC=180&REST_Service=Report&Verb=GET
     let body = {
       V_SRC_ID: this.Execute_res_data['V_SRC_ID'],
       V_UNIQUE_ID: this.Execute_res_data['V_UNIQUE_ID'],
@@ -772,31 +708,46 @@ export class ExecuteComponent implements OnInit , ReportGenerate {
       REST_Service: 'Report',
       Verb: 'POST'
     }
-    console.log("The payload that for report generate is :");
-    console.log(body);
     this.https.post(this.aptUrlPost_report, body)
       .subscribe(
-      res => {
-        this.StorageSessionService.setCookies("report_table", res.json());
-        this.check_data = res.json();
-        this.app.loadingCharts = false;
-        this.report = res.json();
-        console.info("This is report generated data :");
-        console.log(this.report);
-        console.info("The URL to redirecting form is :");
-        console.log(this.report.RESULT);
-        if (this.report.RESULT[0] == "INPUT_ARTFCT_TASK" || this.report.RESULT[0] == "FORM"|| this.report.V_EXE_CD[0] == "V_EXE_CD" ||this.report.V_EXE_CD[0] =="NONREPEATABLE_MANUAL_TASK" )
+        res => {
+          //console.log(res.json());
+          this.StorageSessionService.setCookies("report_table", res.json());
+          this.check_data = res.json();
+          this.app.loadingCharts = false;
+          this.report = res.json();
+          console.info("This is report generated data :");
+          console.log(this.report);
+          console.info("The URL to redirecting form is :");
+          console.log(this.report.RESULT);
+          if (this.report.RESULT[0] == "INPUT_ARTFCT_TASK" || this.report.RESULT[0] == "FORM"|| this.report.V_EXE_CD[0] == "V_EXE_CD" ||this.report.V_EXE_CD[0] =="NONREPEATABLE_MANUAL_TASK" )
           this.Router.navigateByUrl('Forms');
         else
           this.Router.navigateByUrl('ReportTable');
-        // if(this.report.RESULT == "INPUT_ARTFCT_TASK"){
-          
-        //   this.Router.navigateByUrl('Input_Art');
-        // }
-      }
+          // if ('V_EXE_CD' in this.check_data) {
+          //   this.Router.navigateByUrl('forms');
+          //   //             var exe_cd:any[] = this.check_data["V_EXE_CD"];
+          //   //             //console.log(exe_cd);
+          //   //             if(exe_cd.includes("NONREPEATABLE_MANUAL_TASK")){
+          //   //                 alert("FORM DATA");
+          //   //           }
+          //   //           else if(exe_cd.includes("NONREPEATABLE_MANUAL_TASK")){
+          //   //             alert("FORM DATA");
+          //   //                       }
+          // }
+          // else {
+          //   this.Router.navigateByUrl('reportTable');
+          // }
+        }
       );
     if (this.app.loadingCharts && this.show_ALL)
       this.chart_JSON_call();
+
+    // while(true)
+
+    //var timer= setInterval(function myfunc(){console.log("_______________________||||||||||||||||||||____________________");},1000);
+
+
   }
   ColorGantt = [];
   Colorpie = [];
@@ -1130,14 +1081,14 @@ export class ExecuteComponent implements OnInit , ReportGenerate {
         end_time[i] = res['LST_UPD_DT_TM'][i].substring(11);
         Process[i] = res['PRDCR_SRVC_CD'][i];
       }
-      if (this.show_Gantt) {
-        this.show_gantt_chart(Process, start_time, end_time);
+      if(this.show_Gantt){
+      this.show_gantt_chart(Process, start_time, end_time);
       }
-      if (this.show_PIE) {
-        this.show_pie(Process, start_time, end_time);
+      if(this.show_PIE){
+      this.show_pie(Process, start_time, end_time);
       }
-      if (this.show_BAR) {
-        this.show_bar_chart(Process, start_time, end_time);
+      if(this.show_BAR){
+      this.show_bar_chart(Process, start_time, end_time);
       }
       // if(this.show_SM_PIE){
       //   this.show_sm_pie_chart(Process, start_time, end_time);
@@ -1185,7 +1136,7 @@ export class ExecuteComponent implements OnInit , ReportGenerate {
       this.Label = data.json();
       //console.log(this.Label);
     })
-
+    this.getAppCode();
     //-----------------------------for checking the role cd 
     this.roll.getRollCd().subscribe(
       res => {
@@ -1227,12 +1178,6 @@ export class ExecuteComponent implements OnInit , ReportGenerate {
 
 
   }
-}
-export class MouseState {
-  mouseClick: boolean;
-  mouseOut: boolean;
-  parameterValue: string;
-  parameterName: string;
 }
 export interface data {
   PARAM_NM: string[];

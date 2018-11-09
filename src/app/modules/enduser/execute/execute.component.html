@@ -1,17 +1,16 @@
 <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="column">
-  <div fxFlex="30"></div>
+  <div fxFlex="20"></div>
   <div fxFlex="80">
     <!-- outer layout -->
-    <div flex style="margin-left:20px;" fxLayout="row" fxLayout.lt-sm="column">
+    <div flex fxLayout="row" fxLayout.lt-sm="column">
 
 
       <!-- App hide when the array of value <2 -->
       <div fxFlex="45">
         <!-- <div *ngIf="Application_box"> -->
-        <!-- <label style="text-align:center;width:100%;">
+        <label style="text-align:center;width:100%;">
           <strong>{{Label['APP_CD']}}</strong>
-        </label> -->
-        <h3 class="CenterAlign">{{Label['APP_CD']}}</h3>
+        </label>
         <mat-list *ngIf="desktopView" class="scroll">
           <mat-list-item class="list_item" (click)="getProcessCD(app);fooo(app)" *ngFor="let app of APP_CD['APP_CD']" [class.active]="app == selectedapp">
             <div> {{app}}</div>
@@ -35,18 +34,17 @@
       <div fxFlex="45">
 
 
-        <!-- <label style="text-align:center;width:100%;">
+        <label style="text-align:center;width:100%;">
           <strong>{{Label['PRCS_CD']}}</strong>
-        </label> -->
-        <h3 class="CenterAlign">{{Label['PRCS_CD']}}</h3>
+        </label>
         <mat-list *ngIf="desktopView" class="scroll">
-          <mat-list-item class="list_item" (click)="getServiceCode(pro);fooo1(pro);createDyanamicForm();" *ngFor="let pro of PRC_CD['PRCS_CD'];"
+          <mat-list-item class="list_item" (click)="getServiceCode(pro);fooo1(pro);Execute_AP_PR();" *ngFor="let pro of PRC_CD['PRCS_CD'];"
             [class.active]="pro == selectedprcs">
             <div>{{pro}}</div>
           </mat-list-item>
         </mat-list>
         <mat-form-field *ngIf="mobileView" style="width:100%;text-align: center;" [floatLabel]="'never'">
-          <mat-select style="margin-top:10px;" (selectionChange)="getServiceCode($event);fooo1($event);createDyanamicForm();" placeholder="--Select--" [value]="selectedprcs">
+          <mat-select style="margin-top:10px;" (selectionChange)="getServiceCode($event);fooo1($event);Execute_AP_PR();" placeholder="--Select--" [value]="selectedprcs">
             <mat-option style="text-align:center;"  *ngFor="let pro of PRC_CD['PRCS_CD'];" [value]="pro">{{pro}}</mat-option>
           </mat-select>
         </mat-form-field>
@@ -83,85 +81,85 @@
   </div>
   
 </div>
-
+<div fxFlex="20"></div>
 </div>
 <!-- display form auto layout -->
-	<div class="dynamicFormContent">
-      <h3 style="text-align: center;" *ngIf="Data!='' &&  Data!=undefined">{{Label['Parameters']}}</h3><hr />
-      <div class="dynamicContent">
-        <div class="padding-input flexLeft" *ngFor="let pr of Data">
+<div class="dynamicFormContent">
+  <h3 style="text-align: center;" *ngIf="Data!='' &&  Data!=undefined">{{Label['Parameters']}}</h3>
+  <div class="dynamicContent">
+    <div class="padding-input flexLeft" *ngFor="let pr of Data">
 
-          <ng-container *ngIf="pr.type=='date'">
-            <label class="f_label">{{pr.placeholder | removeWt}}}</label>
-             <mat-form-field class="form_input">
-                 <input [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" matInput [matDatepicker]="picker" class="f_inp">
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-                </mat-form-field>
-         </ng-container>
-         <ng-container *ngIf="pr.type=='radio'">
-           <mat-radio-button [value]="pr.name" style="background-color: #f4f6f7">{{pr.placeholder | removeWt}}}</mat-radio-button>
-         </ng-container>
-         <ng-container *ngIf="pr.type=='checkbox'">
-           <mat-checkbox [value]="pr.name" style="background-color: #f4f6f7">{{pr.placeholder | removeWt}}}</mat-checkbox>
-          </ng-container>
-         <ng-container *ngIf="pr.type=='time'">
-           <label class="f_label">{{pr.placeholder | removeWt}}}</label>
-             <mat-form-field class="form_input">
-           <input matInput [type]="pr.type" [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" class="f_inp">
-         </mat-form-field>
-       </ng-container>
-         <ng-container *ngIf="pr.type=='datetime'">
-           <label class="f_label">{{pr.placeholder | removeWt}}}</label>
-             <mat-form-field class="form_input" style="background-color: #f4f6f7">
-             <input matInput [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" [owlDateTimeTrigger]="fdate" [owlDateTime]="fdate">
-             <owl-date-time [attr.id]="pr.name"></owl-date-time>
-             </mat-form-field>
-         </ng-container>
-         <ng-container *ngIf="pr.type=='password'">
-           <label class="f_label">{{pr.placeholder | removeWt}}</label>
-             <mat-form-field class="form_input">
-             <input matInput [type]="pr.type"  [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" class="f_inp">
-           </mat-form-field>
-           </ng-container>
-           <ng-container *ngIf="pr.type=='range'">
-             <label class="f_label">{{pr.placeholder | removeWt}}</label>
-               <mat-slider [(ngModel)]="pr.value" value="1" step="1" min="1" max="100" (keyup)="Update_value($event.target.value,pr.placeholder)" style="background-color: #f4f6f7"></mat-slider>
-           </ng-container>
-             <ng-container *ngIf="pr.type=='color'">
-                 <label class="f_label">{{pr.placeholder | removeWt}}</label>
-                 <input [(colorPicker)]="_backgroundColor" [style.background]="_backgroundColor" [(ngModel)]="pr.value" class="f_inp">
-             </ng-container>
-         <ng-container *ngIf="pr.type=='input'">
-           <label class="f_label">{{pr.placeholder | removeWt}}</label>
-         <!-- <mat-form-field class="form_input">
-           <input matInput [name]="pr.name" (value)="pr.value" [matAutocomplete]="auto" (click)="getDropDownListValue(pr.name)"
-             (keyup)="Update_value($event.target.value,pr.placeholder)"  [(ngModel)]="pr.value" class="f_inp">
- 
-           <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
-             <mat-option style="text-align:center;"  (click)="Update_value($event.target.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
-               {{ item }}
-             </mat-option>
-           </mat-autocomplete>
-         </mat-form-field> -->
+      <ng-container *ngIf="pr.type=='date'">
+        <label class="f_label">{{pr.placeholder | removeWt}}</label>
          <mat-form-field class="form_input">
-          <input matInput  [name]="pr.name" (value)="pr.value" #values [matAutocomplete]="auto"  (click)="makeFilterValueEmpty();getDropDownListValue(pr.name)"
-          (keyup)="keyUpEventActive($event.target.value,pr.placeholder)"
-          (mouseout)="mouseOutEventActive($event.target.value,pr.placeholder)"
-          [(ngModel)]="pr.value" class="f_inp glo_input">
-            <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
-              <mat-option style="text-align:center;"  (click)="updateParameterValue(item,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
-                {{ item }}
-              </mat-option>
-            </mat-autocomplete>
+             <input [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" matInput [matDatepicker]="picker" class="f_inp">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+     </ng-container>
+     <ng-container *ngIf="pr.type=='radio'">
+       <mat-radio-button [value]="pr.name" style="background-color: #f4f6f7">{{pr.placeholder | removeWt}}</mat-radio-button>
+     </ng-container>
+     <ng-container *ngIf="pr.type=='checkbox'">
+       <mat-checkbox [value]="pr.name" style="background-color: #f4f6f7">{{pr.placeholder | removeWt}}</mat-checkbox>
+      </ng-container>
+     <ng-container *ngIf="pr.type=='time'">
+       <label class="f_label">{{pr.placeholder | removeWt}}</label>
+         <mat-form-field class="form_input">
+       <input matInput [type]="pr.type" [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" class="f_inp">
+     </mat-form-field>
+   </ng-container>
+     <ng-container *ngIf="pr.type=='datetime'">
+       <label class="f_label">{{pr.placeholder | removeWt}}</label>
+         <mat-form-field class="form_input" style="background-color: #f4f6f7">
+         <input matInput [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" [owlDateTimeTrigger]="fdate" [owlDateTime]="fdate">
+         <owl-date-time [attr.id]="pr.name"></owl-date-time>
          </mat-form-field>
-        
+     </ng-container>
+     <ng-container *ngIf="pr.type=='password'">
+       <label class="f_label">{{pr.placeholder | removeWt}}</label>
+         <mat-form-field class="form_input">
+         <input matInput [type]="pr.type"  [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" class="f_inp">
+       </mat-form-field>
        </ng-container>
-   
-       </div>
-      </div>
-     
-    </div>
+       <ng-container *ngIf="pr.type=='range'">
+         <label class="f_label">{{pr.placeholder | removeWt}}</label>
+           <mat-slider [(ngModel)]="pr.value" value="1" step="1" min="1" max="100" (keyup)="Update_value($event.target.value,pr.placeholder)" style="background-color: #f4f6f7"></mat-slider>
+       </ng-container>
+         <ng-container *ngIf="pr.type=='color'">
+             <label class="f_label">{{pr.placeholder | removeWt}}</label>
+             <input [(colorPicker)]="_backgroundColor" [style.background]="_backgroundColor" [(ngModel)]="pr.value" class="f_inp">
+         </ng-container>
+     <ng-container *ngIf="pr.type=='input'">
+       <label class="f_label">{{pr.placeholder | removeWt}}</label>
+     <mat-form-field class="form_input">
+       <input matInput [name]="pr.name" (value)="pr.value" [matAutocomplete]="auto" (click)="getDropDownListValue(pr.name)"
+         (keyup)="Update_value($event.target.value,pr.placeholder)"  [(ngModel)]="pr.value" class="f_inp">
+
+       <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
+         <mat-option style="text-align:center;"  (click)="Update_value($event.target.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
+           {{ item }}
+         </mat-option>
+       </mat-autocomplete>
+     </mat-form-field>
+     <!-- <mat-form-field class="form_input">
+      <input matInput  [name]="pr.name" (value)="pr.value" #values [matAutocomplete]="auto"  (click)="makeFilterValueEmpty();getDropDownListValue(pr.name)"
+      (keyup)="keyUpEventActive($event.target.value,pr.placeholder)"
+      (mouseout)="mouseOutEventActive($event.target.value,pr.placeholder)"
+      [(ngModel)]="pr.value" class="f_inp glo_input">
+        <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
+          <mat-option style="text-align:center;"  (click)="updateParameterValue(item,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
+            {{ item }}
+          </mat-option>
+        </mat-autocomplete>
+     </mat-form-field> -->
+    
+   </ng-container>
+
+   </div>
+  </div>
+ 
+</div>
 <!-- <div flex fxLayout="row" fxLayout.lt-sm="column" *ngIf="b==true">
                 
                <div fxFlex="10" ></div>
@@ -175,13 +173,12 @@
 
 <!-- close auto -->
 <br />
-<hr *ngIf="Data!='' &&  Data!=undefined" />
 <!-- button layout -->
 <div flex fxLayout="row" fxLayout.lt-sm="column">
 
   <div fxFlex="100" class="parent">
 
-    <button mat-raised-button mat-button color="primary" [disabled]="!Execute_Now_btn" (click)="executeNow()">
+    <button mat-raised-button mat-button color="primary" [disabled]="!Execute_Now_btn" (click)="add();Execute_Now()">
       <mat-icon class="iconmod">play_arrow</mat-icon>Execute Now</button>
 
 &nbsp;&nbsp;
