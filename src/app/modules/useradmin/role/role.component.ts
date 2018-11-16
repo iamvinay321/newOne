@@ -32,7 +32,11 @@ export class RoleComponent implements OnInit {
     
   ) {this.onResize();
     this.onpselect = function(index){
-      this.selectedrole = index;} }
+      this.selectedrole = index;} 
+      do {
+          this.getRoll();
+      }while(this.Roll_CD.length< 0);
+    }
 
 Roll_CD:any[]=[];
 ROLL_CD_R:any;;

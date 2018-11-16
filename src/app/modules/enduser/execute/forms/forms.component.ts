@@ -9,6 +9,7 @@ import { Headers, RequestMethod, RequestOptions } from '@angular/http';
 import { FileUrls,FileUrlProcessing } from './POJO';
 import  { Http} from '@angular/http';
 import { FormBuild } from './FormBuild';
+import { EndUserService} from '../../../../service/EndUser-service';
 @Component({
   selector: 'app-forms',
   templateUrl: './forms.component.html',
@@ -95,6 +96,7 @@ export class FormsComponent implements OnInit,FileUrlProcessing {
     private http: HttpClient,
     private htp:Http,
     private StorageSessionService: StorageSessionService,
+    private endUser:EndUserService
   ) {
     this.filesUrl = new FileUrls(this.StorageSessionService);
    }
@@ -397,10 +399,17 @@ export class FormsComponent implements OnInit,FileUrlProcessing {
     }
     console.log(this.fd[r]["checked"]);
   }
+  /*
+    get dropn down parameter option values
+  */
+  
   checkoptions(opt) {
     this.progress = true;
     this.options = [];
-    this.http.get(this.apiUrlGet + "V_SRVC_CD=" + this.V_SRVC_CD + "&V_APP_CD=" + this.SL_APP_CD + "&V_PRCS_CD=" + this.SL_PRC_CD + "&V_PARAM_NM=" + opt + "&V_SRVC_CD=" + this.srvc_cd_sl + "&REST_Service=ProcessParametersOptions&Verb=GET").subscribe(
+    // getParameterAllOption(application:string,process:string,paramName:string,srcCode:string)
+   this.http.get(this.apiUrlGet + "V_SRVC_CD=" + this.V_SRVC_CD + "&V_APP_CD=" + this.StorageSessionService.getCookies("AppData")['application'] + "&V_PRCS_CD=" + this.StorageSessionService.getCookies("AppData")['process']+ "&V_PARAM_NM=" + opt + "&V_SRVC_CD=" + this.srvc_cd_sl + "&REST_Service=ProcessParametersOptions&Verb=GET")
+  
+   .subscribe(
       res => {
         console.log(res[opt]);
         this.options = res[opt];

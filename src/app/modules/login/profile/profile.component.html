@@ -17,8 +17,8 @@
 					  <div fxFlex="25" ></div>
 					  <div fxFlex="40" >
 						 <div class="numberlist">
-							<ol>
-							  <li style="cursor: pointer; text-align: center"  (click)="optionSelecteds(opt)" *ngFor="let opt of options"><a>{{opt}}</a></li>
+							<ol> 
+							  <li style="cursor: pointer; text-align: center"  (click)="optionSelecteds(opt)" *ngFor="let opt of options"><a>{{opt | removeWt}}</a></li>
 							</ol>
 						</div>
 					  </div>

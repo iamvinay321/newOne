@@ -81,6 +81,13 @@ import { DeveloperComponent } from './modules/developer/developer.component';
 import { EnduserComponent } from './modules/enduser/enduser.component';
 import { SystemadminComponent } from './modules/systemadmin/systemadmin.component';
 import { UseradminComponent } from './modules/useradmin/useradmin.component';
+import {EndUserService } from './service/EndUser-service';
+import { Input_Art_Component } from './modules/enduser/execute/Input_Art/Input_Art.component';
+import { FormComponent } from './modules/enduser/execute/form/form.component';
+
+import { RepeatableFormComponent} from './modules/enduser/execute/repeatable-form/repeatable-form.component';
+import { formService } from './service/form-service';
+import {NonRepeatableFormComponent} from './modules/enduser/execute/non-repeatable-form/non-repeatable-form.component';
 const appRoutes: Routes = [
   { path: '', component: LoginComponent },
 	  {path:"Profile",component:ProfileComponent},
@@ -137,6 +144,12 @@ const appRoutes: Routes = [
   { path: 'Cl', component: DialogScheduleComponent },
   
   { path:'Forms',component:FormsComponent},
+ 
+  
+  { path:'InputArtForm',component:Input_Art_Component},
+  { path:'Form',component:FormComponent},
+  {path:"RepetForm",component:RepeatableFormComponent},
+  {path:"NonRepetForm",component:NonRepeatableFormComponent},
   
   //{ path:'organization',component:OrganizationComponent},
 
@@ -171,6 +184,7 @@ const appRoutes: Routes = [
     UseradminuserComponent,
     UseradmingroupComponent,
     RoleComponent,
+    Input_Art_Component,
     MembershipComponent,
     OrganizationComponent,
     InstallComponent,
@@ -181,7 +195,8 @@ const appRoutes: Routes = [
     MachinespecsComponent,
     PlatformComponent,
     ConnectionComponent,
-
+    RepeatableFormComponent,
+    NonRepeatableFormComponent,
     DeploymentsnavbarComponent,
     OrganizationComponent,
     MembershipComponent,
@@ -195,7 +210,9 @@ const appRoutes: Routes = [
     DeveloperComponent,
     EnduserComponent,
     SystemadminComponent,
-    UseradminComponent
+    UseradminComponent,
+    FormComponent,
+  
   
     // OrganizationComponent,
     // MembershipComponent
@@ -247,7 +264,7 @@ const appRoutes: Routes = [
   ],
 
   providers: [StorageSessionService,ConfigServiceService,LoginServiceService,FormDataService,RollserviceService,
-    UseradminService,GetMessageService,WebSocketService,Globals,
+    UseradminService,GetMessageService,WebSocketService,Globals,EndUserService,formService,
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}],
   bootstrap: [AppComponent],
   entryComponents: [DialogScheduleComponent,DialogChartsComponent]

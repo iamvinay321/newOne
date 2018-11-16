@@ -236,17 +236,24 @@ Styling the login page
 	 background-color:rgb(242, 242, 242);
  }
  .numberlist ol{
-	 list-style:none;
+     list-style:none;
+     margin-left:auto;
+     margin-right: auto;
+     text-align: center;
+ }
+ .numberlist{
+     margin-left:20px;
  }
  .numberlist li{
-	 width:90%;
+	 width:70%;
 	 margin:10px;
-	 padding-left:20px;
-	 padding-right:20px;
-	 padding-top:10px;
-	 padding-bottom:10px;
+	 padding-left:10px;
 	 padding-right:10px;
-	 background-color:blue;
+	 padding-top:5px;
+	 padding-bottom:5px;
+     padding-right:10px;
+     color:white;
+	 background-color:#737373;
  }
  .numberlist a{
 	
@@ -284,7 +291,8 @@ Styling the login page
 	   left:0px;right:0px;
 	   margin:4px;
 	   display:list-item;
-	   list-style:none;
+       list-style:none;
+       margin-bottom:10px; 
    }
    .CustomeButtonFloat button{
 	   width:120px;

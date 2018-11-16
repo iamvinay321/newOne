@@ -1,0 +1,52 @@
+<!-- 1) remove the all "V_" variable (i.e hide them all)
+2) remove the "_" with space  
+3) fetch the old valus from backend table if table name is exits in report ( PVP object containes table_name in ) 
+4) for the repeatable has one call to update each form field record / or we can add similarly/ delete 
+5) for all call has same rest service but we have to pass different verbs i.e for 
+		1) get => for the fetches the old value
+		2) patch=> for the updates
+		3) delete= > for the delete
+		4)post => for the add 
+
+note-> the rest call is "Forms_Record&Verb=GET"
+6) fetch the each option values i.e autocomplete values 
+7) chagne filed type if the API return DATE,RADIO
+8) After all when user click on submit button , we should have to pass all form field 
+record to API "Forms_Record&Verb=POST"
+-->
+<div>
+
+  <div fxLayout="row" fxLayout.lt-sm="column">
+    <div fxFlex="9">
+    </div>
+    <div fxFlex="82">
+      <mat-card class="CustomeLayout">
+        <mat-card-title>
+        </mat-card-title>
+        <mat-card-content>
+          <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="column">
+            <div fxFlex="10"></div>
+            <div fxFlex="80">
+              <div class="dynamicFormContent container">
+                <div *ngFor="let form of formData.getFormParameter()" class="flexLeft">
+                  <label>{{form | removeWt}}</label>
+                  <input (keyup)="updateFieldValues(form,$event.target.value)" [name]="form" value="" (click)="getDropDownListValue(form)" />
+                  <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
+                      <mat-option style="text-align:center;"  (click)="Update_value(pr.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
+                        {{ item }}
+                      </mat-option>
+                    </mat-autocomplete>
+                </div>
+              </div>
+            </div>
+            <div fxFlex="10"></div>
+          </div>
+
+
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div fxFlex="9">
+    </div>
+  </div>
+</div>

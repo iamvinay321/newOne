@@ -35,16 +35,16 @@ chooworkingProfile(){
         if(data.ROLE_CD[i]=="Developer Role"){
               this.options.push("Developer");
         }else if(data.ROLE_CD[i]=="End User Role"){
-            this.options.push("End User");
+            this.options.push("End_User");
         }else if(data.ROLE_CD[i]=='System Admin Role'){
-          this.options.push("System Admin");
+          this.options.push("System_Admin");
         }else if(data.ROLE_CD[i]=='Finance Role'){
           this.options.push("Cost");
         }
         else if(data.ROLE_CD[i]=='IT Asset Role'){
           this.options.push("Assets");
         }else if(data.ROLE_CD[i]=='User Admin Role'){
-          this.options.push("User Admin");
+          this.options.push("User_Admin");
         }
         
       }

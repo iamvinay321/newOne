@@ -21,6 +21,6 @@ export class MyFilterPipe implements PipeTransform {
 }) 
 export class SplitLastPipe implements PipeTransform {
   transform(value:string):string {
-    return value.split("_").join(" ").split("}").join("");
+    return value.split("_").join(" ");
   }
 }

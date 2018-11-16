@@ -689,6 +689,15 @@ export class ExecuteComponent implements OnInit {
 
 
   }
+ /*
+Call API until report data is not come
+*/
+repeat:any=0;
+repeatCallTable(data:any) : void {
+  do{
+    this.GenerateReportTable();
+  }while(data=="TIMEOUT: Processing did not reach to the ServiceEND yet.");
+  }
    //@override ReportGenerate interface
    public report: ReportData = new ReportData;
   GenerateReportTable() {
@@ -720,10 +729,14 @@ export class ExecuteComponent implements OnInit {
           console.log(this.report);
           console.info("The URL to redirecting form is :");
           console.log(this.report.RESULT);
+         this.repeatCallTable(this.repeat.RESULT);
           if (this.report.RESULT[0] == "INPUT_ARTFCT_TASK" || this.report.RESULT[0] == "FORM"|| this.report.V_EXE_CD[0] == "V_EXE_CD" ||this.report.V_EXE_CD[0] =="NONREPEATABLE_MANUAL_TASK" )
-          this.Router.navigateByUrl('Forms');
+          this.Router.navigateByUrl('Form');
         else
           this.Router.navigateByUrl('ReportTable');
+        
+        
+     
           // if ('V_EXE_CD' in this.check_data) {
           //   this.Router.navigateByUrl('forms');
           //   //             var exe_cd:any[] = this.check_data["V_EXE_CD"];

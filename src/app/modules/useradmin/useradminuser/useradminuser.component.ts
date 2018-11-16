@@ -59,7 +59,10 @@ export class UseradminuserComponent implements OnInit {
     private userAdminService: UseradminService,
     private http: HttpClient
   ) {
-    this.getUser();
+    
+    do{
+      this.getUser();
+    }while(this.USR_NM.length < 0);
     this.onResize();
     this.onpselect = function (index) {
       this.selecteduser = index;

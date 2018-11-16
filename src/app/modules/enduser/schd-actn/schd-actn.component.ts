@@ -11,6 +11,7 @@ import { DataSource } from '@angular/cdk/table';
 import { Observable } from 'rxjs/Observable';
 import { AppComponent } from '../../../app.component';
 import { HostListener } from "@angular/core";
+import { EndUserService } from '../../../service/EndUser-service';
 import {
   MatPaginator, MatTable, MatTableModule, MatTabHeader,
   MatHeaderRow, MatHeaderCell, MatHeaderCellDef, MatHeaderRowDef,
@@ -54,6 +55,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
     private data2: UseradminService,
     private StorageSessionService: StorageSessionService,
     private data: ConfigServiceService,
+    private endUsrData:EndUserService,
     private detector: ChangeDetectorRef) {
     this.onpselect = function (index) {
       this.selectedrole = index;
@@ -93,7 +95,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
   dataSource = new MatTableDataSource();
   Action: any = [];
   getAppCode() {
-    this.https.get(this.apiUrlGet + "V_CD_TYP=APP&V_SRC_CD=" + this.V_SRC_CD + "&SCREEN=PROFILE&REST_Service=Masters&Verb=GET").subscribe(
+    this.endUsrData.getApplication().subscribe(
       res => {
         this.App_CD_data = res.json();
         console.log(res);
@@ -115,7 +117,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
     this.Action = [];
     this.innerTableDT = [];
     this.Data = [];
-    this.https.get(this.apiUrlGet + "V_APP_CD=" + u + "&V_SRC_CD=" + this.V_SRC_CD + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=AppProcesses&Verb=GET")
+    this.endUsrData.getProcesses(u)
       .subscribe(res => { this.proc_CD_data = res.json(); });
     //enable the scheduler btn 
     // this.find_process(u, this.ProcessCD, "All");
@@ -418,7 +420,8 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
   //---------------------------------
   show_btn_save_schedule() {
     //--------------Reuse from ConfigService: ABHISHEK ABHINAV----------------//
-    this.https.get(this.apiUrlGet + "V_APP_CD=" + this.ApplicationCD + "&V_PRCS_CD=" + this.ProcessCD + "&V_SRC_CD=" + this.V_SRC_CD + "&ResetOptimised=" + false + "&Lazyload=" + false + "&REST_Service=ProcessParameters&Verb=GET").subscribe(
+    this.endUsrData.getprocessParameter(this.ApplicationCD,this.ProcessCD)
+    .subscribe(
       res => {
         var FormData= res.json();
         this.ref={disp_dyn_param:false};
@@ -536,7 +539,8 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
     this.FilterAutoValue = v;
     let ag = this.StorageSessionService.getSession('agency');
     let ur = this.StorageSessionService.getSession('email');
-    this.http.get("https://" + this.domain_name + "/rest/E_DB/SP?V_APP_CD=" + this.ApplicationCD + "&V_PRCS_CD=" + this.ProcessCD + "&V_SRC_CD=" + ag + "&V_USR_NM=" + ur + "&V_PARAM_NM=" + n + "&V_PARAM_VAL=" + v + "&REST_Service=ProcessParameters&Verb=PATCH").subscribe(
+    this.http.get("https://" + this.domain_name + "/rest/E_DB/SP?V_APP_CD=" + this.ApplicationCD + "&V_PRCS_CD=" + this.ProcessCD + "&V_SRC_CD=" + ag + "&V_USR_NM=" + ur + "&V_PARAM_NM=" + n + "&V_PARAM_VAL=" + v + "&REST_Service=ProcessParameters&Verb=PATCH")
+    .subscribe(
       res => {
 
       }
@@ -547,12 +551,15 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
   getDropDownListValue(e) {
     //this.app.loading=true;
     this.searchResult = [];
-    this.http.get(this.apiUrlGet + "V_SRC_CD=" + this.V_SRC_CD + "&V_APP_CD=" + this.ApplicationCD + "&V_PRCS_CD=" + this.ProcessCD + "&V_PARAM_NM=" + e + "&V_SRVC_CD=Pull%20FPDS%20Contracts&REST_Service=ProcessParametersOptions&Verb=GET")
-      .subscribe(
+    //this.http.get(this.apiUrlGet + "V_SRC_CD=" + this.V_SRC_CD + "&V_APP_CD=" + this.ApplicationCD + "&V_PRCS_CD=" + this.ProcessCD + "&V_PARAM_NM=" + e + "&V_SRVC_CD=Pull%20FPDS%20Contracts&REST_Service=ProcessParametersOptions&Verb=GET")
+    this.endUsrData.getParameterAllOption(this.ApplicationCD,this.ProcessCD,e,"Pull%20FPDS%20Contract")  
+    .subscribe(
         res => {
-          console.log(res[e]);
-          this.searchResult = res[e];
-          // this.app.loading = false;
+          console.log("Parameter option response is :");
+          console.log(res.json());
+          console.log(res.json()[e]);
+          this.searchResult = res.json()[e];
+          this.app.loading = false;
         }
       );
 
