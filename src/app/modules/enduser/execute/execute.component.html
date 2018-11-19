@@ -137,7 +137,7 @@
          (keyup)="Update_value($event.target.value,pr.placeholder)"  [(ngModel)]="pr.value" class="f_inp">
 
        <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
-         <mat-option style="text-align:center;"  (click)="Update_value($event.target.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
+         <mat-option style="text-align:center;"  (click)="Update_value(pr.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
            {{ item }}
          </mat-option>
        </mat-autocomplete>

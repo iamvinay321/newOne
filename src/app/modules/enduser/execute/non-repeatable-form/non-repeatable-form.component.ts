@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {GetFormData} from '../getDataForm';
 import { StorageSessionService } from '../../../../service/storage-session.service';
-import { formService} from '../../../../service/form-service';
+
 import { EndUserService } from '../../../../service/EndUser-service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Globals } from '../../../../service/globals';
+import {HttpClient} from '@angular/common/http'
+import { Router } from '@angular/router';
 @Component({
   selector: 'app-non-repeatable-form',
   templateUrl: './non-repeatable-form.component.html',
@@ -10,44 +14,60 @@ import { EndUserService } from '../../../../service/EndUser-service';
 })
 export class NonRepeatableFormComponent implements OnInit {
 
-  public formData:GetFormData;
-  private data: Data = new Data();
-
-  public formPass: FormPass;
+// domain_name = this.globals.domain_name;
+  //  private apiUrlGet = "https://" + this.domain_name + "/rest/E_DB/SP?";
+  private formData: GetFormData;
+  public form: FormGroup;
+  public param: any[] = [];
   constructor(
-    private storage:StorageSessionService,
-    private form:formService,
-    private enduser:EndUserService
-  ){
-      this.formData=new GetFormData(this.storage);
-   
-   
-} 
-searchResult:string[];
-getDropDownListValue(e: any) {
+    private storage: StorageSessionService,
+    private http:HttpClient,
+    private router:Router
+  ) {
+    this.formData = new GetFormData(this.storage,this.http);
+    this.param = this.formData.getFormParameter();
+    let group: any = {};
 
-  //---------Balraj Code--------
-  this.searchResult = [];
+    this.param.forEach((e) => {
+      group[e] = new FormControl()
+    })
+    this.form = new FormGroup(group);
+  }
 
-  //---------Balraj Code--------
+  onSubmit() {
+    console.log(JSON.stringify(this.form.value));
+    this.formData.submitForm(JSON.stringify(this.form.value),this);
+  }
+  /*
+    call again getFormParameter method after form 
+    submited , and its contains the table name 
+  */
+  formSubmitResponse(result,data:any[]) : void {
+      if(result){
+        let reportData=new ReportData();
+        console.log(data);
+        let dt=JSON.stringify(data);
+        reportData=JSON.parse(dt);
+        console.log(reportData);
+        if (reportData.RESULT =="INPUT_ARTFCT_TASK") {
 
+          this.router.navigateByUrl('InputArtForm');
 
-  //   this.http.get(this.apiUrlGet + "V_SRC_CD=" + this.V_SRC_CD + "&V_APP_CD=" + this.SL_APP_CD + "&V_PRCS_CD=" + this.SL_PRC_CD + "&V_PARAM_NM=" + e + "&V_SRVC_CD="+this.SL_SRVC_CD+"&REST_Service=ProcessParametersOptions&Verb=GET")
-  this.enduser.getParameterAllOption(this.formData.getApp(), this.formData.getProc(), e, this.formData.getServ())
-    .subscribe(
-    res => {
-      console.log("Parameter option response is :");
-      console.log(res.json());
-      console.log(res.json()['Agency']);
-      this.searchResult = res.json()['Agency'];
-    
+        } else if (reportData.RESULT == "FORM" && reportData.V_EXE_CD[0] == "NONREPEATABLE_MANUAL_TASK") {
+          // non-repetable NonRepetForm
+          this.router.navigateByUrl('NonRepetForm');
 
+        } else if (reportData.RESULT == "FORM" && reportData.V_EXE_CD[0] == "REPEATABLE_MANUAL_TASK") {
+          //repetable 
 
-    }
-    );
+          this.router.navigateByUrl('RepetForm');
+        }
+        else if (reportData.RESULT == "TABLE") {
 
-
-}
+          this.router.navigateByUrl('ReportTable');
+        }
+      }
+  }
   ngOnInit() {
   }
 
@@ -67,6 +87,27 @@ export class FormPass {
   V_KEY_NAME: string;
   V_KEY_VALUE: string;
   V_SRVC_CD: string;
+  constructor() {
+
+  }
+}
+export class ReportData{
+  PARAM_NM: string[];
+  PARAM_VAL: string[];
+  RESULT:string;
+  V_EXE_CD:string[];
+  CONT_ON_ERR_FLG: string[];
+
+  constructor(){
+      
+  }
+
+}
+
+export class FormPass1{
+  SRVC_ID:any[];
+  UNIQUE_ID:string[];
+  V_EXE_CD:string[];
   constructor() {
 
   }

@@ -16,33 +16,93 @@ record to API "Forms_Record&Verb=POST"
 -->
 <div>
 
-		<div fxLayout="row" fxLayout.lt-sm="column">
-		  <div fxFlex="9">
-		  </div>
-		  <div fxFlex="82">
-			<mat-card class="CustomeLayout">
-			  <mat-card-title>
-			  </mat-card-title>
-			  <mat-card-content>
-				<div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="column">
-				  <div fxFlex="10"></div>
-				  <div fxFlex="80">
-					<div class="dynamicFormContent container">
-					  <div *ngFor="let form of formData.getFormParameter()" class="flexLeft">
-						<label>{{form | removeWt}}</label>
-						<input (keyup)="updateFieldValues(form,$event.target.value)" [name]="form" value="" />
-	  
-					  </div>
-					</div>
-				  </div>
-				  <div fxFlex="10"></div>
-				</div>
-	  
-	  
-			  </mat-card-content>
-			</mat-card>
-		  </div>
-		  <div fxFlex="9">
-		  </div>
+	<div fxLayout="row" fxLayout.lt-sm="column">
+		<div fxFlex="9">
 		</div>
-	  </div>
+		<div fxFlex="82">
+			<mat-card class="CustomeLayout">
+				<mat-card-title>
+				</mat-card-title>
+				<mat-card-content>
+					<div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="column">
+						<div fxFlex="10"></div>
+						<div fxFlex="80">
+							<div class="dynamicFormContent container">
+								<form (ngSubmit)="onSubmit()" [formGroup]="form">
+									<table>
+									<tbody>
+										<tr>
+											<td *ngFor="let form of formData.getFormParameter()">
+												<label>{{form | removeWt}}</label>
+												<mat-form-field>
+													<input matInput [formControlName]="form" [id]="form" value="" />
+												</mat-form-field>
+											</td>
+
+										</tr>
+									</tbody>
+									</table>
+									<input type="submit" value="Submit" />
+								</form>
+							</div>
+						</div>
+						<div fxFlex="10"></div>
+					</div>
+
+					<div fxLayout="row" fxLayout.lt-sm="column">
+						<div fxFlex="40">
+						</div>
+						<div fxFlex="48">
+							<button mat-raised-button (click)="cancelbtn_click();" id="cancel">
+								<mat-icon class="iconmod">clear</mat-icon>Cancel</button>
+							<div flex fxFlex="5"></div>
+
+							<button mat-raised-button (click)="submitbtn_click();" id="submit">
+								<mat-icon class="iconmod">done_all</mat-icon>Submit</button>
+						</div>
+
+
+					</div>
+
+
+					<!-- ============== -->
+					<div class="containerG">
+ 
+						<ol>
+					   
+					
+						  <li >
+					  
+							<table class="table table-bordered" id="customers">
+								<thead>
+							   <tr>
+								 <th *ngFor="let k of keys">{{k}}</th>
+							   </tr>
+							   </thead>
+							  <tbody *ngFor="let form of dynamicForm">
+								 <tr>
+								   <td>
+									 <input type="checkbox" (click)="checkBoxClickValue(form,$event.target)" />
+								   </td>
+								   <td *ngFor="let k of keys">
+								   <input type="text" [value]="form[k]" class="form-control" />
+								   </td>
+								   <td><button (click)="addForm(form)">Add</button></td>
+								   <td><button (click)="updateForm(form)">Update</button></td>
+								   <td><button (click)="deleteForm(form)">Delete</button></td>
+						 
+								 </tr>
+							  </tbody>
+							   </table>
+					  
+						  </li>
+					  
+						</ol>
+					  </div>
+				</mat-card-content>
+			</mat-card>
+		</div>
+		<div fxFlex="9">
+		</div>
+	</div>
+</div>

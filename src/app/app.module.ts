@@ -86,7 +86,7 @@ import { Input_Art_Component } from './modules/enduser/execute/Input_Art/Input_A
 import { FormComponent } from './modules/enduser/execute/form/form.component';
 
 import { RepeatableFormComponent} from './modules/enduser/execute/repeatable-form/repeatable-form.component';
-import { formService } from './service/form-service';
+
 import {NonRepeatableFormComponent} from './modules/enduser/execute/non-repeatable-form/non-repeatable-form.component';
 const appRoutes: Routes = [
   { path: '', component: LoginComponent },
@@ -264,7 +264,7 @@ const appRoutes: Routes = [
   ],
 
   providers: [StorageSessionService,ConfigServiceService,LoginServiceService,FormDataService,RollserviceService,
-    UseradminService,GetMessageService,WebSocketService,Globals,EndUserService,formService,
+    UseradminService,GetMessageService,WebSocketService,Globals,EndUserService,
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}],
   bootstrap: [AppComponent],
   entryComponents: [DialogScheduleComponent,DialogChartsComponent]

@@ -16,37 +16,49 @@ record to API "Forms_Record&Verb=POST"
 -->
 <div>
 
-  <div fxLayout="row" fxLayout.lt-sm="column">
-    <div fxFlex="9">
-    </div>
-    <div fxFlex="82">
-      <mat-card class="CustomeLayout">
-        <mat-card-title>
-        </mat-card-title>
-        <mat-card-content>
-          <div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="column">
-            <div fxFlex="10"></div>
-            <div fxFlex="80">
-              <div class="dynamicFormContent container">
-                <div *ngFor="let form of formData.getFormParameter()" class="flexLeft">
-                  <label>{{form | removeWt}}</label>
-                  <input (keyup)="updateFieldValues(form,$event.target.value)" [name]="form" value="" (click)="getDropDownListValue(form)" />
-                  <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
-                      <mat-option style="text-align:center;"  (click)="Update_value(pr.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
-                        {{ item }}
-                      </mat-option>
-                    </mat-autocomplete>
-                </div>
-              </div>
-            </div>
-            <div fxFlex="10"></div>
-          </div>
+	<div fxLayout="row" fxLayout.lt-sm="column">
+		<div fxFlex="9">
+		</div>
+		<div fxFlex="82">
+			<mat-card class="CustomeLayout">
+				<mat-card-title>
+				</mat-card-title>
+				<mat-card-content>
+					<div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="column">
+						<div fxFlex="10"></div>
+						<div fxFlex="80">
+							<div class="dynamicFormContent container">
+								<form (ngSubmit)="onSubmit()" [formGroup]="form">
+									<div *ngFor="let form of formData.getFormParameter()" class="flexLeft">
+										<label>{{form | removeWt}}</label>
+										<input [formControlName]="form" [id]="form" value="" />
+
+									</div>
+							<input type="submit" value="Submit" />
+							</form>
+						</div>
+						</div>
+						<div fxFlex="10"></div>
+					</div>
+
+					<div fxLayout="row" fxLayout.lt-sm="column">
+						<div fxFlex="40">
+						</div>
+						<div fxFlex="48">
+							<button mat-raised-button (click)="cancelbtn_click();" id="cancel">
+								<mat-icon class="iconmod">clear</mat-icon>Cancel</button>
+							<div flex fxFlex="5"></div>
+
+							<button mat-raised-button (click)="submitbtn_click();" id="submit">
+								<mat-icon class="iconmod">done_all</mat-icon>Submit</button>
+						</div>
 
 
-        </mat-card-content>
-      </mat-card>
-    </div>
-    <div fxFlex="9">
-    </div>
-  </div>
+					</div>
+				</mat-card-content>
+			</mat-card>
+		</div>
+		<div fxFlex="9">
+		</div>
+	</div>
 </div>

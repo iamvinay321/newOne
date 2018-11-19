@@ -25,7 +25,7 @@ import { MatTableDataSource } from '@angular/material';
 
 export class ReportData {
   public RESULT: string;
-  public V_EXE_CD:string[];
+  public V_EXE_CD: string[];
   constructor() {
   }
 }
@@ -128,11 +128,11 @@ export class ExecuteComponent implements OnInit {
   countonerror = [];
   //-------Balraj Code--------
   // =========== CHARTS FLAGS ( Toggle these to display or hide charts at loading page )=========
-  show_PIE:boolean = false;
-  show_BAR:boolean = false;
-  show_Gantt:boolean = false;
-  show_ALL:boolean = false;
-  show_SM_PIE:boolean = false;
+  show_PIE: boolean = false;
+  show_BAR: boolean = false;
+  show_Gantt: boolean = false;
+  show_ALL: boolean = false;
+  show_SM_PIE: boolean = false;
   // ==================================
 
   //-------Balraj Code--------
@@ -226,7 +226,7 @@ export class ExecuteComponent implements OnInit {
       this.Data = [];
       // this.Process_box=true;
       // this.Process_label=false;
-      this.https.get(this.apiUrlGet + "V_APP_CD=" + V_APP_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=AppProcesses&Verb=GET").subscribe(res => {
+      this.https.get(this.apiUrlGet + "V_APP_CD=" + V_APP_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=UserProcesses&Verb=GET").subscribe(res => {
         this.PRC_CD = res.json();
         //this.app.PRC_CD_GLOBAL=this.PRC_CD;
         //console.log(this.PRC_CD);
@@ -252,12 +252,12 @@ export class ExecuteComponent implements OnInit {
   p: number;
   q: number;
   c: number;
-  getServiceCode(...args:any[]) {
+  getServiceCode(...args: any[]) {
     var V_PRCS_CD = null;
-    if(args.length>0)
-      V_PRCS_CD= args[0];
-    if(args.length>1)
-      this.SL_APP_CD= args[1];
+    if (args.length > 0)
+      V_PRCS_CD = args[0];
+    if (args.length > 1)
+      this.SL_APP_CD = args[1];
     // if(this.get_cxn==false){
     if (this.mobileView)
       V_PRCS_CD = V_PRCS_CD.value;
@@ -410,18 +410,18 @@ export class ExecuteComponent implements OnInit {
   Data1: any[] = [];
   myFormData;
   searchResult: any[];
-  Execute_AP_PR(...schd_args:any[]) {
+  Execute_AP_PR(...schd_args: any[]) {
     //-----------------schd_args implemented for reuse from schedule component: ABHISHEK ABHINAV--------------------------------//
-    if(schd_args.length>0){
-      this.SL_APP_CD= schd_args[0];
+    if (schd_args.length > 0) {
+      this.SL_APP_CD = schd_args[0];
     }
-    if(schd_args.length>1){
-      this.SL_PRC_CD= schd_args[1];
+    if (schd_args.length > 1) {
+      this.SL_PRC_CD = schd_args[1];
     }
 
     this.b = false;
     this.Data = [];
-    
+
     var currentKey;
     var currentVal;
     var ParametrValue: any[];
@@ -438,181 +438,181 @@ export class ExecuteComponent implements OnInit {
         console.log(res.json());
         console.log(this.apiUrlGet + "V_APP_CD=" + this.SL_APP_CD + "&V_PRCS_CD=" + this.SL_PRC_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&ResetOptimised=" + this.ResetOptimised + "&Lazyload=" + this.Lazyload + "&REST_Service=ProcessParameters&Verb=GET");
         FormData = res.json();
-        var ref={disp_dyn_param:false}
-        var got_res = this.data.exec_schd_restCall(FormData,ref);
-        this.result= got_res.Result;
-        this.Data= got_res.Data;
-        this.b= got_res.B;
-        this.k= got_res.K;
+        var ref = { disp_dyn_param: false }
+        var got_res = this.data.exec_schd_restCall(FormData, ref);
+        this.result = got_res.Result;
+        this.Data = got_res.Data;
+        this.b = got_res.B;
+        this.k = got_res.K;
       });
-        /*
-        ParametrValue = FormData['PARAM_VAL'];
-        ParameterName = FormData['PARAM_NM'];
+    /*
+    ParametrValue = FormData['PARAM_VAL'];
+    ParameterName = FormData['PARAM_NM'];
 
 
-        for (let i = 0; i < ParametrValue.length; i++) {
-          //-----------Balraj Code---------
-          currentVal = ParametrValue[i].split(',');
-          currentKey = ParameterName[i];
-          console.log(currentKey);
-          result[currentKey] = currentVal;
-          if (ParameterName[i].includes('Date') && !(ParameterName[i].includes('DateTime'))) {
-            this.Data[i] = {
-              type: 'date',
-              name: Object.keys(result)[i],
-              value: Object.values(result)[i][0],
-              placeholder: Object.keys(result)[i]
+    for (let i = 0; i < ParametrValue.length; i++) {
+      //-----------Balraj Code---------
+      currentVal = ParametrValue[i].split(',');
+      currentKey = ParameterName[i];
+      console.log(currentKey);
+      result[currentKey] = currentVal;
+      if (ParameterName[i].includes('Date') && !(ParameterName[i].includes('DateTime'))) {
+        this.Data[i] = {
+          type: 'date',
+          name: Object.keys(result)[i],
+          value: Object.values(result)[i][0],
+          placeholder: Object.keys(result)[i]
 
-            };
+        };
 
-          }
-          else if (ParameterName[i].charAt(0) == '?') {
-            this.Data[i] = {
-              type: 'radio',
-              name: Object.keys(result)[i],
-              value: Object.values(result)[i][0],
-              placeholder: Object.keys(result)[i]
-            };
-          }
-          else if (ParameterName[i].charAt(ParameterName[i].length - 1) == '?') {
-            this.Data[i] = {
-              type: 'checkbox',
-              name: Object.keys(result)[i],
-              value: Object.values(result)[i][0],
-              placeholder: Object.keys(result)[i]
-            };
-          }
-          else if (ParameterName[i].includes('Time') && !(ParameterName[i].includes('DateTime'))) {
-            this.Data[i] = {
-              type: 'time',
-              name: Object.keys(result)[i],
-              value: Object.values(result)[i][0],
-              placeholder: Object.keys(result)[i]
-            };
-          }
-          else if (ParameterName[i].includes('DateTime')) {
-            this.Data[i] = {
-              type: 'datetime',
-              name: Object.keys(result)[i],
-              value: Object.values(result)[i][0],
-              placeholder: Object.keys(result)[i]
-            };
-          }
-          else if (ParameterName[i].includes('Password')) {
-            this.Data[i] = {
-              type: 'password',
-              name: Object.keys(result)[i],
-              value: Object.values(result)[i][0],
-              placeholder: Object.keys(result)[i]
-            };
-          }
-          else if (ParameterName[i].includes('Range')) {
-            this.Data[i] = {
-              type: 'range',
-              name: Object.keys(result)[i],
-              value: Object.values(result)[i][0],
-              placeholder: Object.keys(result)[i]
-            };
-          }
-          else if (ParameterName[i].includes('Color')) {
-            this.Data[i] = {
-              type: 'color',
-              name: Object.keys(result)[i],
-              value: Object.values(result)[i][0],
-              placeholder: Object.keys(result)[i]
-            };
-          }
-          else {
-            this.Data[i] = {
-              type: 'input',
-              name: Object.keys(result)[i],
-              value: Object.values(result)[i][0],
-              placeholder: Object.keys(result)[i]
-            };
-          }*/
-          //---------Balraj Code--------
+      }
+      else if (ParameterName[i].charAt(0) == '?') {
+        this.Data[i] = {
+          type: 'radio',
+          name: Object.keys(result)[i],
+          value: Object.values(result)[i][0],
+          placeholder: Object.keys(result)[i]
+        };
+      }
+      else if (ParameterName[i].charAt(ParameterName[i].length - 1) == '?') {
+        this.Data[i] = {
+          type: 'checkbox',
+          name: Object.keys(result)[i],
+          value: Object.values(result)[i][0],
+          placeholder: Object.keys(result)[i]
+        };
+      }
+      else if (ParameterName[i].includes('Time') && !(ParameterName[i].includes('DateTime'))) {
+        this.Data[i] = {
+          type: 'time',
+          name: Object.keys(result)[i],
+          value: Object.values(result)[i][0],
+          placeholder: Object.keys(result)[i]
+        };
+      }
+      else if (ParameterName[i].includes('DateTime')) {
+        this.Data[i] = {
+          type: 'datetime',
+          name: Object.keys(result)[i],
+          value: Object.values(result)[i][0],
+          placeholder: Object.keys(result)[i]
+        };
+      }
+      else if (ParameterName[i].includes('Password')) {
+        this.Data[i] = {
+          type: 'password',
+          name: Object.keys(result)[i],
+          value: Object.values(result)[i][0],
+          placeholder: Object.keys(result)[i]
+        };
+      }
+      else if (ParameterName[i].includes('Range')) {
+        this.Data[i] = {
+          type: 'range',
+          name: Object.keys(result)[i],
+          value: Object.values(result)[i][0],
+          placeholder: Object.keys(result)[i]
+        };
+      }
+      else if (ParameterName[i].includes('Color')) {
+        this.Data[i] = {
+          type: 'color',
+          name: Object.keys(result)[i],
+          value: Object.values(result)[i][0],
+          placeholder: Object.keys(result)[i]
+        };
+      }
+      else {
+        this.Data[i] = {
+          type: 'input',
+          name: Object.keys(result)[i],
+          value: Object.values(result)[i][0],
+          placeholder: Object.keys(result)[i]
+        };
+      }*/
+    //---------Balraj Code--------
 
-          // if(ParameterName[i].includes('Date')&& !(ParameterName[i].includes('DateTime'))){
-          //   this.Data[i] = {
-          //     type: 'date',
-          //     name: ParameterName[i],
-          //     value: ParametrValue[i],
-          //     placeholder: ParameterName[i].split('_').join(' '),
+    // if(ParameterName[i].includes('Date')&& !(ParameterName[i].includes('DateTime'))){
+    //   this.Data[i] = {
+    //     type: 'date',
+    //     name: ParameterName[i],
+    //     value: ParametrValue[i],
+    //     placeholder: ParameterName[i].split('_').join(' '),
 
-          //   };
+    //   };
 
-          // }
-          // else if(ParameterName[i].charAt(0)=='?'){
-          //   this.Data[i] = {
-          //     type: 'radio',
-          //     name: ParameterName[i],
-          //     value: ParametrValue[i],
-          //     placeholder: ParameterName[i].split('_').join(' '),
-          //   };
-          // }
-          // else if(ParameterName[i].charAt(ParameterName[i].length-1)=='?'){
-          //   this.Data[i] = {
-          //     type: 'checkbox',
-          //     name: ParameterName[i],
-          //     value: ParametrValue[i],
-          //     placeholder: ParameterName[i].split('_').join(' '),
-          //   };
-          // }
-          // else if(ParameterName[i].includes('Time') && !(ParameterName[i].includes('DateTime'))){
-          //   this.Data[i] = {
-          //     type: 'time',
-          //     name: ParameterName[i],
-          //     value: ParametrValue[i],
-          //     placeholder: ParameterName[i].split('_').join(' '),
-          //   };
-          // }
-          // else if(ParameterName[i].includes('DateTime')){
-          //   this.Data[i] = {
-          //     type: 'datetime',
-          //     name: ParameterName[i],
-          //     value: ParametrValue[i],
-          //     placeholder: ParameterName[i].split('_').join(' '),
-          //   };
-          // }
-          // else if(ParameterName[i].includes('Password')){
-          //   this.Data[i] = {
-          //     type: 'password',
-          //     name: ParameterName[i],
-          //     value: ParametrValue[i],
-          //     placeholder: ParameterName[i].split('_').join(' '),
-          //   };
-          // }
-          // else if(ParameterName[i].includes('Range')){
-          //   this.Data[i] = {
-          //     type: 'range',
-          //     name: ParameterName[i],
-          //     value: ParametrValue[i],
-          //     placeholder: ParameterName[i].split('_').join(' '),
-          //   };
-          // }
-          // else if(ParameterName[i].includes('Color')){
-          //   this.Data[i] = {
-          //     type: 'color',
-          //     name: ParameterName[i],
-          //     value: ParametrValue[i],
-          //     placeholder: ParameterName[i].split('_').join(' '),
-          //   };
-          // }
-          // else{
-          //   this.Data[i] = {
-          //     type: 'input',
-          //     name: ParameterName[i],
-          //     value: ParametrValue[i],
-          //     placeholder: ParameterName[i].split('_').join(' '),
+    // }
+    // else if(ParameterName[i].charAt(0)=='?'){
+    //   this.Data[i] = {
+    //     type: 'radio',
+    //     name: ParameterName[i],
+    //     value: ParametrValue[i],
+    //     placeholder: ParameterName[i].split('_').join(' '),
+    //   };
+    // }
+    // else if(ParameterName[i].charAt(ParameterName[i].length-1)=='?'){
+    //   this.Data[i] = {
+    //     type: 'checkbox',
+    //     name: ParameterName[i],
+    //     value: ParametrValue[i],
+    //     placeholder: ParameterName[i].split('_').join(' '),
+    //   };
+    // }
+    // else if(ParameterName[i].includes('Time') && !(ParameterName[i].includes('DateTime'))){
+    //   this.Data[i] = {
+    //     type: 'time',
+    //     name: ParameterName[i],
+    //     value: ParametrValue[i],
+    //     placeholder: ParameterName[i].split('_').join(' '),
+    //   };
+    // }
+    // else if(ParameterName[i].includes('DateTime')){
+    //   this.Data[i] = {
+    //     type: 'datetime',
+    //     name: ParameterName[i],
+    //     value: ParametrValue[i],
+    //     placeholder: ParameterName[i].split('_').join(' '),
+    //   };
+    // }
+    // else if(ParameterName[i].includes('Password')){
+    //   this.Data[i] = {
+    //     type: 'password',
+    //     name: ParameterName[i],
+    //     value: ParametrValue[i],
+    //     placeholder: ParameterName[i].split('_').join(' '),
+    //   };
+    // }
+    // else if(ParameterName[i].includes('Range')){
+    //   this.Data[i] = {
+    //     type: 'range',
+    //     name: ParameterName[i],
+    //     value: ParametrValue[i],
+    //     placeholder: ParameterName[i].split('_').join(' '),
+    //   };
+    // }
+    // else if(ParameterName[i].includes('Color')){
+    //   this.Data[i] = {
+    //     type: 'color',
+    //     name: ParameterName[i],
+    //     value: ParametrValue[i],
+    //     placeholder: ParameterName[i].split('_').join(' '),
+    //   };
+    // }
+    // else{
+    //   this.Data[i] = {
+    //     type: 'input',
+    //     name: ParameterName[i],
+    //     value: ParametrValue[i],
+    //     placeholder: ParameterName[i].split('_').join(' '),
 
-          //   };
-          // }
+    //   };
+    // }
 
-          
 
-        
-        //console.log("Parameter names :"+this.Data);
-        //console.log("Parameter names :"+this.Data['value']);
+
+
+    //console.log("Parameter names :"+this.Data);
+    //console.log("Parameter names :"+this.Data['value']);
 
   }
   FilterAutoValue: any;
@@ -689,17 +689,18 @@ export class ExecuteComponent implements OnInit {
 
 
   }
- /*
-Call API until report data is not come
-*/
-repeat:any=0;
-repeatCallTable(data:any) : void {
-  do{
+  /*
+ Call API until report data is not come
+ */
+ repeat: any = 0;
+  repeatCallTable(data:any) : void {
+   if(data && this.repeat < 10){
+     this.repeat ++;
     this.GenerateReportTable();
-  }while(data=="TIMEOUT: Processing did not reach to the ServiceEND yet.");
-  }
-   //@override ReportGenerate interface
-   public report: ReportData = new ReportData;
+    }
+    }
+  //@override ReportGenerate interface
+  public report: ReportData = new ReportData;
   GenerateReportTable() {
     //console.log("in GenerateReportTable");
     this.app.loadingCharts = true;
@@ -719,39 +720,58 @@ repeatCallTable(data:any) : void {
     }
     this.https.post(this.aptUrlPost_report, body)
       .subscribe(
-        res => {
-          //console.log(res.json());
-          this.StorageSessionService.setCookies("report_table", res.json());
-          this.check_data = res.json();
-          this.app.loadingCharts = false;
-          this.report = res.json();
-          console.info("This is report generated data :");
-          console.log(this.report);
-          console.info("The URL to redirecting form is :");
-          console.log(this.report.RESULT);
-         this.repeatCallTable(this.repeat.RESULT);
-          if (this.report.RESULT[0] == "INPUT_ARTFCT_TASK" || this.report.RESULT[0] == "FORM"|| this.report.V_EXE_CD[0] == "V_EXE_CD" ||this.report.V_EXE_CD[0] =="NONREPEATABLE_MANUAL_TASK" )
-          this.Router.navigateByUrl('Form');
-        else
-          this.Router.navigateByUrl('ReportTable');
-        
-        
-     
-          // if ('V_EXE_CD' in this.check_data) {
-          //   this.Router.navigateByUrl('forms');
-          //   //             var exe_cd:any[] = this.check_data["V_EXE_CD"];
-          //   //             //console.log(exe_cd);
-          //   //             if(exe_cd.includes("NONREPEATABLE_MANUAL_TASK")){
-          //   //                 alert("FORM DATA");
-          //   //           }
-          //   //           else if(exe_cd.includes("NONREPEATABLE_MANUAL_TASK")){
-          //   //             alert("FORM DATA");
-          //   //                       }
-          // }
-          // else {
-          //   this.Router.navigateByUrl('reportTable');
-          // }
+      res => {
+        //console.log(res.json());
+        this.StorageSessionService.setCookies("report_table", res.json());
+        this.check_data = res.json();
+        this.app.loadingCharts = false;
+        this.report = res.json();
+        console.info("This is report generated data :");
+        console.log(this.report);
+        console.info("The URL to redirecting form is :");
+        console.log(this.report.RESULT);
+        let dt=JSON.stringify(res);
+        if(JSON.parse(dt).lenght < 0){
+         this.repeatCallTable(true);
+        }else {
+          this.repeatCallTable(false);
         }
+
+        if (this.report.RESULT == "INPUT_ARTFCT_TASK") {
+
+          this.Router.navigateByUrl('InputArtForm');
+
+        } else if (this.report.RESULT == "FORM" && this.report.V_EXE_CD[0] == "NONREPEATABLE_MANUAL_TASK") {
+          // non-repetable NonRepetForm
+          this.Router.navigateByUrl('NonRepetForm');
+
+        } else if (this.report.RESULT == "FORM" && this.report.V_EXE_CD[0] == "REPEATABLE_MANUAL_TASK") {
+          //repetable 
+
+          this.Router.navigateByUrl('RepetForm');
+        }
+        else if (this.report.RESULT == "TABLE") {
+
+          this.Router.navigateByUrl('ReportTable');
+        }
+
+
+
+        // if ('V_EXE_CD' in this.check_data) {
+        //   this.Router.navigateByUrl('forms');
+        //   //             var exe_cd:any[] = this.check_data["V_EXE_CD"];
+        //   //             //console.log(exe_cd);
+        //   //             if(exe_cd.includes("NONREPEATABLE_MANUAL_TASK")){
+        //   //                 alert("FORM DATA");
+        //   //           }
+        //   //           else if(exe_cd.includes("NONREPEATABLE_MANUAL_TASK")){
+        //   //             alert("FORM DATA");
+        //   //                       }
+        // }
+        // else {
+        //   this.Router.navigateByUrl('reportTable');
+        // }
+      }
       );
     if (this.app.loadingCharts && this.show_ALL)
       this.chart_JSON_call();
@@ -1094,14 +1114,14 @@ repeatCallTable(data:any) : void {
         end_time[i] = res['LST_UPD_DT_TM'][i].substring(11);
         Process[i] = res['PRDCR_SRVC_CD'][i];
       }
-      if(this.show_Gantt){
-      this.show_gantt_chart(Process, start_time, end_time);
+      if (this.show_Gantt) {
+        this.show_gantt_chart(Process, start_time, end_time);
       }
-      if(this.show_PIE){
-      this.show_pie(Process, start_time, end_time);
+      if (this.show_PIE) {
+        this.show_pie(Process, start_time, end_time);
       }
-      if(this.show_BAR){
-      this.show_bar_chart(Process, start_time, end_time);
+      if (this.show_BAR) {
+        this.show_bar_chart(Process, start_time, end_time);
       }
       // if(this.show_SM_PIE){
       //   this.show_sm_pie_chart(Process, start_time, end_time);

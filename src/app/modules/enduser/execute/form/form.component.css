@@ -18,3 +18,10 @@
        margin:4px;
        text-align: center;
     }
+
+    #cancel{
+        background-color: lightcoral;
+      }
+      #submit{
+        background-color: lightgreen;
+      }

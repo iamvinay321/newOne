@@ -88,7 +88,6 @@ export class FormsComponent implements OnInit,FileUrlProcessing {
   V_SCOPE_LMTNG_CD: string = "";
   V_SCOPE_LMTNG_LVL: string = "";
   V_USR_GRP_ID = 0;
-
   //@ override 
   public filesUrl: FileUrls;
   constructor(private dataStored: StorageSessionService,
