@@ -54,7 +54,7 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
   options: any[] = [];
   displayedColumns: any[] = [];
   displayedColumns1: any[] = [];
-  displayedColumnsClone: any[] = [];
+  displayedColumnsClone: any;
   dat = '';
   V_PRCS_TXN_ID = '';
   V_SRVC_ID: any[];
@@ -392,7 +392,7 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
   artfct_submitbtn_click() {
     this.V_PVP = '';
     for (let i = 0; i < this.fd.length; i++) {
-      if (this.fd[i]['checked'] === true) {
+      if (this.fd[i]['checked'] == true) {
         this.V_PVP += this.fd[i]['name'] + '|';
       }
     }

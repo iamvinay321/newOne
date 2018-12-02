@@ -5,7 +5,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class SplitFormsPipe implements PipeTransform {
 
-  transform(val: string): string[] {
+  transform(val: string) {
       return val.split('_').join(' ');
   }
 }
