@@ -33,7 +33,7 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
   filesdata = {};
   fd: any[] = [];
   Form_Data: any;
-  Field_Data: any[];
+  Field_Data: any;
   FormData: any[];
   DisplayFields: any[] = [];
   Check_RPT_NRPT = '';
@@ -52,8 +52,8 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
   SL_APP_CD: any[] = [];
   SL_PRC_CD: any[] = [];
   options: any[] = [];
-  displayedColumns: any[] = [];
-  displayedColumns1: any[] = [];
+  displayedColumns: any;
+  displayedColumns1: any;
   displayedColumnsClone: any;
   dat = '';
   V_PRCS_TXN_ID = '';
