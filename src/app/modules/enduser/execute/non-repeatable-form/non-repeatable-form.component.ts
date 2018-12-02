@@ -7,6 +7,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Globals } from '../../../../service/globals';
 import {HttpClient} from '@angular/common/http'
 import { Router } from '@angular/router';
+import {MatTableDataSource} from '@angular/material';
 @Component({
   selector: 'app-non-repeatable-form',
   templateUrl: './non-repeatable-form.component.html',
@@ -18,7 +19,10 @@ export class NonRepeatableFormComponent implements OnInit {
   //  private apiUrlGet = "https://" + this.domain_name + "/rest/E_DB/SP?";
   private formData: GetFormData;
   public form: FormGroup;
-  public param: any[] = [];
+  public param: any;
+  dataSource: TableEx[];
+  editing = true;
+  displayedColumns = ['V_USR_NM', 'Program_Manager', 'Program_Score', 'Program_Start_Date', 'Program_Status', 'Program_Trend', 'Program_Type'];
   constructor(
     private storage: StorageSessionService,
     private http:HttpClient,
@@ -39,8 +43,8 @@ export class NonRepeatableFormComponent implements OnInit {
     this.formData.submitForm(JSON.stringify(this.form.value),this);
   }
   /*
-    call again getFormParameter method after form 
-    submited , and its contains the table name 
+    call again getFormParameter method after form
+    submited , and its contains the table name
   */
   formSubmitResponse(result,data:any[]) : void {
       if(result){
@@ -58,7 +62,7 @@ export class NonRepeatableFormComponent implements OnInit {
           this.router.navigateByUrl('NonRepetForm');
 
         } else if (reportData.RESULT == "FORM" && reportData.V_EXE_CD[0] == "REPEATABLE_MANUAL_TASK") {
-          //repetable 
+          //repetable
 
           this.router.navigateByUrl('RepetForm');
         }
@@ -69,11 +73,26 @@ export class NonRepeatableFormComponent implements OnInit {
       }
   }
   ngOnInit() {
+    const obj = [];
+    const data = JSON.parse(this.param);
+    obj.push(data);
+    this.dataSource =  obj;
+    console.log(this.dataSource);
   }
 
 }
 
-
+export interface TableEx {
+  V_USR_NM: any;
+  Program_Score: any;
+  Program_Manager: any;
+  Program_Start_Date: any;
+  Program_Status: any;
+  Program_Trend: any;
+  Program_Type: any;
+  // V_SRC_CD: string;
+  // V_PRCS_ID: any;
+}
 export class Data {
   PARAM_NM: string[];
   PVP: any[];
@@ -99,7 +118,7 @@ export class ReportData{
   CONT_ON_ERR_FLG: string[];
 
   constructor(){
-      
+
   }
 
 }

@@ -12,15 +12,15 @@
                     <h3>{{srvc_cd_sl}}</h3>
                   </div>
                   </div>
-        
+
          <hr />
         </mat-card-title>
         <mat-card-content>
           <div *ngIf="!a" flex fxLayout="row" fxLayoutAlign="center" class="example-container" style="position: relative;">
-            <mat-table class="TableForm" class="adventColor" #table [dataSource]="dataSource" style="overflow: auto">
+            <mat-table class="TableForm adventColor" #table [dataSource]="dataSource" style="overflow: auto">
               <ng-container class="adventColor" *ngFor="let mc of displayedColumns" matColumnDef="{{mc}}">
                 <ng-container class="adventColor" *ngIf="mc!='action'">
-                  <mat-header-cell class="adventColor" *matHeaderCellDef>{{mc}}</mat-header-cell>
+                  <mat-header-cell class="adventColor" *matHeaderCellDef>{{mc | splitForms}}</mat-header-cell>
                   <mat-cell class="adventColor" *matCellDef="let data">
                     <ng-container class="adventColor">
                       <mat-form-field>
@@ -56,11 +56,12 @@
 
           <div *ngIf="a">
             <mat-table class="adventColor" #table [dataSource]="dataSource" style="height:auto;overflow:auto;">
-                  
+
               <ng-container *ngFor="let mc of displayedColumns" matColumnDef="{{mc}}">
                 <ng-container *ngIf="mc!='action'">
-                  <mat-header-cell class="adventColor" *matHeaderCellDef><h4 style="padding-bottom:6px;" id="he">{{mc}}</h4></mat-header-cell>
-                 
+                  <mat-header-cell class="adventColor" *matHeaderCellDef>
+                    <h4 style="padding-bottom:6px;" id="he">{{mc | splitForms}}</h4></mat-header-cell>
+
                   <mat-cell class="adventColor" *matCellDef="let data">
                     <ng-container class="adventColor">
                       <mat-form-field class="adventColor">
@@ -113,7 +114,7 @@
               <button mat-raised-button (click)="submitbtn_click();" id="submit">
                 <mat-icon class="iconmod">done_all</mat-icon>Submit</button>
             </div>
-           
+
 
           </div>
         </mat-card-content>

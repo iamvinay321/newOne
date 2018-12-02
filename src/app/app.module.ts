@@ -11,9 +11,9 @@ import { StorageSessionService } from './service/storage-session.service';
 import {Globals} from './service/globals';
 import { ConfigServiceService } from './service/config-service.service';
 import { LoginServiceService } from './service/login-service.service';
-import { MAT_DIALOG_DEFAULT_OPTIONS,MatButtonModule, MatCardModule, MatFormFieldModule} from '@angular/material';
-import { ToastrModule } from 'ngx-toastr'
-import { RouterModule ,Routes} from '@angular/router';
+import { MAT_DIALOG_DEFAULT_OPTIONS, MatButtonModule, MatCardModule, MatFormFieldModule} from '@angular/material';
+import { ToastrModule } from 'ngx-toastr';
+import { RouterModule , Routes} from '@angular/router';
 import { ProfileComponent } from './modules/login/profile/profile.component';
 import { RepeatProcessComponent } from './modules/enduser/execute/repeat-process/repeat-process.component';
 import { LoginComponent } from './modules/login/login.component';
@@ -29,11 +29,11 @@ import { ExecuteComponent } from './modules/enduser/execute/execute.component';
 import { ReactiveFormsModule }          from '@angular/forms';
 // import { PracticeComponent } from './practice/practice.component';
 import { NgbModule} from '@ng-bootstrap/ng-bootstrap';
-import {NgAutoCompleteModule} from "ng-auto-complete";
+import {NgAutoCompleteModule} from 'ng-auto-complete';
 import {JsonpModule} from '@angular/http';
-import { MatAutocompleteModule, MatInputModule,MatTooltipModule } from '@angular/material';
+import { MatAutocompleteModule, MatInputModule, MatTooltipModule } from '@angular/material';
 import {MatSnackBarModule} from '@angular/material/snack-bar';
-import { LoadingModule,ANIMATION_TYPES  } from 'ngx-loading';
+import { LoadingModule, ANIMATION_TYPES  } from 'ngx-loading';
 import { ReportTableComponent } from './modules/enduser/report-table/report-table.component';
 import { FormDataService } from './service/form-data.service';
 import { UsernavbarComponent } from './modules/enduser/usernavbar/usernavbar.component';
@@ -63,7 +63,7 @@ import { SchdActnComponent } from './modules/enduser/schd-actn/schd-actn.compone
 import { AssignroleComponent } from './modules/useradmin/assignrole/assignrole.component';
 import { MyFilterPipe , SplitLastPipe} from './modules/enduser/execute/MyFilterPipe ';
 import { AuthorizeroleComponent } from './modules/useradmin/authorizerole/authorizerole.component';
-import { MatPaginatorModule,MatSortModule, MatTableModule } from "@angular/material";
+import { MatPaginatorModule, MatSortModule, MatTableModule } from '@angular/material';
 import { MyFilterPipe1 } from './modules/enduser/schd-actn/myFilterPipe1';
 import { RepeatAfterComponent } from './modules/enduser/schd-actn/repeat-after/repeat-after.component';
 import { FormsComponent } from './modules/enduser/execute/forms/forms.component';
@@ -76,7 +76,7 @@ import { WebSocketService } from './service/web-socket.service';
 import { DialogChartsComponent } from './modules/enduser/report-table/dialog-charts/dialog-charts.component';
 import { DeviceDetectorModule } from 'ngx-device-detector';
 import {MatSliderModule} from '@angular/material/slider';
-import { ngfModule } from "angular-file";
+import { ngfModule } from 'angular-file';
 import { DeveloperComponent } from './modules/developer/developer.component';
 import { EnduserComponent } from './modules/enduser/enduser.component';
 import { SystemadminComponent } from './modules/systemadmin/systemadmin.component';
@@ -88,43 +88,44 @@ import { FormComponent } from './modules/enduser/execute/form/form.component';
 import { RepeatableFormComponent} from './modules/enduser/execute/repeatable-form/repeatable-form.component';
 
 import {NonRepeatableFormComponent} from './modules/enduser/execute/non-repeatable-form/non-repeatable-form.component';
+import { SplitFormsPipe } from './split-forms.pipe';
 const appRoutes: Routes = [
   { path: '', component: LoginComponent },
-	  {path:"Profile",component:ProfileComponent},
-  {path:"User_Admin", redirectTo: 'UserAdmin',pathMatch: 'full'},
+	  {path: 'Profile', component: ProfileComponent},
+  {path: 'User_Admin', redirectTo: 'UserAdmin', pathMatch: 'full'},
     { path: 'UserAdmin', component: UseradminComponent,
 		  children: [
 		  { path: '', redirectTo: 'Adminuser', pathMatch: 'full' },
 		  { path: 'Adminuser', component: UseradminuserComponent },
 		  { path: 'UserGroup', component: UseradmingroupComponent },
-		  { path: 'UserRole', component:RoleComponent },
-		  { path: 'Organization', component:OrganizationComponent },
-		  { path: 'Membership', component:MembershipComponent },
-		  { path: 'Assignrole', component:AssignroleComponent},
-		  { path: 'Authorizerole', component:AuthorizeroleComponent}
+		  { path: 'UserRole', component: RoleComponent },
+		  { path: 'Organization', component: OrganizationComponent },
+		  { path: 'Membership', component: MembershipComponent },
+		  { path: 'Assignrole', component: AssignroleComponent},
+		  { path: 'Authorizerole', component: AuthorizeroleComponent}
     ]
-  },  
-  {path:"End_User",redirectTo:"EndUser",pathMatch:"full"},
-	  {path:"EndUser",component:EnduserComponent,
+  },
+  {path: 'End_User', redirectTo: 'EndUser', pathMatch: 'full'},
+	  {path: 'EndUser', component: EnduserComponent,
 		children: [
-			{path:"",redirectTo:"Execute",pathMatch:"full"},
-			{ path: 'Execute', component:ExecuteComponent},
+			{path: '', redirectTo: 'Execute', pathMatch: 'full'},
+			{ path: 'Execute', component: ExecuteComponent},
 			{path: 'Mytask', component: MytaskComponent },
 			{ path: 'Exception', component: ExceptionComponent },
 			{ path: 'ScheduleAction', component: SchdActnComponent },
-			{ path:'Process',component:ProcessComponent},
+			{ path: 'Process', component: ProcessComponent},
 			{ path: 'Orchestrate', component: OrchestrateComponent },
-			{ path:'Dashboard',component:DashboardComponent},
-			
+			{ path: 'Dashboard', component: DashboardComponent},
+
 		]
 	  },
-	  { path:'ReportTable',component:ReportTableComponent},
-	  {path:"System_Admin",redirectTo:"SystemAdmin",pathMatch:"full"},
+	  { path: 'ReportTable', component: ReportTableComponent},
+	  {path: 'System_Admin', redirectTo: 'SystemAdmin', pathMatch: 'full'},
 	  {
-		  path:"SystemAdmin",component:SystemadminComponent,
+		  path: 'SystemAdmin', component: SystemadminComponent,
 		  children: [
-			{path:"",redirectTo:"AppDeploy",pathMatch:"full"},
-			{path:"AppDeploy",component:DeployStatusComponent},
+			{path: '', redirectTo: 'AppDeploy', pathMatch: 'full'},
+			{path: 'AppDeploy', component: DeployStatusComponent},
 			{ path: 'Install', component: InstallComponent },
 			{ path: 'Machineconnection', component: MachineconnectionComponent },
 			{ path: 'Deployment', component: DeploymentComponent },
@@ -132,34 +133,34 @@ const appRoutes: Routes = [
 			{ path: 'Machine', component: MachineComponent },
 			{ path: 'Machinespecs', component: MachinespecsComponent },
 			{ path: 'Platform', component: PlatformComponent },
-			
+
 		  ]
 	  },
   { path: 'Login', component: LoginComponent },
 
-  { path: 'Developer', component: DeveloperComponent },// developer app-dialog-schedule
+  { path: 'Developer', component: DeveloperComponent }, // developer app-dialog-schedule
   { path: 'Parameters', component: ParametersComponent },
-  
+
   { path: 'Repeat', component: RepeatProcessComponent },
   { path: 'Cl', component: DialogScheduleComponent },
-  
-  { path:'Forms',component:FormsComponent},
- 
-  
-  { path:'InputArtForm',component:Input_Art_Component},
-  { path:'Form',component:FormComponent},
-  {path:"RepetForm",component:RepeatableFormComponent},
-  {path:"NonRepetForm",component:NonRepeatableFormComponent},
-  
+
+  { path: 'Forms', component: FormsComponent},
+
+
+  { path: 'InputArtForm', component: Input_Art_Component},
+  { path: 'Form', component: FormComponent},
+  {path: 'RepetForm', component: RepeatableFormComponent},
+  {path: 'NonRepetForm', component: NonRepeatableFormComponent},
+
   //{ path:'organization',component:OrganizationComponent},
 
-  { path: '', component: EnduserComponent ,pathMatch:'full'},
-  {path:'**', redirectTo:'users',pathMatch:'full'} ,  //UsersComponent
-  
+  { path: '', component: EnduserComponent , pathMatch: 'full'},
+  {path: '**', redirectTo: 'users', pathMatch: 'full'} ,  //UsersComponent
+
   //---------------------------------------------user admin
   //{ path: 'User', component:UseradminComponent },
 
-  
+
 ];
 @NgModule({
   declarations: [
@@ -201,7 +202,7 @@ const appRoutes: Routes = [
     OrganizationComponent,
     MembershipComponent,
     AssignroleComponent,
-    AuthorizeroleComponent, 
+    AuthorizeroleComponent,
     RepeatAfterComponent,
     FormsComponent,
     DashboardComponent,
@@ -212,8 +213,9 @@ const appRoutes: Routes = [
     SystemadminComponent,
     UseradminComponent,
     FormComponent,
-  
-  
+    SplitFormsPipe,
+
+
     // OrganizationComponent,
     // MembershipComponent
    // PracticeComponent,
@@ -240,7 +242,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     MatAutocompleteModule,
     MatIconModule,
-	  MatPaginatorModule, 
+	  MatPaginatorModule,
     MatSortModule, MatTableModule,
     MatSnackBarModule,
     MatSliderModule,
@@ -249,10 +251,10 @@ const appRoutes: Routes = [
     MatProgressSpinnerModule,
     LoadingModule.forRoot({
       animationType: ANIMATION_TYPES.wanderingCubes,
-      backdropBackgroundColour: 'rgba(0,0,0,0.1)', 
+      backdropBackgroundColour: 'rgba(0,0,0,0.1)',
       backdropBorderRadius: '4px',
-      primaryColour: '#ffffff', 
-      secondaryColour: '#ffffff', 
+      primaryColour: '#ffffff',
+      secondaryColour: '#ffffff',
       tertiaryColour: '#ffffff'
   }),
   DeviceDetectorModule.forRoot(),
@@ -263,10 +265,10 @@ const appRoutes: Routes = [
     ),
   ],
 
-  providers: [StorageSessionService,ConfigServiceService,LoginServiceService,FormDataService,RollserviceService,
-    UseradminService,GetMessageService,WebSocketService,Globals,EndUserService,
+  providers: [StorageSessionService, ConfigServiceService, LoginServiceService, FormDataService, RollserviceService,
+    UseradminService, GetMessageService, WebSocketService, Globals, EndUserService,
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}],
   bootstrap: [AppComponent],
-  entryComponents: [DialogScheduleComponent,DialogChartsComponent]
+  entryComponents: [DialogScheduleComponent, DialogChartsComponent]
 })
 export class AppModule { }

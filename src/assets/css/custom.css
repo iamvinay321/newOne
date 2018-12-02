@@ -46,9 +46,12 @@
     display:block!important;padding: 11px;min-height:40px;
     background: white;
 
-} 
+}
 
-.mat-table{width:8000px;}
+.mat-table{width:100%}
+.mat-form-field-infix {
+  width: auto !important;
+}
 
 
 @media only screen and (max-width: 767px) {

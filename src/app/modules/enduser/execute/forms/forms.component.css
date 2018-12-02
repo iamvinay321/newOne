@@ -1,13 +1,13 @@
 #body{
     height: auto;
-    margin-top:4%; 
+    margin-top:4%;
     margin-bottom:4%;
   }
   *{
     font-size: 14px;
   }
   mat-radio-button {
-   
+
   }
   #mat_card{
     background-color:rgb(248, 248, 248);
@@ -49,10 +49,10 @@
   overflow: hidden;
   }
 .mat-header-row {
- 
+
   height: auto;
 
-  margin-bottom:5px; 
+  margin-bottom:5px;
   width:max-content;
   overflow: hidden;
 }
@@ -65,8 +65,8 @@
   width: max-content;
 }
 .mat-header-cell{
-  display: block!important; 
-  
+  display: block!important;
+
   color:rgba(26, 17, 17, 0.973);
   width:auto;
   font-size: 16px!important;
@@ -122,19 +122,19 @@ mat-checkbox{
 
   .mat-header-cell {
       border: 1px dashed rgb(190, 190, 190);
-      height:auto;      
-      vertical-align: middle;     
+      height:auto;
+      vertical-align: middle;
       font-size: 16px!important;
   }
   .mat-header-row {
-        
+
     position: sticky;
     z-index: 1000;
     width: auto;
     top: 0;
     left: 0;
-   
-  } 
+
+  }
   mat-cell{
     background-color: transparent;
   }
@@ -142,7 +142,7 @@ mat-checkbox{
     height:auto;
    padding-top: 15px;
     vertical-align: middle;
-    
+
   }
 
   .mat-sort-header-container {
@@ -151,5 +151,5 @@ mat-checkbox{
     cursor: pointer;
     justify-content: flex-end;
   }
-   
-}  
+
+}

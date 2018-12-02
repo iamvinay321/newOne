@@ -138,7 +138,7 @@ export class ExecuteComponent implements OnInit {
   //-------Balraj Code--------
 
   ResetOptimised: boolean = false;
-  Lazyload: boolean = false;
+  Lazyload: boolean = true;
 
   check_data = {};
   executedata = {};
@@ -182,7 +182,7 @@ export class ExecuteComponent implements OnInit {
     this.data.getAppCode(this.V_SRC_CD).subscribe(res => {
       this.APP_CD = res.json();
       //this.app.APP_CD_GLOBAL=this.APP_CD;
-      //------------get lenght 
+      //------------get lenght
       console.log(this.APP_CD);
 
       if (this.APP_CD['APP_CD'].length == 1) {
@@ -296,7 +296,7 @@ export class ExecuteComponent implements OnInit {
     this.q = 0;
     for (let j = 0; j < this.SRVC_CD.length; j++) {
       this.SL_SRVC_CD = this.SRVC_CD[j];
-      //console.log(this.SL_SRVC_CD);
+      // console.log(this.SL_SRVC_CD);
       this.data.getID(this.SL_APP_CD, this.SL_PRCS_CD, this.SL_SRVC_CD).subscribe(res => {
         // //console.log(res.json());
         this.SRVC_DATA = res.json();
@@ -304,7 +304,7 @@ export class ExecuteComponent implements OnInit {
         // //console.log(this.SRVC_CD);
 
         this.executedata = { SL_APP_CD: this.SL_APP_CD, SL_PRC_CD: this.SL_PRC_CD };
-        console.log(this.executedata);
+        console.log('this.executedata',this.executedata);
         this.StorageSessionService.setCookies("executedata", this.executedata);
         this.ID_DATA = res.json();
         this.StorageSessionService.setCookies("iddata", this.ID_DATA);
@@ -350,7 +350,7 @@ export class ExecuteComponent implements OnInit {
         // }
         // if(this.countonerror.length===0){
 
-        //         this.deployService.splice(this.deployService.indexOf(this.deployService[h]), 1);      
+        //         this.deployService.splice(this.deployService.indexOf(this.deployService[h]), 1);
         // }
 
         this.p++;
@@ -367,7 +367,7 @@ export class ExecuteComponent implements OnInit {
       }
       // else {
       //   this.b = false;
-      //   this.Service_box = true;     
+      //   this.Service_box = true;
       //   this.Execute_Now_btn = false;
       //   this.Schedule_btn = false;
 
@@ -387,7 +387,7 @@ export class ExecuteComponent implements OnInit {
   }
 
   /////////////////////////////////////////////////////////////////////////////////////////////////////
-  //--------------this is for report table 
+  //--------------this is for report table
   Execute_both() {
     this.getAppCode();
     this.getProcessCD(this.APP_CD);
@@ -676,13 +676,13 @@ export class ExecuteComponent implements OnInit {
     this.https.post("https://" + this.domain_name + "/rest/Process/Start", body).subscribe(
       res => {
 
-        //console.log(res);
-        //console.log(res.json());
+        // console.log(res);
+        // console.log(res.json());
         this.Execute_res_data = res.json();
         this.StorageSessionService.setCookies("executeresdata", this.Execute_res_data);
-        //console.log(this.Execute_res_data);
+        // console.log(this.Execute_res_data);
         this.PFrame.display_page = false;
-        //console.log(this.Execute_res_data);
+        // console.log(this.Execute_res_data);
         this.GenerateReportTable();
       }
     );
@@ -746,7 +746,7 @@ export class ExecuteComponent implements OnInit {
           this.Router.navigateByUrl('NonRepetForm');
 
         } else if (this.report.RESULT == "FORM" && this.report.V_EXE_CD[0] == "REPEATABLE_MANUAL_TASK") {
-          //repetable 
+          //repetable
 
           this.Router.navigateByUrl('RepetForm');
         }
@@ -1170,7 +1170,7 @@ export class ExecuteComponent implements OnInit {
       //console.log(this.Label);
     })
     this.getAppCode();
-    //-----------------------------for checking the role cd 
+    //-----------------------------for checking the role cd
     this.roll.getRollCd().subscribe(
       res => {
         this.Roll_cd = res['ROLE_CD'];
@@ -1197,7 +1197,7 @@ export class ExecuteComponent implements OnInit {
         if (ex_btn1.length != 0 && ex_btn2.length != 0 && ex_pro.length != 0) {
           // this.Execute_Now_btn = false;
         }
-        //---for schedule 3 Roll must here 
+        //---for schedule 3 Roll must here
         if (ex_btn1.length != 0 && ex_btn2.length != 0 && ex_tab.length != 0 && ex_pro.length != 0) {
           // this.Schedule_btn = false;
         }

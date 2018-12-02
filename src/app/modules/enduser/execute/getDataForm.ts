@@ -23,6 +23,7 @@ export class GetFormData {
         console.log("======AP DATA++++++++++");
         console.log(this.storage.getCookies("AppData"));
         this.data.PARAM_NM = this.storage.getCookies('report_table')['PARAM_NM'];
+      this.data.RVP = this.storage.getCookies('report_table')['RVP'];
         let tmp = this.storage.getCookies('report_table')['PVP'][0];
         this.data.V_SRVC_CD = this.storage.getCookies('report_table')['V_SRVC_CD'];
         console.log(this.storage.getCookies('report_table')['PVP']);
@@ -69,17 +70,17 @@ export class GetFormData {
     }
     /*
       Return the parameter name in PVP response report object
-      Replacing the V_ starting character 
+      Replacing the V_ starting character
     */
     getFormParameter(): any[] {
         let group: any[] = [];
-        this.data.PARAM_NM.forEach((e) => {
+        this.data.RVP.forEach((e) => {
             if (e.charAt(0) != "V")
                 group.push(e);
         })
         return group;
     }
- 
+
     fetchingFormData(form:ReportData,obj){
         let formData=new ReportData();
         formData=form;
@@ -91,7 +92,7 @@ export class GetFormData {
         });
     }
 /*
-    Submit the form 
+    Submit the form
 */
     submitForm(form: string, obj: any) {
         let formSub = new FormPass();
@@ -119,10 +120,10 @@ export class GetFormData {
         console.log(body);
         this.http.post("https://" + "enablement.us/Enablement" + "/rest/Submit/FormSubmit", body).subscribe(
             res => {
-               
+
                     this.storage.setCookies("report_table", res);
                     obj.formSubmitResponse(true, res);
-             
+
 
             }
         );
@@ -131,7 +132,7 @@ export class GetFormData {
         return JSON.parse(this.storage.getCookies('report_table')['PVP'][0])[pr];
     }
     /*
-        get the 
+        get the
     */
     getApp(): string {
         return this.storage.getCookies("AppData")['application'];
@@ -151,6 +152,7 @@ export class GetFormData {
 export class Data {
     PARAM_NM: string[];
     PVP: any[];
+  RVP: any;
     V_SRVC_CD: any[];
 }
 export class FormPass {
@@ -196,9 +198,9 @@ export class ReportData{
     V_USR_NM:string[];
     V_SRC_CD:string[];
     V_PRCS_ID:string[];
-  
+
     constructor(){
-        
+
     }
-  
+
   }
