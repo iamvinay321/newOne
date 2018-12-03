@@ -712,7 +712,7 @@ export class ExecuteComponent implements OnInit {
     //console.log("in GenerateReportTable");
     this.app.loadingCharts = true;
     // this.app.text_mgs = 'Loading Table..';
-    //"&V_DSPLY_WAIT_SEC=100&V_MNL_WAIT_SEC=180&REST_Service=Report&Verb=GET
+    // "&V_DSPLY_WAIT_SEC=100&V_MNL_WAIT_SEC=180&REST_Service=Report&Verb=GET
     const body = {
       V_SRC_ID: this.Execute_res_data['V_SRC_ID'],
       V_UNIQUE_ID: this.Execute_res_data['V_UNIQUE_ID'],
@@ -728,7 +728,7 @@ export class ExecuteComponent implements OnInit {
     this.https.post(this.aptUrlPost_report, body)
       .subscribe(
       res => {
-        //console.log(res.json());
+        // console.log(res.json());
         this.StorageSessionService.setCookies('report_table', res.json());
         this.check_data = res.json();
         this.app.loadingCharts = false;
@@ -750,7 +750,8 @@ export class ExecuteComponent implements OnInit {
 
         } else if (this.report.RESULT == 'FORM' && this.report.V_EXE_CD[0] == 'NONREPEATABLE_MANUAL_TASK') {
           // non-repetable NonRepetForm
-          this.router.navigateByUrl('NonRepetForm');
+          //this.router.navigateByUrl('NonRepetForm');
+          this.router.navigateByUrl('Forms');
 
         } else if (this.report.RESULT == 'FORM' && this.report.V_EXE_CD[0] == 'REPEATABLE_MANUAL_TASK') {
           //repetable
