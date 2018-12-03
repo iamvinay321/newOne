@@ -755,9 +755,9 @@ export class ExecuteComponent implements OnInit {
 
         } else if (this.report.RESULT == 'FORM' && this.report.V_EXE_CD[0] == 'REPEATABLE_MANUAL_TASK') {
           //repetable
-          this.router.navigateByUrl('Forms');
-
           this.router.navigateByUrl('RepetForm');
+
+          //this.router.navigateByUrl('RepetForm');
         } else if (this.report.RESULT == 'TABLE') {
 
           this.router.navigateByUrl('ReportTable');
