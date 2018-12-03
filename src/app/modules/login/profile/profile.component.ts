@@ -14,11 +14,11 @@ export class ProfileComponent implements OnInit {
 
   constructor(private router:Router,private StorageSessionService:StorageSessionService, private globals:Globals,
     public toastr: ToastrService,
-  
+
     private http:HttpClient
   ) {
-    
-   
+
+
   }
   domain_name=this.globals.domain_name;
  options=[];
@@ -46,7 +46,7 @@ chooworkingProfile(){
         }else if(data.ROLE_CD[i]=='User Admin Role'){
           this.options.push("User_Admin");
         }
-        
+
       }
       //navigate when the lenght is 1
       console.log("length"+this.options.length);
@@ -54,8 +54,8 @@ chooworkingProfile(){
       if(this.options.length==1){
         // this.StorageSessionService.setLocatS("profileopt",this.options);
 
-        this.toastr.info(this.options[0].toString(),"profile");  
-       this.router.navigateByUrl(this.options.pop());
+        this.toastr.info(this.options[0].toString(),"profile");
+       this.router.navigateByUrl(this.options.pop(), {skipLocationChange: true});
       }
       this.StorageSessionService.setLocatS("profileopt",this.options);
     });
@@ -65,7 +65,7 @@ chooworkingProfile(){
 optionSelecteds(e:any){
 	//if(e.split(" ") > 0)
 	 // this.toastr.info("your profile "+e+"profile");
-	  this.router.navigateByUrl(e.replace(" ", "_"));
+	  this.router.navigateByUrl(e.replace(" ", "_"), {skipLocationChange: true});
 	//this.router.navigateByUrl(e);
 }
   ngOnInit() {

@@ -746,21 +746,21 @@ export class ExecuteComponent implements OnInit {
 
         if (this.report.RESULT == 'INPUT_ARTFCT_TASK') {
 
-          this.router.navigateByUrl('InputArtForm');
+          this.router.navigateByUrl('InputArtForm', {skipLocationChange: true});
 
         } else if (this.report.RESULT == 'FORM' && this.report.V_EXE_CD[0] == 'NONREPEATABLE_MANUAL_TASK') {
           // non-repetable NonRepetForm
           //this.router.navigateByUrl('NonRepetForm');
-          this.router.navigateByUrl('Forms');
+          this.router.navigateByUrl('Forms', {skipLocationChange: true});
 
         } else if (this.report.RESULT == 'FORM' && this.report.V_EXE_CD[0] == 'REPEATABLE_MANUAL_TASK') {
           //repetable
-          this.router.navigateByUrl('RepetForm');
+          this.router.navigateByUrl('RepetForm', {skipLocationChange: true});
 
           //this.router.navigateByUrl('RepetForm');
         } else if (this.report.RESULT == 'TABLE') {
 
-          this.router.navigateByUrl('ReportTable');
+          this.router.navigateByUrl('ReportTable', {skipLocationChange: true});
         }
 
 

@@ -36,7 +36,7 @@ public sendMail;
     private   apiServiceService:ConfigServiceService,
     private data:UseradminService,
     private toastr:ToastrService,
-     
+
     private route: ActivatedRoute,
      private router: Router,
      private logData:LoginServiceService,
@@ -158,9 +158,9 @@ this.logData.CheckUsrPw(form).subscribe(
                                         this.StorageSessionService.setSession('agency',data.resultSrc);
                                         this.apiServiceService.getUserId(data.resultSrc).subscribe(data => {
                                           this.StorageSessionService.setSession('userid',data.SRC_ID[0]);
-                                          this.router.navigate(['Profile']);
+                                          this.router.navigate(['Profile'],{skipLocationChange: true});
                                         });
-                       }    
+                       }
     });
     this.progress=false;
 }else{
