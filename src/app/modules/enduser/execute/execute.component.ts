@@ -7,10 +7,10 @@ import { Chart } from 'chart.js';
 import { DialogScheduleComponent } from './dialog-schedule/dialog-schedule.component';
 import { WebSocketService } from '../../../service/web-socket.service';
 import { GetMessageService } from '../../../service/get-message.service';
-//import { FieldConfig } from '../../dynamic-form/models/field-config.interface';
-//import { DynamicFormComponent } from '../../dynamic-form/containers/dynamic-form/dynamic-form.component';
+// import { FieldConfig } from '../../dynamic-form/models/field-config.interface';
+// import { DynamicFormComponent } from '../../dynamic-form/containers/dynamic-form/dynamic-form.component';
 import { FormBuilder } from '@angular/forms';
-import { HostListener } from "@angular/core";
+import { HostListener } from '@angular/core';
 import { Injectable } from '@angular/core';
 import { EnduserComponent } from '../enduser.component';
 
@@ -39,14 +39,75 @@ export class ReportData {
 @Injectable()
 export class ExecuteComponent implements OnInit {
 
-  domain_name = this.globals.domain_name; private apiUrlGet = "https://" + this.domain_name + "/rest/E_DB/SP?";
-  private aptUrlPost_report = "https://" + this.domain_name + "/rest/Process/Report";
-  SL_APP_CD = "";
-  SL_PRC_CD = "";
+  domain_name = this.globals.domain_name; private apiUrlGet = 'https://' + this.domain_name + '/rest/E_DB/SP?';
+  private aptUrlPost_report = 'https://' + this.domain_name + '/rest/Process/Report';
+  SL_APP_CD = '';
+  SL_PRC_CD = '';
   screenHeight = 0;
   screenWidth = 0;
   mobileView = false;
   desktopView = true;
+  //----------------GET APP CODE
+  V_SRC_CD = this.StorageSessionService.getSession('agency');
+  V_USR_NM = this.StorageSessionService.getSession('email');
+  get_cxn = true;
+  APP_CD = [];
+  PRC_CD = [];
+  PRCS_DATA = [];
+  PRCS_CD = [];
+  k = 0;
+  ts = {};
+  SL_PRCS_CD = '';
+  SRVC_DATA = [];
+  SRVC_CD = [];
+  SL_SRVC_CD = '';
+  deployTableDT: any[] = [];
+  deployData: any[];
+  ID_DATA = [];
+  APP_ID = [];
+  PRCS_ID = [];
+  SRVC_ID = [];
+  SRC_ID = [];
+  SL_APP_ID = '';
+  SL_PRCS_ID = '';
+  SL_SRVC_ID = '';
+  SL_SRC_ID = '';
+  deployService = [];
+  countonerror = [];
+  //-------Balraj Code--------
+  // =========== CHARTS FLAGS ( Toggle these to display or hide charts at loading page )=========
+  show_PIE = false;
+  show_BAR = false;
+  show_Gantt = false;
+  show_ALL = false;
+  show_SM_PIE = false;
+  // ==================================
+
+  //-------Balraj Code--------
+
+  ResetOptimised = false;
+  Lazyload = true;
+
+  check_data = {};
+  executedata = {};
+  _backgroundColor = 'rgba(34,181,306,0.2)';
+  // Application_box:boolean=true;
+  // Application_label:boolean=false;
+  // Process_box:boolean=false;
+  // Process_label:boolean=false;
+  Service_box: boolean;
+  Schedule_btn = false;
+  Execute_Now_btn = false;
+  //// 1) call application CD
+  selectedapp: string = null;
+  selectedprcs: string = null;
+  selectedEmoji: string;
+  data_form: Form_data;
+  form_dl_data: any[] = [];
+  displayedNames = ['Service', 'Platform', 'Machine', 'Limited Job', 'Instances', 'Limited', 'Capacity', 'Rating', 'Used Capacity', 'Limited Machine Use', 'Dummy', 'Status', 'State', 'Cxn Type'];
+
+  displayedColumns = ['Service', 'Platform', 'Machine', 'Lim_Job', 'Instances', 'Limited', 'Capacity', 'Rating', 'Used_Cap', 'Lim_Mach_Use', 'Dummy', 'Status', 'State', 'Cxn_Type'];
+  dataSource = new MatTableDataSource();
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
     this.screenHeight = window.innerHeight;
@@ -60,13 +121,13 @@ export class ExecuteComponent implements OnInit {
     }
   }
   offset(el) {
-    var rect = el.getBoundingClientRect(),
+    const rect = el.getBoundingClientRect(),
       scrollLeft = window.pageXOffset || document.documentElement.scrollLeft,
       scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    return { top: rect.top + scrollTop, left: rect.left + scrollLeft }
+    return { top: rect.top + scrollTop, left: rect.left + scrollLeft };
   }
 
-  constructor(private Router: Router,
+  constructor(private router: Router,
     private http: HttpClient,
     private https: Http,
     private StorageSessionService: StorageSessionService,
@@ -82,9 +143,12 @@ export class ExecuteComponent implements OnInit {
   ) {
     this.onResize();
   }
-  selectedEmoji: string;
+  repeatProcess() {
+    this.router.navigateByUrl('repeat');
+    this.dialog.closeAll();
+  }
   openEmojiDialog() {
-    let dialog = this.dialog.open(DialogScheduleComponent, {
+    const dialog = this.dialog.open(DialogScheduleComponent, {
       height: '150px',
       width: '300px'
     });
@@ -99,69 +163,11 @@ export class ExecuteComponent implements OnInit {
       });
   }
 
-  //----------------GET APP CODE
-  V_SRC_CD = this.StorageSessionService.getSession("agency");
-  V_USR_NM = this.StorageSessionService.getSession("email");
-  get_cxn: boolean = true;
-  APP_CD = [];
-  PRC_CD = [];
-  PRCS_DATA = [];
-  PRCS_CD = [];
-  k = 0;
-  ts = {};
-  SL_PRCS_CD = "";
-  SRVC_DATA = [];
-  SRVC_CD = [];
-  SL_SRVC_CD = "";
-  deployTableDT: any[] = [];
-  deployData: any[];
-  ID_DATA = [];
-  APP_ID = [];
-  PRCS_ID = [];
-  SRVC_ID = [];
-  SRC_ID = [];
-  SL_APP_ID = "";
-  SL_PRCS_ID = "";
-  SL_SRVC_ID = "";
-  SL_SRC_ID = "";
-  deployService = [];
-  countonerror = [];
-  //-------Balraj Code--------
-  // =========== CHARTS FLAGS ( Toggle these to display or hide charts at loading page )=========
-  show_PIE: boolean = false;
-  show_BAR: boolean = false;
-  show_Gantt: boolean = false;
-  show_ALL: boolean = false;
-  show_SM_PIE: boolean = false;
-  // ==================================
-
-  //-------Balraj Code--------
-
-  ResetOptimised: boolean = false;
-  Lazyload: boolean = true;
-
-  check_data = {};
-  executedata = {};
-  _backgroundColor = "rgba(34,181,306,0.2)";
-  // Application_box:boolean=true;
-  // Application_label:boolean=false;
-  // Process_box:boolean=false;
-  // Process_label:boolean=false;
-  Service_box: boolean;
-  Schedule_btn: boolean = false;
-  Execute_Now_btn: boolean = false;
-  repeatProcess() {
-    this.Router.navigateByUrl("repeat");
-    this.dialog.closeAll();
-  }
-  //// 1) call application CD
-  selectedapp: string = null;
-  selectedprcs: string = null;
   fooo(u) {
-    if (this.mobileView)
+    if (this.mobileView) {
       u = u.value;
-    if (u == null) { }
-    else {
+    }
+    if (u == null) { } else {
       this.SL_APP_CD = u;
       this.selectedapp = u;
       this.app.selected_APPLICATION = u;
@@ -175,7 +181,7 @@ export class ExecuteComponent implements OnInit {
     /*    var div = document.querySelector('div');
         var divOffset = this.offset(div);
         console.log(divOffset.left, divOffset.top);*/
-    console.log("Hello");
+    console.log('Hello');
   }
   //_____________________________1_____________________
   getAppCode() {
@@ -196,22 +202,16 @@ export class ExecuteComponent implements OnInit {
       if (this.selectedapp != null && this.app.START == false && this.app.selected_APPLICATION != 'ALL') {
         //console.log("calling getProcess");
         this.SL_APP_CD = this.selectedapp;
-        if (this.desktopView)
+        if (this.desktopView) {
           this.getProcessCD(this.selectedapp);
-        else if (this.mobileView)
+        } else if (this.mobileView) {
           this.getProcessCD({ value: this.selectedapp });
+             }
       }
 
     });
   }
-  //___________________________close 2______________________
-  //__________________________________________2__________________
-  data_form: Form_data;
-  form_dl_data: any[] = [];
-  displayedNames = ['Service', 'Platform', 'Machine', 'Limited Job', 'Instances', 'Limited', 'Capacity', 'Rating', 'Used Capacity', 'Limited Machine Use', 'Dummy', 'Status', 'State', 'Cxn Type'];
 
-  displayedColumns = ['Service', 'Platform', 'Machine', 'Lim_Job', 'Instances', 'Limited', 'Capacity', 'Rating', 'Used_Cap', 'Lim_Mach_Use', 'Dummy', 'Status', 'State', 'Cxn_Type'];
-  dataSource = new MatTableDataSource();
   getProcessCD(V_APP_CD) {
     if (this.mobileView) {
       V_APP_CD = V_APP_CD.value;
@@ -226,7 +226,7 @@ export class ExecuteComponent implements OnInit {
       this.Data = [];
       // this.Process_box=true;
       // this.Process_label=false;
-      this.https.get(this.apiUrlGet + "V_APP_CD=" + V_APP_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&V_USR_NM=" + this.V_USR_NM + "&REST_Service=UserProcesses&Verb=GET").subscribe(res => {
+      this.https.get(this.apiUrlGet + 'V_APP_CD=' + V_APP_CD + '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&REST_Service=UserProcesses&Verb=GET').subscribe(res => {
         this.PRC_CD = res.json();
         //this.app.PRC_CD_GLOBAL=this.PRC_CD;
         //console.log(this.PRC_CD);
@@ -248,19 +248,22 @@ export class ExecuteComponent implements OnInit {
 
 
   UNIQUE_ID = [];
-  SL_UNIQUE_ID = "";
+  SL_UNIQUE_ID = '';
   p: number;
   q: number;
   c: number;
   getServiceCode(...args: any[]) {
-    var V_PRCS_CD = null;
-    if (args.length > 0)
+    let V_PRCS_CD = null;
+    if (args.length > 0) {
       V_PRCS_CD = args[0];
-    if (args.length > 1)
+    }
+    if (args.length > 1) {
       this.SL_APP_CD = args[1];
+    }
     // if(this.get_cxn==false){
-    if (this.mobileView)
+    if (this.mobileView) {
       V_PRCS_CD = V_PRCS_CD.value;
+    }
     if (V_PRCS_CD == null) {
 
     } else {
@@ -289,7 +292,7 @@ export class ExecuteComponent implements OnInit {
   getIdCode() {
     this.ID_DATA = [];
     this.SRVC_DATA = [];
-    //console.log("getidcode function");
+    // console.log("getidcode function");
     this.deployService = [];
     this.p = 0;
     this.c = 0;
@@ -304,10 +307,10 @@ export class ExecuteComponent implements OnInit {
         // //console.log(this.SRVC_CD);
 
         this.executedata = { SL_APP_CD: this.SL_APP_CD, SL_PRC_CD: this.SL_PRC_CD };
-        console.log('this.executedata',this.executedata);
-        this.StorageSessionService.setCookies("executedata", this.executedata);
+        console.log('this.executedata', this.executedata);
+        this.StorageSessionService.setCookies('executedata', this.executedata);
         this.ID_DATA = res.json();
-        this.StorageSessionService.setCookies("iddata", this.ID_DATA);
+        this.StorageSessionService.setCookies('iddata', this.ID_DATA);
         console.log(this.ID_DATA);
         this.APP_ID = this.ID_DATA['V_APP_ID'];
 
@@ -394,8 +397,9 @@ export class ExecuteComponent implements OnInit {
   }
   //________________________________CLOSE 2___________________________
   fooo1(u) {
-    if (this.mobileView)
+    if (this.mobileView) {
       u = u.value;
+    }
     if (u == null) {
 
     } else {
@@ -406,7 +410,7 @@ export class ExecuteComponent implements OnInit {
   }
   b = false;
   result: any = {};
-  Data: any[] = [];
+  Data: any;
   Data1: any[] = [];
   myFormData;
   searchResult: any[];
@@ -422,24 +426,24 @@ export class ExecuteComponent implements OnInit {
     this.b = false;
     this.Data = [];
 
-    var currentKey;
-    var currentVal;
-    var ParametrValue: any[];
-    var ParameterName: any[];
-    var FormData: any[];
-    var result: any = {};
+    let currentKey;
+    let currentVal;
+    let ParametrValue: any[];
+    let ParameterName: any[];
+    let FormData: any[];
+    const result: any = {};
 
     //this.https.get(this.apiUrlGet + "V_APP_CD=" + this.SL_APP_CD + "&V_PRCS_CD=" + this.SL_PRC_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=ProcessParameters&Verb=GET").subscribe(
 
     //------- Changed the Rest call for Parameters (By : Balraj Saini) Added Two flags --------
 
-    this.https.get(this.apiUrlGet + "V_APP_CD=" + this.SL_APP_CD + "&V_PRCS_CD=" + this.SL_PRC_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&ResetOptimised=" + this.ResetOptimised + "&Lazyload=" + this.Lazyload + "&REST_Service=ProcessParameters&Verb=GET").subscribe(
+    this.https.get(this.apiUrlGet + 'V_APP_CD=' + this.SL_APP_CD + '&V_PRCS_CD=' + this.SL_PRC_CD + '&V_SRC_CD=' + this.V_SRC_CD + '&ResetOptimised=' + this.ResetOptimised + '&Lazyload=' + this.Lazyload + '&REST_Service=ProcessParameters&Verb=GET').subscribe(
       res => {
         console.log(res.json());
-        console.log(this.apiUrlGet + "V_APP_CD=" + this.SL_APP_CD + "&V_PRCS_CD=" + this.SL_PRC_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&ResetOptimised=" + this.ResetOptimised + "&Lazyload=" + this.Lazyload + "&REST_Service=ProcessParameters&Verb=GET");
+        console.log(this.apiUrlGet + 'V_APP_CD=' + this.SL_APP_CD + '&V_PRCS_CD=' + this.SL_PRC_CD + '&V_SRC_CD=' + this.V_SRC_CD + '&ResetOptimised=' + this.ResetOptimised + '&Lazyload=' + this.Lazyload + '&REST_Service=ProcessParameters&Verb=GET');
         FormData = res.json();
-        var ref = { disp_dyn_param: false }
-        var got_res = this.data.exec_schd_restCall(FormData, ref);
+        const ref = { disp_dyn_param: false };
+        const got_res = this.data.exec_schd_restCall(FormData, ref);
         this.result = got_res.Result;
         this.Data = got_res.Data;
         this.b = got_res.B;
@@ -618,7 +622,7 @@ export class ExecuteComponent implements OnInit {
   FilterAutoValue: any;
   Update_value(v: any, n: any) { //v=value and n=paramter name
     this.FilterAutoValue = v;
-    this.http.get(this.apiUrlGet + "V_APP_CD=" + this.SL_APP_CD + "&V_PRCS_CD=" + this.SL_PRC_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_PARAM_NM=" + n + "&V_PARAM_VAL=" + v + "&REST_Service=ProcessParameters&Verb=PATCH").subscribe(
+    this.http.get(this.apiUrlGet + 'V_APP_CD=' + this.SL_APP_CD + '&V_PRCS_CD=' + this.SL_PRC_CD + '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&V_PARAM_NM=' + n + '&V_PARAM_VAL=' + v + '&REST_Service=ProcessParameters&Verb=PATCH').subscribe(
       res => {
         console.log(res);
       }
@@ -652,34 +656,37 @@ export class ExecuteComponent implements OnInit {
   //____________CLOSE APP CODE FUN
   add() {
     for (let i = 0; i <= this.k; i++) {
-      if (this.Data[i].value != "" && this.Data[i].value != null) {
+      if (this.Data[i].value != '' && this.Data[i].value != null) {
         this.ts[this.Data[i].name] = this.Data[i].value;
       }
     }
     //console.log(this.ts);
-    this.StorageSessionService.setCookies("ts", this.ts);
+    this.StorageSessionService.setCookies('ts', this.ts);
   }
   Execute_res_data: any[];
   Execute_Now() {
-    let body = {
-      "V_APP_CD": this.SL_APP_CD,
-      "V_PRCS_CD": this.SL_PRC_CD,
-      "V_SRVC_CD": 'START',
-      "V_SRC_CD": this.V_SRC_CD,
-      "V_USR_NM": this.V_USR_NM
+    const body = {
+      'V_APP_CD': this.SL_APP_CD,
+      'V_PRCS_CD': this.SL_PRC_CD,
+      'V_SRVC_CD': 'START',
+      'V_SRC_CD': this.V_SRC_CD,
+      'V_USR_NM': this.V_USR_NM
 
     };
 
-    Object.assign(body, this.ts)
+    Object.assign(body, this.ts);
     console.log(body);
 
-    this.https.post("https://" + this.domain_name + "/rest/Process/Start", body).subscribe(
+    this.https.post('https://' + this.domain_name + '/rest/Process/Start', body).subscribe(
       res => {
 
         // console.log(res);
-        // console.log(res.json());
+        //
+        this.executedata = { SL_APP_CD: this.SL_APP_CD, SL_PRC_CD: this.SL_PRC_CD };
+        console.log('this.executedata', this.executedata);
+        this.StorageSessionService.setCookies('executedata', this.executedata);
         this.Execute_res_data = res.json();
-        this.StorageSessionService.setCookies("executeresdata", this.Execute_res_data);
+        this.StorageSessionService.setCookies('executeresdata', this.Execute_res_data);
         // console.log(this.Execute_res_data);
         this.PFrame.display_page = false;
         // console.log(this.Execute_res_data);
@@ -693,8 +700,8 @@ export class ExecuteComponent implements OnInit {
  Call API until report data is not come
  */
  repeat: any = 0;
-  repeatCallTable(data:any) : void {
-   if(data && this.repeat < 10){
+  repeatCallTable(data: any): void {
+   if (data && this.repeat < 10) {
      this.repeat ++;
     this.GenerateReportTable();
     }
@@ -706,7 +713,7 @@ export class ExecuteComponent implements OnInit {
     this.app.loadingCharts = true;
     // this.app.text_mgs = 'Loading Table..';
     //"&V_DSPLY_WAIT_SEC=100&V_MNL_WAIT_SEC=180&REST_Service=Report&Verb=GET
-    let body = {
+    const body = {
       V_SRC_ID: this.Execute_res_data['V_SRC_ID'],
       V_UNIQUE_ID: this.Execute_res_data['V_UNIQUE_ID'],
       V_APP_ID: this.Execute_res_data['V_APP_ID'],
@@ -717,48 +724,47 @@ export class ExecuteComponent implements OnInit {
       V_MNL_WAIT_SEC: 180,
       REST_Service: 'Report',
       Verb: 'POST'
-    }
+    };
     this.https.post(this.aptUrlPost_report, body)
       .subscribe(
       res => {
         //console.log(res.json());
-        this.StorageSessionService.setCookies("report_table", res.json());
+        this.StorageSessionService.setCookies('report_table', res.json());
         this.check_data = res.json();
         this.app.loadingCharts = false;
         this.report = res.json();
-        console.info("This is report generated data :");
+        console.info('This is report generated data :');
         console.log(this.report);
-        console.info("The URL to redirecting form is :");
+        console.info('The URL to redirecting form is :');
         console.log(this.report.RESULT);
-        let dt=JSON.stringify(res);
-        if(JSON.parse(dt).lenght < 0){
+        const dt = JSON.stringify(res);
+        if (JSON.parse(dt).lenght < 0) {
          this.repeatCallTable(true);
-        }else {
+        } else {
           this.repeatCallTable(false);
         }
 
-        if (this.report.RESULT == "INPUT_ARTFCT_TASK") {
+        if (this.report.RESULT == 'INPUT_ARTFCT_TASK') {
 
-          this.Router.navigateByUrl('InputArtForm');
+          this.router.navigateByUrl('InputArtForm');
 
-        } else if (this.report.RESULT == "FORM" && this.report.V_EXE_CD[0] == "NONREPEATABLE_MANUAL_TASK") {
+        } else if (this.report.RESULT == 'FORM' && this.report.V_EXE_CD[0] == 'NONREPEATABLE_MANUAL_TASK') {
           // non-repetable NonRepetForm
-          this.Router.navigateByUrl('NonRepetForm');
+          this.router.navigateByUrl('NonRepetForm');
 
-        } else if (this.report.RESULT == "FORM" && this.report.V_EXE_CD[0] == "REPEATABLE_MANUAL_TASK") {
+        } else if (this.report.RESULT == 'FORM' && this.report.V_EXE_CD[0] == 'REPEATABLE_MANUAL_TASK') {
           //repetable
 
-          this.Router.navigateByUrl('RepetForm');
-        }
-        else if (this.report.RESULT == "TABLE") {
+          this.router.navigateByUrl('RepetForm');
+        } else if (this.report.RESULT == 'TABLE') {
 
-          this.Router.navigateByUrl('ReportTable');
+          this.router.navigateByUrl('ReportTable');
         }
 
 
 
         // if ('V_EXE_CD' in this.check_data) {
-        //   this.Router.navigateByUrl('forms');
+        //   this.router.navigateByUrl('forms');
         //   //             var exe_cd:any[] = this.check_data["V_EXE_CD"];
         //   //             //console.log(exe_cd);
         //   //             if(exe_cd.includes("NONREPEATABLE_MANUAL_TASK")){
@@ -769,12 +775,13 @@ export class ExecuteComponent implements OnInit {
         //   //                       }
         // }
         // else {
-        //   this.Router.navigateByUrl('reportTable');
+        //   this.router.navigateByUrl('reportTable');
         // }
       }
       );
-    if (this.app.loadingCharts && this.show_ALL)
+    if (this.app.loadingCharts && this.show_ALL) {
       this.chart_JSON_call();
+    }
 
     // while(true)
 
@@ -793,14 +800,15 @@ export class ExecuteComponent implements OnInit {
   }
 
   show_gantt_chart(Process, start_time, end_time) {
-    var count = 0, flag = false, val1;
-    var mydataset = [];
+    let count = 0, flag = false, val1;
+    const mydataset = [];
     for (let i = 0; i < Process.length; i++) {
-      var R = Math.floor(Math.random() * 200);
-      var G = Math.floor(Math.random() * 200);
-      var B = Math.floor(Math.random() * 200);
-      if (this.ColorGantt.length < i + 1)
-        this.ColorGantt[i] = "rgba(" + R + ',' + G + ',' + B + ")";
+      const R = Math.floor(Math.random() * 200);
+      const G = Math.floor(Math.random() * 200);
+      const B = Math.floor(Math.random() * 200);
+      if (this.ColorGantt.length < i + 1) {
+        this.ColorGantt[i] = 'rgba(' + R + ',' + G + ',' + B + ')';
+      }
       //console.log((this.time_to_sec(start_time[i]) - this.time_to_sec(start_time[0])));
       //console.log((this.time_to_sec(end_time[i]) - this.time_to_sec(start_time[0])));
       mydataset[Process.length - i - 1] = {
@@ -818,12 +826,12 @@ export class ExecuteComponent implements OnInit {
             y: Process.length - i - 1
           }
         ]
-      }
+      };
     }
-    var element = (<HTMLCanvasElement>document.getElementById("myGanttchart"));
+    const element = (<HTMLCanvasElement>document.getElementById('myGanttchart'));
     if (element != null) {
-      var ctx = element.getContext('2d');
-      var scatterChart = new Chart(ctx, {
+      const ctx = element.getContext('2d');
+      const scatterChart = new Chart(ctx, {
         type: 'line',
         data: {
           datasets: mydataset
@@ -865,12 +873,12 @@ export class ExecuteComponent implements OnInit {
                 //beginAtZero :true,
                 callback: function (value, index, values) {
                   if (value == Math.floor(value)) {
-                    var beg_str = start_time[0].substring(0, 2);
-                    var begstr = parseInt(beg_str);
-                    var mid_str = (start_time[0][3] + start_time[0][4]);
-                    var midstr = parseInt(mid_str);
-                    var end_str = start_time[0].substring(6);
-                    var endstr = parseInt(end_str);
+                    let beg_str = start_time[0].substring(0, 2);
+                    let begstr = parseInt(beg_str);
+                    let mid_str = (start_time[0][3] + start_time[0][4]);
+                    let midstr = parseInt(mid_str);
+                    let end_str = start_time[0].substring(6);
+                    let endstr = parseInt(end_str);
                     endstr += value;
                     midstr += Math.floor(endstr / 60);
                     endstr = endstr - 60 * Math.floor(endstr / 60);
@@ -878,12 +886,15 @@ export class ExecuteComponent implements OnInit {
                     midstr = midstr - 60 * Math.floor(midstr / 60);
                     //console.log(index);
 
-                    if (midstr < 10)
+                    if (midstr < 10) {
                       mid_str = '0' + midstr;
-                    if (endstr < 10)
+                    }
+                    if (endstr < 10) {
                       end_str = '0' + endstr;
-                    if (begstr < 10)
+                    }
+                    if (begstr < 10) {
                       beg_str = '0' + begstr;
+                    }
                     //console.log(count);
                     return beg_str + ':' + mid_str + ':' + end_str;
                   }
@@ -900,24 +911,24 @@ export class ExecuteComponent implements OnInit {
   }
 
   show_pie(Process, start_time, end_time) {
-    var mydata = [];
-    var color = [], bcolor = [];
-    var borderwidth_ = [];
+    const mydata = [];
+    const color = [], bcolor = [];
+    const borderwidth_ = [];
     for (let i = 0; i < Process.length; i++) {
-      var R = Math.floor(Math.random() * 200);
-      var G = Math.floor(Math.random() * 200);
-      var B = Math.floor(Math.random() * 200);
+      const R = Math.floor(Math.random() * 200);
+      const G = Math.floor(Math.random() * 200);
+      const B = Math.floor(Math.random() * 200);
       if (this.Colorpie.length < i + 1) {
         this.Colorpie[i] = 'rgb(' + R + ',' + G + ',' + B + ',0.8)';
         this.Colorpie_boder[i] = 'rgb(' + Math.floor(R * 0.8) + ',' + Math.floor(G * 0.8) + ',' + Math.floor(B * 0.8) + ')';
       }
-      var temp = (this.time_to_sec(end_time[i]) - this.time_to_sec(start_time[i]));
+      const temp = (this.time_to_sec(end_time[i]) - this.time_to_sec(start_time[i]));
       mydata[i] = temp;
       color[i] = this.Colorpie[i];
       bcolor[i] = this.Colorpie_boder[i];
       borderwidth_[i] = 1;
     }
-    var data2 = {
+    const data2 = {
       labels: Process,
       datasets: [
         {
@@ -928,11 +939,11 @@ export class ExecuteComponent implements OnInit {
         }
       ]
     };
-    var element = (<HTMLCanvasElement>document.getElementById("myPie"));
+    const element = (<HTMLCanvasElement>document.getElementById('myPie'));
     if (element != null) {
-      var ctx = element.getContext('2d');
-      var chart1 = new Chart(ctx, {
-        type: "pie",
+      const ctx = element.getContext('2d');
+      const chart1 = new Chart(ctx, {
+        type: 'pie',
         data: data2,
         options: {
           animation: {
@@ -947,7 +958,7 @@ export class ExecuteComponent implements OnInit {
               label: function (tooltipItem, data) {
                 //console.log(tooltipItem);
                 //console.log(data['datasets'][0]['data'][tooltipItem['index']]);
-                var ret = mydata[tooltipItem['index']];
+                let ret = mydata[tooltipItem['index']];
                 ret = Math.floor(ret * 100) / 100;
                 return ret + ' sec';
               }
@@ -961,16 +972,16 @@ export class ExecuteComponent implements OnInit {
           },
           title: {
             display: true,
-            position: "top",
-            text: "Current Processes",
+            position: 'top',
+            text: 'Current Processes',
             fontSize: 12,
-            fontColor: "#111"
+            fontColor: '#111'
           },
           legend: {
             display: true,
-            position: "right",
+            position: 'right',
             labels: {
-              fontColor: "#333",
+              fontColor: '#333',
               fontSize: 10
             }
           }
@@ -980,22 +991,23 @@ export class ExecuteComponent implements OnInit {
   }
 
   show_bar_chart(Process, start_time, end_time) {
-    var val1, flag = false;
-    var duration = [];
-    var color = [];
-    var bcolor = [];
-    var temp_HH, temp_MM, temp_SS;
+    let val1, flag = false;
+    const duration = [];
+    const color = [];
+    const bcolor = [];
+    let temp_HH, temp_MM, temp_SS;
     for (let i = 0; i < Process.length; i++) {
-      let len_temp = Process[i].length;
+      const len_temp = Process[i].length;
       Process[i] = Process[i].substring(0, 11);
-      if (len_temp > Process[i].length)
+      if (len_temp > Process[i].length) {
         Process[i] = Process[i] + '...';
-      var temp = this.time_to_sec(end_time[i]) - this.time_to_sec(start_time[i]);
+      }
+      const temp = this.time_to_sec(end_time[i]) - this.time_to_sec(start_time[i]);
       duration[i] = temp;
       //console.log(duration);
-      var R = Math.floor(Math.random() * 200);
-      var G = Math.floor(Math.random() * 200);
-      var B = Math.floor(Math.random() * 200);
+      const R = Math.floor(Math.random() * 200);
+      const G = Math.floor(Math.random() * 200);
+      const B = Math.floor(Math.random() * 200);
       if (this.ColorBar.length < i + 1) {
         this.ColorBar[i] = 'rgba(' + R + ',' + G + ',' + B + ',0.6)';
         this.ColorBar_border[i] = 'rgb(' + Math.floor(R * 0.8) + ',' + Math.floor(G * 0.8) + ',' + Math.floor(B * 0.8) + ')';
@@ -1003,10 +1015,10 @@ export class ExecuteComponent implements OnInit {
       color[i] = this.ColorBar[i];
       bcolor[i] = this.ColorBar_border[i];
     }
-    var element = (<HTMLCanvasElement>document.getElementById("myBarchart"));
+    const element = (<HTMLCanvasElement>document.getElementById('myBarchart'));
     if (element != null) {
-      var ctx = element.getContext('2d');
-      var myBarChart = new Chart(ctx, {
+      const ctx = element.getContext('2d');
+      const myBarChart = new Chart(ctx, {
         type: 'bar',
         data: {
           labels: Process,
@@ -1025,9 +1037,9 @@ export class ExecuteComponent implements OnInit {
           responsive: true,
           legend: {
             display: false,
-            position: "bottom",
+            position: 'bottom',
             labels: {
-              fontColor: "#333",
+              fontColor: '#333',
               fontSize: 16
             }
           },
@@ -1039,7 +1051,7 @@ export class ExecuteComponent implements OnInit {
               label: function (tooltipItem, data) {
                 //console.log(tooltipItem);
                 //console.log(data['datasets'][0]['data'][tooltipItem['index']]);
-                var ret = duration[tooltipItem['index']];
+                let ret = duration[tooltipItem['index']];
                 ret = Math.floor(ret * 100) / 100;
                 return ret + ' sec';
               }
@@ -1063,10 +1075,10 @@ export class ExecuteComponent implements OnInit {
                 min: 0,
                 callback: function (value, index, values) {
                   if (value == Math.floor(value)) {
-                    var begstr = 0;
-                    var midstr = 0;
+                    let begstr = 0;
+                    let midstr = 0;
 
-                    var endstr = value;
+                    let endstr = value;
                     //console.log(index*value);
                     midstr += Math.floor(endstr / 60);
                     endstr = endstr - 60 * Math.floor(endstr / 60);
@@ -1074,12 +1086,15 @@ export class ExecuteComponent implements OnInit {
                     midstr = midstr - 60 * Math.floor(midstr / 60);
                     //console.log(index);
                     let beg_str = begstr.toString(), mid_str = midstr.toString(), end_str = endstr.toString();
-                    if (midstr < 10)
+                    if (midstr < 10) {
                       mid_str = '0' + midstr;
-                    if (endstr < 10)
+                    }
+                    if (endstr < 10) {
                       end_str = '0' + endstr;
-                    if (begstr < 10)
+                    }
+                    if (begstr < 10) {
                       beg_str = '0' + begstr;
+                    }
                     //console.log(min);
                     return beg_str + ':' + mid_str + ':' + end_str;
                   }
@@ -1105,9 +1120,9 @@ export class ExecuteComponent implements OnInit {
     }
   }
   chart_JSON_call() {
-    this.http.get(this.apiUrlGet + "V_SRC_ID=" + this.Execute_res_data['V_SRC_ID'] + "&V_APP_ID=" + this.Execute_res_data['V_APP_ID'] + "&V_PRCS_ID=" + this.Execute_res_data['V_PRCS_ID'] + "&V_PRCS_TXN_ID=" + this.Execute_res_data['V_PRCS_TXN_ID'] + "&REST_Service=ProcessStatus&Verb=GET").subscribe(res => {
+    this.http.get(this.apiUrlGet + 'V_SRC_ID=' + this.Execute_res_data['V_SRC_ID'] + '&V_APP_ID=' + this.Execute_res_data['V_APP_ID'] + '&V_PRCS_ID=' + this.Execute_res_data['V_PRCS_ID'] + '&V_PRCS_TXN_ID=' + this.Execute_res_data['V_PRCS_TXN_ID'] + '&REST_Service=ProcessStatus&Verb=GET').subscribe(res => {
       console.log(res);
-      var start_time = [], end_time = [], Process = [];
+      const start_time = [], end_time = [], Process = [];
 
       for (let i = 0; i < res['INS_DT_TM'].length; i++) {
         start_time[i] = res['INS_DT_TM'][i].substring(11);
@@ -1127,9 +1142,10 @@ export class ExecuteComponent implements OnInit {
       //   this.show_sm_pie_chart(Process, start_time, end_time);
       //   }
       //delay
-      var exec = this;
-      if (this.app.loadingCharts)
+      const exec = this;
+      if (this.app.loadingCharts) {
         setTimeout(function () { exec.chart_JSON_call(); }, 500);
+      }
     });
   }
   repeatURL() {
@@ -1137,11 +1153,11 @@ export class ExecuteComponent implements OnInit {
     this.form_dl_data[0] = {
       APP_CD: this.SL_APP_CD,
       PRC_CD: this.SL_PRC_CD
-    }
+    };
 
-    this.StorageSessionService.setSession("Exe_data", this.form_dl_data[0]);
+    this.StorageSessionService.setSession('Exe_data', this.form_dl_data[0]);
     //console.log(this.form_dl_data[0]);
-    // this.Router.navigateByUrl("repeat");
+    // this.router.navigateByUrl("repeat");
   }
   ///data11='{PIID=[W56JSR14C0050, W9124916F0057, HSHQDC17F0002…280001, 200370001], Country=[USA, USA, USA, USA],balaji=[IND, IND, IND, IND]}';
   Roll_cd: any[] = [];
@@ -1149,7 +1165,7 @@ export class ExecuteComponent implements OnInit {
 
 
   ngOnInit() {
-    let exec = this;
+    const exec = this;
     setTimeout(function () {
       exec.wSocket.listenOn = '102';
       exec.msg.getMessage.subscribe(res => {
@@ -1160,45 +1176,47 @@ export class ExecuteComponent implements OnInit {
     //this.APP_CD=this.app.APP_CD_GLOBAL;
     //this.PRC_CD=this.app.PRC_CD_GLOBAL;
     this.Service_box = false;
-    if (this.app.selected_APPLICATION != 'ALL' && !this.app.START)
+    if (this.app.selected_APPLICATION != 'ALL' && !this.app.START) {
       this.selectedapp = this.app.selected_APPLICATION;
-    if (this.app.selected_PROCESS != 'ALL' && !this.app.START)
+    }
+    if (this.app.selected_PROCESS != 'ALL' && !this.app.START) {
       this.selectedprcs = this.app.selected_PROCESS;
+    }
     this.data.getJSON().subscribe(data => {
       //console.log(data.json());
       this.Label = data.json();
       //console.log(this.Label);
-    })
+    });
     this.getAppCode();
     //-----------------------------for checking the role cd
     this.roll.getRollCd().subscribe(
       res => {
         this.Roll_cd = res['ROLE_CD'];
 
-        let l = this.Roll_cd.length;
-        let ex_btn1: any[] = [];
-        let ex_btn2: any[] = [];
-        let ex_tab: any[] = [];
-        let ex_pro: any[] = [];
+        const l = this.Roll_cd.length;
+        const ex_btn1: any[] = [];
+        const ex_btn2: any[] = [];
+        const ex_tab: any[] = [];
+        const ex_pro: any[] = [];
         for (let i = 0; i < l; i++) {
-          if (this.Roll_cd[i] == 'Process Execute' || this.Roll_cd[i] == 'Service Execute' || this.Roll_cd[i] == 'Enablement Workflow Schedule Role' || this.Roll_cd[i] == 'End User Role') {
+          if (this.Roll_cd[i] === 'Process Execute' || this.Roll_cd[i] === 'Service Execute' || this.Roll_cd[i] === 'Enablement Workflow Schedule Role' || this.Roll_cd[i] === 'End User Role') {
             if (this.Roll_cd[i] == 'Process Execute') {
               ex_btn1.push('Process Execute');
-            } else if (this.Roll_cd[i] == 'Service Execute') {
+            } else if (this.Roll_cd[i] === 'Service Execute') {
               ex_btn2.push('Service Execute');
-            } else if (this.Roll_cd[i] == 'Enablement Workflow Schedule Role') {
-              ex_tab.push('Enablement Workflow Schedule Role')
-            } else if (this.Roll_cd[i] == 'End User Role') {
+            } else if (this.Roll_cd[i] === 'Enablement Workflow Schedule Role') {
+              ex_tab.push('Enablement Workflow Schedule Role');
+            } else if (this.Roll_cd[i] === 'End User Role') {
               ex_pro.push('End User Role');
             }
           }
         }
-        //----if both roll cd not empty then show the execute now button
-        if (ex_btn1.length != 0 && ex_btn2.length != 0 && ex_pro.length != 0) {
+        // if both roll cd not empty then show the execute now button
+        if (ex_btn1.length !== 0 && ex_btn2.length !== 0 && ex_pro.length === 0) {
           // this.Execute_Now_btn = false;
         }
-        //---for schedule 3 Roll must here
-        if (ex_btn1.length != 0 && ex_btn2.length != 0 && ex_tab.length != 0 && ex_pro.length != 0) {
+        // for schedule 3 Roll must here
+        if (ex_btn1.length !== 0 && ex_btn2.length !== 0 && ex_tab.length !== 0 && ex_pro.length !== 0) {
           // this.Schedule_btn = false;
         }
 

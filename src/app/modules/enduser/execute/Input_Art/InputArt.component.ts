@@ -1,39 +1,38 @@
-import { MatTableDataSource } from '@angular/material';
-import { Component, OnInit } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Router } from '@angular/router';
-import { StorageSessionService } from '../../../../service/storage-session.service';
-import * as dateFormat from 'dateformat';
-import { Globals } from '../../../../service/globals';
-import { Headers, RequestMethod, RequestOptions } from '@angular/http';
-import { ReportData ,ScopeLimiting} from './Classes';
-import { FileUrls } from '../forms/POJO';
+import {MatTableDataSource} from '@angular/material';
+import {Component, OnInit} from '@angular/core';
+import {HttpClient} from '@angular/common/http';
+import {Router} from '@angular/router';
+import {StorageSessionService} from '../../../../service/storage-session.service';
+import {Globals} from '../../../../service/globals';
+import {ReportData, ScopeLimiting} from './Classes';
+import {FileUrls} from '../forms/POJO';
+
 @Component({
-  selector: 'Input_Art',
+  selector: 'app-input-art',
   templateUrl: './Input_Art.component.html',
   styleUrls: ['./Input_Art.component.css'],
 })
 
-export class Input_Art_Component {
+export class InputArtComponent {
   private dataSource1 = new MatTableDataSource();
   private reportData: ReportData;
-  private scope:ScopeLimiting=new ScopeLimiting();
+  private scope: ScopeLimiting = new ScopeLimiting();
   private domain_name = this.globals.domain_name;
-  private apiUrlGet = "https://" + this.domain_name + "/rest/E_DB/SP?";
-  private allFiles: string[] = [];
-  private agencyName: string;
-  private application: string;
-  private process: string;
-  private service: string;
-  //@ override 
-  public filesUrl: FileUrls ;
+  private apiUrlGet = 'https://' + this.domain_name + '/rest/E_DB/SP?';
+  allFiles: string[] = [];
+  agencyName: string;
+  application: string;
+  process: string;
+  service: string;
+  // @ override
+  public filesUrl: FileUrls;
+
   constructor(private storage: StorageSessionService,
-    private http: HttpClient,
-    private globals: Globals,
-  ) {
-    this.filesUrl= new FileUrls(this.storage);
+              private http: HttpClient,
+              private globals: Globals,) {
+    this.filesUrl = new FileUrls(this.storage);
     this.reportData = new ReportData(this.storage);
-    console.log("---------------");
+    console.log('---------------');
     console.log(this.reportData.getProcess());
     this.agencyName = this.reportData.getAgency();
     this.application = this.reportData.getProcess();
@@ -48,31 +47,34 @@ export class Input_Art_Component {
   oldfiles() {
     // this.filesdata = {};
     // this.fd = [];
-    this.http.get<AllFiles>(this.apiUrlGet + "V_SRVC_CD=" + this.reportData.getService() + "&V_APP_CD=" + this.reportData.getApplication() + "&V_PRCS_CD=" + this.reportData.getProcess() + "&V_SRC_CD=" + this.reportData.getAgency() + "&REST_Service=Artifacts&Verb=GET").subscribe(
+    this.http.get<AllFiles>(this.apiUrlGet + 'V_SRVC_CD=' + this.reportData.getService() + '&V_APP_CD=' +
+      this.reportData.getApplication() + '&V_PRCS_CD=' + this.reportData.getProcess() +
+      '&V_SRC_CD=' + this.reportData.getAgency() + '&REST_Service=Artifacts&Verb=GET').subscribe(
       res => {
         console.log(res);
         this.allFiles = res['ARTFCT_NM'];
         console.log(this.allFiles);
       });
   }
+
   /*
 Fire this function when user click on upload buttons
 */
   fileChangeEvent(event: any, file: any) {
-    this.allFiles=[];
-    let fileList: FileList = event.target.files;
-    let selectedFile = <File>event.target.files[0];
+    this.allFiles = [];
+    const fileList: FileList = event.target.files;
+    const selectedFile = <File>event.target.files[0];
     //  this.fileName = selectedFile.name;
     //  this.fileType = selectedFile.type;
-    let formData: FormData = new FormData();
-    let files: any = {};
+    const formData: FormData = new FormData();
+    const files: any = {};
     files['File_Path'] = this.filesUrl.getFileUrl();
     files['File_Name'] = selectedFile.name;
     formData.append('Source_File', selectedFile);
-    formData.append("FileInfo", JSON.stringify(files));
-    console.log("Upload file info");
+    formData.append('FileInfo', JSON.stringify(files));
+    console.log('Upload file info');
     console.log(formData);
-    let obj = this.http.post("https://" + this.domain_name + "/FileAPIs/api/file/v1/upload", formData).subscribe(
+    const obj = this.http.post('https://' + this.domain_name + '/FileAPIs/api/file/v1/upload', formData).subscribe(
       res => {
         console.log(res);
         this.oldfiles();
@@ -80,40 +82,42 @@ Fire this function when user click on upload buttons
     );
 
   }
+
   /*
-  1)Build the url for uploading the files where base name is agency name 
-  2)putting V_SCOPE_LMTNG_LVL and other parameter to ADD and SUBMIT button 
+  1)Build the url for uploading the files where base name is agency name
+  2)putting V_SCOPE_LMTNG_LVL and other parameter to ADD and SUBMIT button
   */
   makeurl(values: string) {
-    if (values == 'agency') {
+    if (values === 'agency') {
       this.scope.setUrl(this.reportData.getAgency());
       this.scope.V_SCOPE_LMTNG_LVL = values;
       this.scope.V_SCOPE_LMTNG_CD = this.reportData.getAgency();
       this.filesUrl.setFileUrl(this.reportData.getAgency());
-    }
-    else if (values == 'application') {
+    } else if (values === 'application') {
       this.scope.setUrl(this.reportData.getAgency() + '/' + this.reportData.getApplication());
       this.scope.V_SCOPE_LMTNG_LVL = values;
       this.scope.V_SCOPE_LMTNG_CD = this.reportData.getApplication();
-      this.filesUrl.setFileUrl(this.reportData.getAgency() + "/" + this.reportData.getApplication());
-    }
-    else if (values == 'process') {
+      this.filesUrl.setFileUrl(this.reportData.getAgency() + '/' + this.reportData.getApplication());
+    } else if (values === 'process') {
       this.scope.setUrl(this.reportData.getAgency() + '/' + this.reportData.getApplication() + '/' + this.reportData.getProcess());
       this.scope.V_SCOPE_LMTNG_LVL = values;
       this.scope.V_SCOPE_LMTNG_CD = this.reportData.getProcess();
-      this.filesUrl.setFileUrl(this.reportData.getAgency() + '/' + this.reportData.getApplication() + "/" + this.reportData.getApplication());
-    }
-    else if (values == 'service') {
-      this.scope.setUrl(this.reportData.getAgency() + '/' + this.reportData.getApplication() + '/' + this.reportData.getProcess() + '/' + this.reportData.getService());
+      this.filesUrl.setFileUrl(this.reportData.getAgency() + '/' +
+        this.reportData.getApplication() + '/' + this.reportData.getApplication());
+    } else if (values === 'service') {
+      this.scope.setUrl(this.reportData.getAgency() + '/' + this.reportData.getApplication() + '/' +
+        this.reportData.getProcess() + '/' + this.reportData.getService());
       this.scope.V_SCOPE_LMTNG_LVL = values;
       this.scope.V_SCOPE_LMTNG_CD = this.reportData.getService();
-      this.filesUrl.setFileUrl(this.reportData.getAgency() + '/' + this.reportData.getApplication() + "/" + this.reportData.getApplication() + "/" + this.reportData.getService());
+      this.filesUrl.setFileUrl(this.reportData.getAgency() + '/' + this.reportData.getApplication() + '/' +
+        this.reportData.getApplication() + '/' + this.reportData.getService());
     }
-    console.info("The given build file scope URLS:");
+    // console.info('The given build file scope URLS:');
     console.log(this.filesUrl.getFileUrl());
   }
+
   addbtn_click() {
-    console.log("THE SCOPE is");
+    console.log('THE SCOPE is');
     console.log(this.scope.V_SCOPE_LMTNG_CD);
     // let body = {
     //   "V_ARTFCT_NM": this.fileName,
@@ -142,10 +146,17 @@ Fire this function when user click on upload buttons
   uploadBtnClick() {
     document.getElementById('Document_File').click();
   }
+  cancelbtn_click() {
+    console.log('cancelbtn_click');
+  }
+  artfct_submitbtn_click() {
+    console.log('artfct_submitbtn_click');
+  }
 }
 
 export class AllFiles {
   ARTFCT_NM: string[];
+
   constructor() {
 
   }

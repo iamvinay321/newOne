@@ -82,13 +82,13 @@ import { EnduserComponent } from './modules/enduser/enduser.component';
 import { SystemadminComponent } from './modules/systemadmin/systemadmin.component';
 import { UseradminComponent } from './modules/useradmin/useradmin.component';
 import {EndUserService } from './service/EndUser-service';
-import { Input_Art_Component } from './modules/enduser/execute/Input_Art/Input_Art.component';
 import { FormComponent } from './modules/enduser/execute/form/form.component';
 
 import { RepeatableFormComponent} from './modules/enduser/execute/repeatable-form/repeatable-form.component';
 
 import {NonRepeatableFormComponent} from './modules/enduser/execute/non-repeatable-form/non-repeatable-form.component';
 import { SplitFormsPipe } from './split-forms.pipe';
+import {InputArtComponent} from './modules/enduser/execute/Input_Art/InputArt.component';
 const appRoutes: Routes = [
   { path: '', component: LoginComponent },
 	  {path: 'Profile', component: ProfileComponent},
@@ -116,7 +116,6 @@ const appRoutes: Routes = [
 			{ path: 'Process', component: ProcessComponent},
 			{ path: 'Orchestrate', component: OrchestrateComponent },
 			{ path: 'Dashboard', component: DashboardComponent},
-
 		]
 	  },
 	  { path: 'ReportTable', component: ReportTableComponent},
@@ -124,19 +123,28 @@ const appRoutes: Routes = [
 	  {
 		  path: 'SystemAdmin', component: SystemadminComponent,
 		  children: [
-			{path: '', redirectTo: 'AppDeploy', pathMatch: 'full'},
-			{path: 'AppDeploy', component: DeployStatusComponent},
-			{ path: 'Install', component: InstallComponent },
-			{ path: 'Machineconnection', component: MachineconnectionComponent },
-			{ path: 'Deployment', component: DeploymentComponent },
-			{ path: 'Connection', component: ConnectionComponent },
-			{ path: 'Machine', component: MachineComponent },
-			{ path: 'Machinespecs', component: MachinespecsComponent },
-			{ path: 'Platform', component: PlatformComponent },
+        {path: '', redirectTo: 'AppDeploy', pathMatch: 'full'},
+        {path: 'AppDeploy', component: DeployStatusComponent},
+        { path: 'Install', component: InstallComponent },
+        { path: 'Machineconnection', component: MachineconnectionComponent },
+        { path: 'Deployment', component: DeploymentComponent },
+        { path: 'Connection', component: ConnectionComponent },
+        { path: 'Machine', component: MachineComponent },
+        { path: 'Machinespecs', component: MachinespecsComponent },
+        { path: 'Platform', component: PlatformComponent },
 
 		  ]
 	  },
-  { path: 'Login', component: LoginComponent },
+  { path: 'Login', component: LoginComponent },{path: '', redirectTo: 'AppDeploy', pathMatch: 'full'},
+  {path: 'AppDeploy', component: DeployStatusComponent},
+  { path: 'Install', component: InstallComponent },
+  { path: 'Machineconnection', component: MachineconnectionComponent },
+  { path: 'Deployment', component: DeploymentComponent },
+  { path: 'Connection', component: ConnectionComponent },
+  { path: 'Machine', component: MachineComponent },
+  { path: 'Machinespecs', component: MachinespecsComponent },
+  { path: 'Platform', component: PlatformComponent },
+
 
   { path: 'Developer', component: DeveloperComponent }, // developer app-dialog-schedule
   { path: 'Parameters', component: ParametersComponent },
@@ -147,18 +155,18 @@ const appRoutes: Routes = [
   { path: 'Forms', component: FormsComponent},
 
 
-  { path: 'InputArtForm', component: Input_Art_Component},
+  { path: 'InputArtForm', component: InputArtComponent},
   { path: 'Form', component: FormComponent},
   {path: 'RepetForm', component: RepeatableFormComponent},
   {path: 'NonRepetForm', component: NonRepeatableFormComponent},
 
-  //{ path:'organization',component:OrganizationComponent},
+  // { path:'organization',component:OrganizationComponent},
 
   { path: '', component: EnduserComponent , pathMatch: 'full'},
-  {path: '**', redirectTo: 'users', pathMatch: 'full'} ,  //UsersComponent
+  {path: '**', redirectTo: 'users', pathMatch: 'full'} ,  // UsersComponent
 
-  //---------------------------------------------user admin
-  //{ path: 'User', component:UseradminComponent },
+  // ---------------------------------------------user admin
+  // { path: 'User', component:UseradminComponent },
 
 
 ];
@@ -185,7 +193,7 @@ const appRoutes: Routes = [
     UseradminuserComponent,
     UseradmingroupComponent,
     RoleComponent,
-    Input_Art_Component,
+    InputArtComponent,
     MembershipComponent,
     OrganizationComponent,
     InstallComponent,

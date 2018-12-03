@@ -37,9 +37,7 @@
 		<div fxFlex="48">
 			<strong>{{Label['user_description']}}</strong>
 			<mat-form-field style="width:100%;">
-				<textarea (keyup)="changinUserInfo()" matInput [(ngModel)]="USR_DSC_R">
-												
-										</textarea>
+				<textarea (keyup)="changinUserInfo($event)" matInput [(ngModel)]="USR_DSC_R"></textarea>
 			</mat-form-field>
 			<br />
 

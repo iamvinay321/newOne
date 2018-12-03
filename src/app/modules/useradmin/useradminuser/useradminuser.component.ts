@@ -2,13 +2,13 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { UseradminService } from '../../../service/useradmin.service';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { HostListener } from "@angular/core";
-import { ngfModule, ngf } from "angular-file"
+import { HostListener } from '@angular/core';
+import { ngfModule, ngf } from 'angular-file';
 import { Subscription } from 'rxjs';
 import { HttpRequest, HttpResponse, HttpEvent, HttpHeaders, HttpClient } from '@angular/common/http';
 import { Http } from '@angular/http';
 
-import { saveAs as importedSaveAs } from "file-saver";
+import { saveAs as importedSaveAs } from 'file-saver';
 @Component({
   selector: 'app-useradminuser',
   templateUrl: './useradminuser.component.html',
@@ -21,27 +21,28 @@ export class UseradminuserComponent implements OnInit {
   public desktopView = true;
   public USR_NM: any[] = [];
   public USR_NM_RR: any;
-  public addBtn: boolean = true;
-  public deleteBtn: boolean = true;
+  public addBtn = true;
+  public deleteBtn = true;
   public USR_NM_R: any;
   public USR_DSC_R: any;
   public USR_PASS: any;
   public USRC_STATUS_R: any;
-  public progress: boolean = false;
+  public progress = false;
   public onpselect: Function;
   public selecteduser: Number;
   public emailMessage: string;
-  public updateBtn: boolean = true;
+  public updateBtn = true;
   public accept = '*';
   public files: File[] = [];
   public url = 'https://evening-anchorage-3159.herokuapp.com/api/';
-  hasBaseDropZoneOver: boolean = false;
+  hasBaseDropZoneOver = false;
   httpEmitter: Subscription;
   httpEvent: HttpEvent<Event>;
   lastFileAt: Date;
   Label: any[] = [];
-  sendableFormData: FormData;//populated via ngfFormData directive
-  // end 
+  emailOption = false;
+  sendableFormData: FormData; // populated via ngfFormData directive
+  // end
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
     this.screenHeight = window.innerHeight;
@@ -59,54 +60,52 @@ export class UseradminuserComponent implements OnInit {
     private userAdminService: UseradminService,
     private http: HttpClient
   ) {
-    
-    do{
+
+    do {
       this.getUser();
-    }while(this.USR_NM.length < 0);
+    }while (this.USR_NM.length < 0);
     this.onResize();
     this.onpselect = function (index) {
       this.selecteduser = index;
-    }
+    };
   }
 
 
   // Code by manav
 
-  //code by dharmraj begin
+  // code by dharmraj begin
   uploadBtnClick() {
     document.getElementById('Document_File').click();
   }
-
-  emailOption: boolean = false;
   /*
     Fire this function when user click on upload buttons
   */
   fileChangeEvent(event: any, file: any) {
-    let fileList: FileList = event.target.files;
-    console.log("====================");
+    const fileList: FileList = event.target.files;
+    console.log('====================');
     console.log(fileList.item(0));
-    this.userAdminService.fileUpload(fileList.item(0), "UserDL.xlsx", "user").subscribe(
+    this.userAdminService.fileUpload(fileList.item(0), 'UserDL.xlsx', 'user').subscribe(
       res => {
         console.log(res);
-        setTimeout(()=>{   
+        setTimeout(() => {
           this.getUser();
      }, 3000);
     },
       error => {
         console.error(error);
-       
+
       }
     );
   }
   /*
     Send the email to adding the new user
-    , email will send if the admin user 
+    , email will send if the admin user
     check the input checkbox
   */
   sendEmailToUser(checkBoxStatus: any): void {
     console.log(checkBoxStatus.checked);
     if (!checkBoxStatus.checked) {
-      console.log("condition checked");
+      console.log('condition checked');
       console.log(this.USR_NM_R);
       this.emailOption = true;
 
@@ -115,10 +114,10 @@ export class UseradminuserComponent implements OnInit {
   }
   //code by dharmraj end
   downloadFile() {
-    this.userAdminService.downloadFile("UserDL.xlsx");
+    this.userAdminService.downloadFile('UserDL.xlsx');
   }
   getDate() {
-    return new Date()
+    return new Date();
   }
 
   /*
@@ -137,7 +136,7 @@ export class UseradminuserComponent implements OnInit {
 
   }
   /*
-    Get the specific user 
+    Get the specific user
     details
   */
   getUserDetails(USR_NM: any) {
@@ -160,16 +159,16 @@ export class UseradminuserComponent implements OnInit {
     this.USR_NM_RR = e;
   }
   /*
-  Add the new user in existing user 
+  Add the new user in existing user
   */
   AddUSer() {
     this.progress = true;
-    let randPass = Math.random().toString(36).slice(-8);
+    const randPass = Math.random().toString(36).slice(-8);
     this.userAdminService.AddUser(this.USR_NM_R, this.USR_DSC_R, randPass, this.USRC_STATUS_R).subscribe(
       res => {
         if (res.status == 200) {
           //this.toastr.info("User", "The user " + this.USR_DSC_R + " is added..!");
-          if (this.emailOption && this.USR_NM_R != undefined && this.USR_NM_R != "") {
+          if (this.emailOption && this.USR_NM_R != undefined && this.USR_NM_R != '') {
             this.userAdminService.sendEmailStatus(this, this.USR_NM_R, randPass);
           }
         }
@@ -187,15 +186,16 @@ export class UseradminuserComponent implements OnInit {
     this.userAdminService.updateExistingUser(this);
   }
 	/*
-		update button should be visible when user changing 
+		update button should be visible when user changing
 		something in description field and statues field
 	*/
   changinUserInfo(userDscr: any): void {
-    //this.updateBtn=false;
-    if (this.USR_DSC_R === userDscr)
+    // this.updateBtn=false;
+    if (this.USR_DSC_R === userDscr) {
       this.updateBtn = true;
-    else
+    } else {
       this.updateBtn = false;
+    }
   }
 
 	/*
@@ -203,7 +203,7 @@ export class UseradminuserComponent implements OnInit {
   doBothField() {
     this.addBtn = false;
     this.USR_DSC_R = this.USR_NM_R;
-    if (this.USR_NM_R == "") {
+    if (this.USR_NM_R == '') {
       this.addBtn = true;
 
     }
@@ -217,19 +217,19 @@ export class UseradminuserComponent implements OnInit {
   }
 
   ClearField() {
-    this.USR_NM_R = "";
-    this.USR_DSC_R = "";
-    this.USRC_STATUS_R = "";
+    this.USR_NM_R = '';
+    this.USR_DSC_R = '';
+    this.USRC_STATUS_R = '';
   }
 
   ngOnInit() {
-    // set defaul values 
-    this.USRC_STATUS_R = "ACTIVE";
+    // set defaul values
+    this.USRC_STATUS_R = 'ACTIVE';
     this.userAdminService.getJSON().subscribe(data => {
       console.log(data.json());
       this.Label = data.json();
       console.log(this.Label);
-    })
+    });
 
   }
 

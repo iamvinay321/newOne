@@ -57,16 +57,16 @@ export class NonRepeatableFormComponent implements OnInit {
 
           this.router.navigateByUrl('InputArtForm');
 
-        } else if (reportData.RESULT == "FORM" && reportData.V_EXE_CD[0] == "NONREPEATABLE_MANUAL_TASK") {
+        } else if (reportData.RESULT === "FORM" && reportData.V_EXE_CD[0] === "NONREPEATABLE_MANUAL_TASK") {
           // non-repetable NonRepetForm
           this.router.navigateByUrl('NonRepetForm');
 
-        } else if (reportData.RESULT == "FORM" && reportData.V_EXE_CD[0] == "REPEATABLE_MANUAL_TASK") {
+        } else if (reportData.RESULT === "FORM" && reportData.V_EXE_CD[0] === "REPEATABLE_MANUAL_TASK") {
           //repetable
 
           this.router.navigateByUrl('RepetForm');
         }
-        else if (reportData.RESULT == "TABLE") {
+        else if (reportData.RESULT === "TABLE") {
 
           this.router.navigateByUrl('ReportTable');
         }
@@ -78,6 +78,12 @@ export class NonRepeatableFormComponent implements OnInit {
     obj.push(data);
     this.dataSource =  obj;
     console.log(this.dataSource);
+  }
+  cancelbtn_click() {
+    console.log('cancelbtn_click');
+  }
+  submitbtn_click() {
+    console.log('submitbtn_click');
   }
 
 }
