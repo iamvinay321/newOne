@@ -104,6 +104,15 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
   V_USR_NM = this.StorageSessionService.getSession('email');
 
   public formBuild: FormBuild = new FormBuild();
+  showDate(data) {
+    if (data === 'Program_Start_Date') {
+      return true;
+    } else if (data === 'Expected_End_Date') {
+      return true;
+    } else {
+      return false;
+    }
+  }
   getFormData() {
     this.Form_Data = this.dataStored.getCookies('report_table');
     console.info('The form data stored in local storage: ');
@@ -414,7 +423,7 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
   checked(r: number) {
     if (this.fd[r]['checked'] === true) {
       this.fd[r]['checked'] = false;
-    } else if (this.fd[r]['checked'] ===false) {
+    } else if (this.fd[r]['checked'] === false) {
       this.fd[r]['checked'] = true;
     }
     console.log(this.fd[r]['checked']);
@@ -426,7 +435,7 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
   checkoptions(opt) {
     this.progress = true;
     this.options = [];
-  this.http.get(this.apiUrlGet + 'V_SRC_CD=QA%20Test&V_APP_CD=Update%20Program&V_PRCS_CD=Add%20Bimonthly%20Status&V_PARAM_NM='+opt+'&V_SRVC_CD=Get%20Params&REST_Service=ProcessParametersOptions&Verb=GET')
+  this.http.get(this.apiUrlGet + 'V_SRC_CD=QA%20Test&V_APP_CD=Update%20Program&V_PRCS_CD=Add%20Bimonthly%20Status&V_PARAM_NM=' + opt + '&V_SRVC_CD=Get%20Params&REST_Service=ProcessParametersOptions&Verb=GET')
     // getParameterAllOption(application:string,process:string,paramName:string,srcCode:string)
    //this.http.get(this.apiUrlGet + 'V_SRVC_CD=' + this.V_SRVC_CD + '&V_APP_CD=' + 'Program%20Assessment' + '&V_PRCS_CD=' + 'Program%20RM' + '&RVP=' + opt + '&V_SRVC_CD=' + this.srvc_cd_sl + '&REST_Service=ProcessParametersOptions&Verb=GET')
 

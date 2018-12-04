@@ -16,21 +16,26 @@
          <hr />
         </mat-card-title>
         <mat-card-content>
-          <div *ngIf="!a" flex fxLayout="row" fxLayoutAlign="center" class="example-container" style="position: relative;">
-            <mat-table class="TableForm adventColor" #table [dataSource]="dataSource" style="overflow: auto">
+          <div *ngIf="!a" style="position: relative;">
+            <mat-table class="adventColor" #table [dataSource]="dataSource" style="overflow: auto">
               <ng-container class="adventColor" *ngFor="let mc of displayedColumns" matColumnDef="{{mc}}">
                 <ng-container class="adventColor" *ngIf="mc!='action'">
                   <mat-header-cell class="adventColor" *matHeaderCellDef>{{mc | splitForms}}</mat-header-cell>
                   <mat-cell class="adventColor" *matCellDef="let data">
                     <ng-container class="adventColor">
-                      <mat-form-field>
-                        <input matInput type="text" class="form-control" [readonly]="data['show']" (click)="checkoptions(mc)" [(ngModel)]="data[mc]"
+                      <mat-form-field *ngIf="!showDate(mc)">
+                        <input matInput type="text" [readonly]="data['show']" (click)="checkoptions(mc)" [(ngModel)]="data[mc]"
                           [matAutocomplete]="auto">
                         <mat-autocomplete #auto="matAutocomplete">
                           <mat-option style="text-align:center;" *ngFor="let option of options" [value]="option">
                             {{option}}
                           </mat-option>
                         </mat-autocomplete>
+                      </mat-form-field>
+                      <mat-form-field class="form_input" *ngIf="showDate(mc)">
+                        <input [(ngModel)]="data[mc]" matInput [matDatepicker]="picker" class="f_inp">
+                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
                       </mat-form-field>
                     </ng-container>
                   </mat-cell>

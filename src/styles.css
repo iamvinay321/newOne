@@ -12,21 +12,21 @@
   }
 
 #body{
-   
+
     height: auto;
-    margin-top:7%; 
+    margin-top:7%;
     margin-bottom: 7%;
   }
   #mat_card{
 	 margin:auto;
   display:block;
-  
+
   background-color:rgb(242, 242, 242);
   box-shadow: 0 3px 9px rgba(0, 0, 0, .5);
   border: 1px solid rgb(117, 117, 117);
   border: 1px solid rgba(0, 0, 0, .2);
   border-radius: 6px;
-    
+
 }
 label{
     font-weight:bold;
@@ -42,13 +42,13 @@ label{
 }
 
 .scroll {
-    height: 230px; 
+    height: 230px;
     overflow-y: auto;
     background-color: white;
     border:1px solid lightblue;
 }
 textarea,input{
-   
+
 }
 .list_item:nth-child(odd) {
     background-color:rgb(221, 221, 221);
@@ -61,7 +61,7 @@ textarea,input{
 mat-list-item div{
     font-size: 1rem;
     text-align:center;
-    width:100%;    
+    width:100%;
   }
   .list_item:nth-child(odd) {
     background-color:rgb(221, 221, 221);
@@ -92,7 +92,7 @@ height: 34px;
      /* Hidden by default */
     width: 100%; /* Full width (cover the whole page) */
     height: 100%; /* Full height (cover the whole page) */
-    top: 0; 
+    top: 0;
     left: 0;
     right: 0;
     bottom: 0;
@@ -124,7 +124,7 @@ button.mat-raised-button{
     font-size:16px;
 }
 mat-option.mat-option.ng-star-inserted{
-    
+
     height: 25px;
     padding: 0 5px;
 }
@@ -182,7 +182,7 @@ mat-list-item:hover{
     position: relative;
     padding: 0 .2rem .2rem 0;
     justify-content: center;
-} 
+}
 
 ::-webkit-input-placeholder { /* Chrome */
   color: #e6e6e6;
@@ -205,12 +205,12 @@ mat-list-item:hover{
 	font-size:15px;
 	width:100%;
 }
-/*  
+/*
 
 Styling the login page
 */
 .cong-group {
-	
+
 }
 .cong-group input {
 	padding:4px;
@@ -256,19 +256,19 @@ Styling the login page
 	 background-color:#737373;
  }
  .numberlist a{
-	
+
 	 color:white;
 	 width:100%;
 	 left:0px;
 	 right:0px;
-	 
+
  }
    .bodyPanel{
 	   left:0px;right:0px;
 	   margin:0px;
-	   
+
    }
-   /* 
+   /*
 	This is styling for all pages/Panel/Layout
    */
    .CustomeLayout{
@@ -277,14 +277,13 @@ Styling the login page
 	    background-color:rgb(242, 242, 242);
    }
    .adventColor{
-    background-color:#e6e6ff;
     z-index: unset;
     background-attachment: unset;
     background-color:rgb(242, 242, 242);
    }
-   
-   /* 
-	Styling for admin user 
+
+   /*
+	Styling for admin user
    */
    .CustomeButtonFloat{
 	   width:100%;
@@ -292,9 +291,9 @@ Styling the login page
 	   margin:4px;
 	   display:list-item;
        list-style:none;
-       margin-bottom:10px; 
+       margin-bottom:10px;
    }
    .CustomeButtonFloat button{
 	   width:120px;
    }
-   
+
