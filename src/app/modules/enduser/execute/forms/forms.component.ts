@@ -109,6 +109,8 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
       return true;
     } else if (data === 'Expected_End_Date') {
       return true;
+    } else if (data === 'Date_Reported') {
+      return true;
     } else {
       return false;
     }
@@ -235,6 +237,7 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
       }
       this.displayedColumnsClone = Object.keys(JSON.parse(this.Field_Data));
       if (this.displayedColumnsClone.length > 0) {
+        this.displayedColumns = this.displayedColumnsClone;
         const index1 = this.displayedColumnsClone.indexOf('V_USR_NM');
         if (index1 !== -1) {
           this.displayedColumnsClone.splice(index1, 1);
