@@ -579,6 +579,7 @@ tableData: string[] = [];
           console.info('Test table-------------->');
           console.log(this.tabledata);
           this.dataSource = new MatTableDataSource(this.td);
+          console.log('tableDataqqq',this.dataSource)
           if (this.td.length == 0) {
             this.tm = {};
             this.td = [];
@@ -605,9 +606,12 @@ tableData: string[] = [];
       this.tm['id'] = this.g;
       this.tm['show'] = false;
       this.tm['up'] = false;
+      Object.assign(this.tm, JSON.parse(this.Field_Data));
       this.td.push(this.tm);
+      // this.td.push(JSON.parse(this.Field_Data));
       console.log(this.td);
       this.dataSource = new MatTableDataSource(this.td);
+      console.log('tableData',this.dataSource)
     }
   }
 

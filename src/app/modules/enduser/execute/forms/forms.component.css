@@ -153,3 +153,7 @@ mat-checkbox{
   }
 
 }
+.mat-column- {
+  display: flex;
+  justify-content: flex-end;
+}
