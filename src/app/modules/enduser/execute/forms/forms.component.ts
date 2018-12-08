@@ -438,9 +438,11 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
   checkoptions(opt) {
     this.progress = true;
     this.options = [];
-  this.http.get(this.apiUrlGet + 'V_SRC_CD=QA%20Test&V_APP_CD=Update%20Program&V_PRCS_CD=Add%20Bimonthly%20Status&V_PARAM_NM=' + opt + '&V_SRVC_CD=Get%20Params&REST_Service=ProcessParametersOptions&Verb=GET')
+  this.http.get(this.apiUrlGet +
+    'V_SRC_CD=QA%20Test&V_APP_CD=Update%20Program&V_PRCS_CD=Add%20Bimonthly%20Status&V_PARAM_NM=' + opt +
+    '&V_SRVC_CD=Get%20Params&REST_Service=ProcessParametersOptions&Verb=GET')
     // getParameterAllOption(application:string,process:string,paramName:string,srcCode:string)
-   //this.http.get(this.apiUrlGet + 'V_SRVC_CD=' + this.V_SRVC_CD + '&V_APP_CD=' + 'Program%20Assessment' + '&V_PRCS_CD=' + 'Program%20RM' + '&RVP=' + opt + '&V_SRVC_CD=' + this.srvc_cd_sl + '&REST_Service=ProcessParametersOptions&Verb=GET')
+   // this.http.get(this.apiUrlGet + 'V_SRVC_CD=' + this.V_SRVC_CD + '&V_APP_CD=' + 'Program%20Assessment' + '&V_PRCS_CD=' + 'Program%20RM' + '&RVP=' + opt + '&V_SRVC_CD=' + this.srvc_cd_sl + '&REST_Service=ProcessParametersOptions&Verb=GET')
 
    .subscribe(
       res => {
