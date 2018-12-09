@@ -69,10 +69,13 @@
 
   color:rgba(26, 17, 17, 0.973);
   width:auto;
-  font-size: 16px!important;
+  font-size: 14px!important;
 }
 
-
+.title_form {
+  font-size: 16px;
+  font-weight: 600;
+}
 .mat-input-element{
   font-size:16px!important;
   text-align: center;
@@ -83,7 +86,7 @@
 #he{
   text-align: center;
   font-size: 15px;
-  padding-left: 30px;
+  /*padding-left: 30px;*/
 }
 .alignRadioCenter{
   margin-left:auto;

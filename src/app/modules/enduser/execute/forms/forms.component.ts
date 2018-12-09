@@ -558,6 +558,7 @@ tableData: string[] = [];
           }
           this.initvalues1['V_ID'] = this.initvalues['V_ID'];
           console.log(this.initvalues1);
+          console.log('this.displayedColumns', this.displayedColumns);
 
 
           this.td = [];
@@ -580,6 +581,9 @@ tableData: string[] = [];
           this.tableData = this.td;
           console.info('Test table-------------->');
           console.log(this.tabledata);
+          Object.assign(this.tm, JSON.parse(this.Field_Data));
+          this.td.push(this.tm);
+          console.log('this.displayedColumns', this.displayedColumns);
           this.dataSource = new MatTableDataSource(this.td);
           console.log('tableDataqqq',this.dataSource)
           if (this.td.length == 0) {
@@ -592,9 +596,9 @@ tableData: string[] = [];
             this.tm['id'] = this.g;
             this.tm['show'] = false;
             this.tm['up'] = false;
+            console.log('this.displayedColumns', this.displayedColumns);
+            Object.assign(this.tm, JSON.parse(this.Field_Data));
             this.td.push(this.tm);
-            console.log(this.td);
-            debugger;
             this.dataSource = new MatTableDataSource(this.td);
           }
         });
