@@ -281,7 +281,7 @@ export class ConfigServiceService {
 
 
   getDeployStatus(UNIQUE_ID, SL_SRC_ID, SL_APP_ID, SL_PRCS_ID, SL_SRVC_ID) {
-
+    console.log(this.apiUrlGet + "V_UNIQUE_ID=" + UNIQUE_ID + "&V_SRC_ID=" + SL_SRC_ID + "&V_APP_ID=" + SL_APP_ID + "&V_PRCS_ID=" + SL_PRCS_ID + "&V_SRVC_ID=" + SL_SRVC_ID + "&FULL_DTL_FLG=Y&AVL_DTL_FLG=N&REST_Service=DeploymentStatus&Verb=GET");
     return this.http.get(this.apiUrlGet + "V_UNIQUE_ID=" + UNIQUE_ID + "&V_SRC_ID=" + SL_SRC_ID + "&V_APP_ID=" + SL_APP_ID + "&V_PRCS_ID=" + SL_PRCS_ID + "&V_SRVC_ID=" + SL_SRVC_ID + "&FULL_DTL_FLG=Y&AVL_DTL_FLG=N&REST_Service=DeploymentStatus&Verb=GET")
   }
   getAppCode(vSRCcd) {

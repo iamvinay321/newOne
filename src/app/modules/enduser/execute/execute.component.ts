@@ -76,11 +76,12 @@ export class ExecuteComponent implements OnInit {
   countonerror = [];
   //-------Balraj Code--------
   // =========== CHARTS FLAGS ( Toggle these to display or hide charts at loading page )=========
-  show_PIE = false;
+  /*show_PIE = false;
   show_BAR = false;
   show_Gantt = false;
   show_ALL = false;
-  show_SM_PIE = false;
+  show_SM_PIE = false;*/
+  //Charts flags implemented in control-variable.json file
   // ==================================
 
   //-------Balraj Code--------
@@ -206,7 +207,7 @@ export class ExecuteComponent implements OnInit {
           this.getProcessCD(this.selectedapp);
         } else if (this.mobileView) {
           this.getProcessCD({ value: this.selectedapp });
-             }
+        }
       }
 
     });
@@ -288,7 +289,6 @@ export class ExecuteComponent implements OnInit {
     // this.Execute_Now_btn = true;
     // this.Schedule_btn = true;
   }
-
   getIdCode() {
     this.ID_DATA = [];
     this.SRVC_DATA = [];
@@ -297,33 +297,35 @@ export class ExecuteComponent implements OnInit {
     this.p = 0;
     this.c = 0;
     this.q = 0;
-    for (let j = 0; j < this.SRVC_CD.length; j++) {
-      this.SL_SRVC_CD = this.SRVC_CD[j];
-      // console.log(this.SL_SRVC_CD);
-      this.data.getID(this.SL_APP_CD, this.SL_PRCS_CD, this.SL_SRVC_CD).subscribe(res => {
-        // //console.log(res.json());
-        this.SRVC_DATA = res.json();
-        this.SRVC_CD.push(this.SRVC_DATA['SRVC_CD']);
-        // //console.log(this.SRVC_CD);
+    if (this.ctrl_variables.checkDeployement) {
+      for (let j = 0; j < this.SRVC_CD.length; j++) {
+        this.SL_SRVC_CD = this.SRVC_CD[j];
+        // console.log(this.SL_SRVC_CD);
+        this.data.getID(this.SL_APP_CD, this.SL_PRCS_CD, this.SL_SRVC_CD).subscribe(res => {
+          // //console.log(res.json());
+          this.SRVC_DATA = res.json();
+          this.SRVC_CD.push(this.SRVC_DATA['SRVC_CD']);
+          // //console.log(this.SRVC_CD);
 
-        this.executedata = { SL_APP_CD: this.SL_APP_CD, SL_PRC_CD: this.SL_PRC_CD };
-        console.log('this.executedata', this.executedata);
-        this.StorageSessionService.setCookies('executedata', this.executedata);
-        this.ID_DATA = res.json();
-        this.StorageSessionService.setCookies('iddata', this.ID_DATA);
-        console.log(this.ID_DATA);
-        this.APP_ID = this.ID_DATA['V_APP_ID'];
+          this.executedata = { SL_APP_CD: this.SL_APP_CD, SL_PRC_CD: this.SL_PRC_CD };
+          console.log('this.executedata', this.executedata);
+          this.StorageSessionService.setCookies('executedata', this.executedata);
+          this.ID_DATA = res.json();
+          this.StorageSessionService.setCookies('iddata', this.ID_DATA);
+          console.log(this.ID_DATA);
+          this.APP_ID = this.ID_DATA['V_APP_ID'];
 
-        this.PRCS_ID = this.ID_DATA['V_PRCS_ID'];
+          this.PRCS_ID = this.ID_DATA['V_PRCS_ID'];
 
 
-        this.SRC_ID = this.ID_DATA['V_SRC_ID'];
+          this.SRC_ID = this.ID_DATA['V_SRC_ID'];
 
-        this.SRVC_ID = this.ID_DATA['V_SRVC_ID'];
-        this.UNIQUE_ID = this.ID_DATA['V_UNIQUE_ID'];
+          this.SRVC_ID = this.ID_DATA['V_SRVC_ID'];
+          this.UNIQUE_ID = this.ID_DATA['V_UNIQUE_ID'];
 
-        this.getDeployment();
-      });
+          this.getDeployment();
+        });
+      }
 
     }
 
@@ -336,7 +338,8 @@ export class ExecuteComponent implements OnInit {
     //console.log("getDeployment function");
     //console.log(this.SL_SRVC_ID);
     this.data.getDeployStatus(this.UNIQUE_ID, this.SRC_ID, this.APP_ID, this.PRCS_ID, this.SRVC_ID).subscribe(res => {
-      // //console.log(res.json());
+      console.log("Services");
+      console.log(res.json());
       this.deployData = res.json();
 
       if (this.deployData['CXN_ID'].length === 0) {
@@ -699,13 +702,13 @@ export class ExecuteComponent implements OnInit {
   /*
  Call API until report data is not come
  */
- repeat: any = 0;
+  repeat: any = 0;
   repeatCallTable(data: any): void {
-   if (data && this.repeat < 10) {
-     this.repeat ++;
-    this.GenerateReportTable();
+    if (data && this.repeat < this.ctrl_variables.repeat_count) {
+      this.repeat++;
+      this.GenerateReportTable();
     }
-    }
+  }
   //@override ReportGenerate interface
   public report: ReportData = new ReportData;
   GenerateReportTable() {
@@ -727,61 +730,65 @@ export class ExecuteComponent implements OnInit {
     };
     this.https.post(this.aptUrlPost_report, body)
       .subscribe(
-      res => {
-        // console.log(res.json());
-        this.StorageSessionService.setCookies('report_table', res.json());
-        this.check_data = res.json();
-        this.app.loadingCharts = false;
-        this.report = res.json();
-        console.info('This is report generated data :');
-        console.log(this.report);
-        console.info('The URL to redirecting form is :');
-        console.log(this.report.RESULT);
-        const dt = JSON.stringify(res);
-        if (JSON.parse(dt).lenght < 0) {
-         this.repeatCallTable(true);
-        } else {
-          this.repeatCallTable(false);
+        res => {
+          // console.log(res.json());
+          this.StorageSessionService.setCookies('report_table', res.json());
+          this.check_data = res.json();
+          this.app.loadingCharts = false;
+          this.report = res.json();
+          console.info('This is report generated data :');
+          console.log(this.report);
+          console.info('The URL to redirecting form is :');
+          console.log(this.report.RESULT);
+          console.log(res.json());
+          var timeout = res.json().RESULT.toString().substring(0,7)=="TIMEOUT";
+          console.log(timeout);
+          /*const dt = JSON.stringify(res);
+          console.log(dt);*/
+          if (timeout && this.ctrl_variables.call_repeat_on_TIMEOUT) {
+            this.repeatCallTable(true);
+          } else {
+            this.repeatCallTable(false);
+          }
+
+          if (this.report.RESULT == 'INPUT_ARTFCT_TASK') {
+
+            this.router.navigateByUrl('InputArtForm', { skipLocationChange: true });
+
+          } else if (this.report.RESULT == 'FORM' && this.report.V_EXE_CD[0] == 'NONREPEATABLE_MANUAL_TASK') {
+            // non-repetable NonRepetForm
+            //this.router.navigateByUrl('NonRepetForm');
+            this.router.navigateByUrl('Forms', { skipLocationChange: true });
+
+          } else if (this.report.RESULT == 'FORM' && this.report.V_EXE_CD[0] == 'REPEATABLE_MANUAL_TASK') {
+            //repetable
+            this.router.navigateByUrl('RepetForm', { skipLocationChange: true });
+
+            //this.router.navigateByUrl('RepetForm');
+          } else if (this.report.RESULT == 'TABLE') {
+
+            this.router.navigateByUrl('ReportTable', { skipLocationChange: true });
+          }
+
+
+
+          // if ('V_EXE_CD' in this.check_data) {
+          //   this.router.navigateByUrl('forms');
+          //   //             var exe_cd:any[] = this.check_data["V_EXE_CD"];
+          //   //             //console.log(exe_cd);
+          //   //             if(exe_cd.includes("NONREPEATABLE_MANUAL_TASK")){
+          //   //                 alert("FORM DATA");
+          //   //           }
+          //   //           else if(exe_cd.includes("NONREPEATABLE_MANUAL_TASK")){
+          //   //             alert("FORM DATA");
+          //   //                       }
+          // }
+          // else {
+          //   this.router.navigateByUrl('reportTable');
+          // }
         }
-
-        if (this.report.RESULT == 'INPUT_ARTFCT_TASK') {
-
-          this.router.navigateByUrl('InputArtForm', {skipLocationChange: true});
-
-        } else if (this.report.RESULT == 'FORM' && this.report.V_EXE_CD[0] == 'NONREPEATABLE_MANUAL_TASK') {
-          // non-repetable NonRepetForm
-          //this.router.navigateByUrl('NonRepetForm');
-          this.router.navigateByUrl('Forms', {skipLocationChange: true});
-
-        } else if (this.report.RESULT == 'FORM' && this.report.V_EXE_CD[0] == 'REPEATABLE_MANUAL_TASK') {
-          //repetable
-          this.router.navigateByUrl('RepetForm', {skipLocationChange: true});
-
-          //this.router.navigateByUrl('RepetForm');
-        } else if (this.report.RESULT == 'TABLE') {
-
-          this.router.navigateByUrl('ReportTable', {skipLocationChange: true});
-        }
-
-
-
-        // if ('V_EXE_CD' in this.check_data) {
-        //   this.router.navigateByUrl('forms');
-        //   //             var exe_cd:any[] = this.check_data["V_EXE_CD"];
-        //   //             //console.log(exe_cd);
-        //   //             if(exe_cd.includes("NONREPEATABLE_MANUAL_TASK")){
-        //   //                 alert("FORM DATA");
-        //   //           }
-        //   //           else if(exe_cd.includes("NONREPEATABLE_MANUAL_TASK")){
-        //   //             alert("FORM DATA");
-        //   //                       }
-        // }
-        // else {
-        //   this.router.navigateByUrl('reportTable');
-        // }
-      }
       );
-    if (this.app.loadingCharts && this.show_ALL) {
+    if (this.app.loadingCharts && this.ctrl_variables.show_ALL) {
       this.chart_JSON_call();
     }
 
@@ -1131,13 +1138,13 @@ export class ExecuteComponent implements OnInit {
         end_time[i] = res['LST_UPD_DT_TM'][i].substring(11);
         Process[i] = res['PRDCR_SRVC_CD'][i];
       }
-      if (this.show_Gantt) {
+      if (this.ctrl_variables.show_Gantt) {
         this.show_gantt_chart(Process, start_time, end_time);
       }
-      if (this.show_PIE) {
+      if (this.ctrl_variables.show_PIE) {
         this.show_pie(Process, start_time, end_time);
       }
-      if (this.show_BAR) {
+      if (this.ctrl_variables.show_BAR) {
         this.show_bar_chart(Process, start_time, end_time);
       }
       // if(this.show_SM_PIE){
@@ -1165,9 +1172,13 @@ export class ExecuteComponent implements OnInit {
   Roll_cd: any[] = [];
   Label: any[] = [];
 
-
+  ctrl_variables :any;
   ngOnInit() {
     const exec = this;
+    this.http.get('../../../../assets/control-variable.json').subscribe(res => {
+      this.ctrl_variables = res;  
+      console.log(res);
+    });
     setTimeout(function () {
       exec.wSocket.listenOn = '102';
       exec.msg.getMessage.subscribe(res => {
