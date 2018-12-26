@@ -236,6 +236,8 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
         }
       }
       this.displayedColumnsClone = Object.keys(JSON.parse(this.Field_Data));
+      this.Check_RPT_NRPT === 'NONREPEATABLE_MANUAL_TASK' ? this.a = false : this.a = true;
+      console.log(this.Check_RPT_NRPT);
       if (this.displayedColumnsClone.length > 0) {
         this.displayedColumns = this.displayedColumnsClone;
         const index1 = this.displayedColumnsClone.indexOf('V_USR_NM');
@@ -268,7 +270,9 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
           this.displayedColumnsClone.splice(index6, 1);
           this.displayedColumns = this.displayedColumnsClone;
         }
-        this.displayedColumns.push('action');
+        if(this.a)
+          this.displayedColumns.push('action');
+        //---------Removed Action Label & tick icon from non-repeatable form----------//
       }
       // debugger;
       console.log('ffff', this.displayedColumns);
@@ -281,8 +285,7 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
       for (let i = 0; i < this.Field_Data.length; i++) {
         this.tm[this.Field_Data[i]] = ' ';
       }
-      this.Check_RPT_NRPT === 'NONREPEATABLE_MANUAL_TASK' ? this.a = false : this.a = true;
-      console.log(this.Check_RPT_NRPT);
+      
       this.tableFieldValue();
     }
   }

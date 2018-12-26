@@ -40,7 +40,7 @@
                     </ng-container>
                   </mat-cell>
                 </ng-container>
-                <ng-container class="adventColor" matColumnDef="action">
+                <!--<ng-container class="adventColor" matColumnDef="action">
                   <mat-header-cell class="adventColor" *matHeaderCellDef>Action</mat-header-cell>
                   <mat-cell class="adventColor" *matCellDef="let data">
                     <button mat-icon-button matTooltip="Update" matTooltipPosition='above' *ngIf="data['show']" (click)="change(data['id']);FieldValue(data['id'])">
@@ -50,8 +50,10 @@
                       <mat-icon class="iconmod">done</mat-icon>
                     </button>
                   </mat-cell>
-                </ng-container>
+                </ng-container>-->
+                <!--Removed Action label & tick icon from non-repeatable form-->
               </ng-container>
+              
 
               <mat-header-cell *matHeaderCellDef></mat-header-cell>
               <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
