@@ -13,6 +13,7 @@ export class AppComponent {
   text_mgs:string;
   public loading = false;
   public loadingCharts = false;
+  public fromNonRepForm = false;
   public selected_APPLICATION='ALL';
   public selected_PROCESS='ALL';
   public selected_SERVICE='ALL';

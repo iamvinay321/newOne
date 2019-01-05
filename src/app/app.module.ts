@@ -157,8 +157,9 @@ const appRoutes: Routes = [
 
   { path: 'InputArtForm', component: InputArtComponent},
   { path: 'Form', component: FormComponent},
-  {path: 'RepetForm', component: RepeatableFormComponent},
-  {path: 'NonRepetForm', component: NonRepeatableFormComponent},
+  {path: 'RepeatForm', component: RepeatableFormComponent},
+  { path: 'Execute', component: ExecuteComponent},
+  {path: 'NonRepeatForm', component: NonRepeatableFormComponent},
 
   // { path:'organization',component:OrganizationComponent},
 
@@ -274,7 +275,7 @@ const appRoutes: Routes = [
   ],
 
   providers: [StorageSessionService, ConfigServiceService, LoginServiceService, FormDataService, RollserviceService,
-    UseradminService, GetMessageService, WebSocketService, Globals, EndUserService,
+    UseradminService, GetMessageService, WebSocketService, Globals, EndUserService, EnduserComponent,
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}],
   bootstrap: [AppComponent],
   entryComponents: [DialogScheduleComponent, DialogChartsComponent]

@@ -124,13 +124,13 @@ export class RepeatableFormComponent implements OnInit {
         this.router.navigateByUrl('InputArtForm');
 
       } else if (reportData.RESULT == 'FORM' && reportData.V_EXE_CD[0] == 'NONREPEATABLE_MANUAL_TASK') {
-        // non-repetable NonRepetForm
-        this.router.navigateByUrl('NonRepetForm');
+        // non-Repeatable NonRepeatForm
+        this.router.navigateByUrl('NonRepeatForm');
 
       } else if (reportData.RESULT == 'FORM' && reportData.V_EXE_CD[0] == 'REPEATABLE_MANUAL_TASK') {
-        //repetable
+        //Repeatable
 
-        this.router.navigateByUrl('RepetForm');
+        this.router.navigateByUrl('RepeatForm');
       } else if (reportData.RESULT == 'TABLE') {
 
         this.router.navigateByUrl('ReportTable');

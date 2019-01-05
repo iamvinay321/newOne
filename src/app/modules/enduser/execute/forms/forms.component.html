@@ -25,7 +25,7 @@
                     <ng-container class="adventColor">
                       <mat-form-field *ngIf="!showDate(mc)">
                         <input matInput type="text" [readonly]="data['show']" (click)="checkoptions(mc)" [(ngModel)]="data[mc]"
-                          [matAutocomplete]="auto">
+                          [matAutocomplete]="auto" id="task_read">
                         <mat-autocomplete #auto="matAutocomplete">
                           <mat-option style="text-align:center;" *ngFor="let option of options" [value]="option">
                             {{option}}

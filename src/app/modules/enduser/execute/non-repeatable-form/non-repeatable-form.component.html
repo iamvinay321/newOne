@@ -1,194 +1,72 @@
-<!-- 1) remove the all "V_" variable (i.e hide them all)
-2) remove the "_" with space
-3) fetch the old valus from backend table if table name is exits in report ( PVP object containes table_name in )
-4) for the repeatable has one call to update each form field record / or we can add similarly/ delete
-5) for all call has same rest service but we have to pass different verbs i.e for
-		1) get => for the fetches the old value
-		2) patch=> for the updates
-		3) delete= > for the delete
-		4)post => for the add
+<div fxLayout="row" fxLayout.lt-sm="column">
+  <div fxFlex="9">
+  </div>
+  <div fxFlex="82">
+    <mat-card class="CustomeLayout">
+      <div *ngIf="!artf">
+        <mat-card-title>
+          <div fxLayout="row" fxLayout.lt-sm="column">
+            <div fxFlex="40">
+            </div>
+            <div fxFlex="48" class="title_form">
+              {{srvc_cd_sl}}
+            </div>
+          </div>
 
-note-> the rest call is "Forms_Record&Verb=GET"
-6) fetch the each option values i.e autocomplete values
-7) chagne filed type if the API return DATE,RADIO
-8) After all when user click on submit button , we should have to pass all form field
-record to API "Forms_Record&Verb=POST"
--->
-<div>
-  <!--<div class="example-container mat-elevation-z8">-->
-  <!--<mat-table #table [dataSource]="dataSource">-->
-
-    <!--&lt;!&ndash;- Note that these columns can be defined in any order.-->
-          <!--The actual rendered columns are set as a property on the row definition" &ndash;&gt;-->
-
-    <!--&lt;!&ndash; Position Column &ndash;&gt;-->
-    <!--<ng-container matColumnDef="V_USR_NM">-->
-      <!--<mat-header-cell *matHeaderCellDef>V_USR_NM</mat-header-cell>-->
-      <!--<mat-cell *matCellDef="let element">-->
-      <!--<mat-form-field floatPlaceholder="{{ editing ? 'float' : 'never'}}">-->
-        <!--<input [(ngModel)]="element.V_USR_NM" placeholder="Name" [disabled]="!editing" matInput>-->
-      <!--</mat-form-field>-->
-      <!--</mat-cell>-->
-    <!--</ng-container>-->
-    <!--<ng-container matColumnDef="Program_Manager">-->
-      <!--<mat-header-cell *matHeaderCellDef>Program_Manager</mat-header-cell>-->
-      <!--<mat-cell *matCellDef="let element">-->
-        <!--<mat-form-field floatPlaceholder="{{ editing ? 'float' : 'never'}}">-->
-          <!--<input [(ngModel)]="element.Program_Manager" placeholder="Name" [disabled]="!editing" matInput>-->
-        <!--</mat-form-field>-->
-      <!--</mat-cell>-->
-    <!--</ng-container>-->
-    <!--<ng-container matColumnDef="Program_Score">-->
-      <!--<mat-header-cell *matHeaderCellDef>Program_Score</mat-header-cell>-->
-      <!--<mat-cell *matCellDef="let element">-->
-        <!--<mat-form-field floatPlaceholder="{{ editing ? 'float' : 'never'}}">-->
-          <!--<input [(ngModel)]="element.Program_Score" placeholder="Name" [disabled]="!editing" matInput>-->
-        <!--</mat-form-field>-->
-      <!--</mat-cell>-->
-    <!--</ng-container>-->
-    <!--<ng-container matColumnDef="Program_Start_Date">-->
-      <!--<mat-header-cell *matHeaderCellDef>Program_Start_Date</mat-header-cell>-->
-      <!--<mat-cell *matCellDef="let element">-->
-        <!--<mat-form-field floatPlaceholder="{{ editing ? 'float' : 'never'}}">-->
-          <!--<input [(ngModel)]="element.Program_Start_Date" placeholder="Name" [disabled]="!editing" matInput>-->
-        <!--</mat-form-field>-->
-      <!--</mat-cell>-->
-    <!--</ng-container>-->
-    <!--<ng-container matColumnDef="Program_Status">-->
-      <!--<mat-header-cell *matHeaderCellDef>Program_Status</mat-header-cell>-->
-      <!--<mat-cell *matCellDef="let element">-->
-        <!--<mat-form-field floatPlaceholder="{{ editing ? 'float' : 'never'}}">-->
-          <!--<input [(ngModel)]="element.Program_Status" placeholder="Name" [disabled]="!editing" matInput>-->
-        <!--</mat-form-field>-->
-      <!--</mat-cell>-->
-    <!--</ng-container>-->
-    <!--<ng-container matColumnDef="Program_Trend">-->
-      <!--<mat-header-cell *matHeaderCellDef>Program_Trend</mat-header-cell>-->
-      <!--<mat-cell *matCellDef="let element">-->
-        <!--<mat-form-field floatPlaceholder="{{ editing ? 'float' : 'never'}}">-->
-          <!--<input [(ngModel)]="element.Program_Trend" placeholder="Name" [disabled]="!editing" matInput>-->
-        <!--</mat-form-field>-->
-      <!--</mat-cell>-->
-    <!--</ng-container>-->
-    <!--<ng-container matColumnDef="Program_Type">-->
-      <!--<mat-header-cell *matHeaderCellDef>Program_Type</mat-header-cell>-->
-      <!--<mat-cell *matCellDef="let element">-->
-        <!--<mat-form-field floatPlaceholder="{{ editing ? 'float' : 'never'}}">-->
-          <!--<input [(ngModel)]="element.Program_Type" placeholder="Name" [disabled]="!editing" matInput>-->
-        <!--</mat-form-field>-->
-      <!--</mat-cell>-->
-    <!--</ng-container>-->
-
-    <!--<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>-->
-    <!--<mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>-->
-  <!--</mat-table>-->
-  <!--</div>-->
-	<div fxLayout="row" fxLayout.lt-sm="column">
-		<div fxFlex="9">
-		</div>
-		<div fxFlex="82">
-			<mat-card class="CustomeLayout">
-				<mat-card-title>
-				</mat-card-title>
-				<mat-card-content>
-					<div flex fxLayout="row" fxLayout.lt-sm="column" fxLayout.sm="column" fxLayout.gt-sm="column">
-						<div fxFlex="10"></div>
-						<div fxFlex="80">
-							<div class="dynamicFormContent container">
-                <!--<form (ngSubmit)="onSubmit()" [formGroup]="form">-->
-                <!--<div *ngFor="let form of formData.getFormParameter()" class="flexLeft">-->
-                <!--<label>{{form | removeWt}}</label>-->
-                <!--<input [formControlName]="form" [id]="form" value="" />-->
-
-                <!--</div>-->
-                <!--<input type="submit" value="Submit" />-->
-                <!--</form>-->
-                <div class="example-container mat-elevation-z8">
-                  <mat-table #table [dataSource]="dataSource">
-                    <ng-container matColumnDef="V_USR_NM">
-                      <mat-header-cell *matHeaderCellDef>V_USR_NM</mat-header-cell>
-                      <mat-cell *matCellDef="let element">
-                        <mat-form-field floatPlaceholder="{{ editing ? 'float' : 'never'}}">
-                          <input [(ngModel)]="element.V_USR_NM" placeholder="V_USR_NM" [disabled]="!editing" matInput>
-                        </mat-form-field>
-                      </mat-cell>
+          <hr />
+        </mat-card-title>
+        <mat-card-content>
+          <div *ngIf="!a" style="position: relative;">
+            <mat-table class="adventColor" #table [dataSource]="dataSource" style="overflow: auto">
+              <ng-container class="adventColor" *ngFor="let mc of displayedColumns" matColumnDef="{{mc}}">
+                <ng-container class="adventColor" *ngIf="mc!='action'">
+                  <mat-header-cell class="adventColor" *matHeaderCellDef>{{mc | splitForms}}</mat-header-cell>
+                  <mat-cell class="adventColor" *matCellDef="let data">
+                    <ng-container class="adventColor">
+                      <mat-form-field *ngIf="!showDate(mc)">
+                        <input matInput type="text" [readonly]="data['show']" (click)="checkoptions(mc)" [(ngModel)]="data[mc]"
+                          [matAutocomplete]="auto" id="task_read">
+                        <mat-autocomplete #auto="matAutocomplete">
+                          <mat-option style="text-align:center;" *ngFor="let option of options" [value]="option">
+                            {{option}}
+                          </mat-option>
+                        </mat-autocomplete>
+                      </mat-form-field>
+                      <mat-form-field class="form_input" *ngIf="showDate(mc)">
+                        <input [(ngModel)]="data[mc]" [readonly]="data['show']" matInput [matDatepicker]="picker" class="f_inp">
+                        <mat-datepicker-toggle matSuffix [for]="picker" *ngIf="!data['show']"></mat-datepicker-toggle>
+                        <mat-datepicker #picker></mat-datepicker>
+                      </mat-form-field>
                     </ng-container>
-                    <ng-container matColumnDef="Program_Manager">
-                      <mat-header-cell *matHeaderCellDef>Program_Manager</mat-header-cell>
-                      <mat-cell *matCellDef="let element">
-                        <mat-form-field floatPlaceholder="{{ editing ? 'float' : 'never'}}">
-                          <input [(ngModel)]="element.Program_Manager" placeholder="Program_Manager" [disabled]="!editing" matInput>
-                        </mat-form-field>
-                      </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Program_Score">
-                      <mat-header-cell *matHeaderCellDef>Program_Score</mat-header-cell>
-                      <mat-cell *matCellDef="let element">
-                        <mat-form-field floatPlaceholder="{{ editing ? 'float' : 'never'}}">
-                          <input [(ngModel)]="element.Program_Score" placeholder="Program_Score" [disabled]="!editing" matInput>
-                        </mat-form-field>
-                      </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Program_Start_Date">
-                      <mat-header-cell *matHeaderCellDef>Program_Start_Date</mat-header-cell>
-                      <mat-cell *matCellDef="let element">
-                        <mat-form-field floatPlaceholder="{{ editing ? 'float' : 'never'}}">
-                          <input [(ngModel)]="element.Program_Start_Date" placeholder="Program_Start_Date" [disabled]="!editing" matInput>
-                        </mat-form-field>
-                      </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Program_Status">
-                      <mat-header-cell *matHeaderCellDef>Program_Status</mat-header-cell>
-                      <mat-cell *matCellDef="let element">
-                        <mat-form-field floatPlaceholder="{{ editing ? 'float' : 'never'}}">
-                          <input [(ngModel)]="element.Program_Status" placeholder="Program_Status" [disabled]="!editing" matInput>
-                        </mat-form-field>
-                      </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Program_Trend">
-                      <mat-header-cell *matHeaderCellDef>Program_Trend</mat-header-cell>
-                      <mat-cell *matCellDef="let element">
-                        <mat-form-field floatPlaceholder="{{ editing ? 'float' : 'never'}}">
-                          <input [(ngModel)]="element.Program_Trend" placeholder="Program_Trend" [disabled]="!editing" matInput>
-                        </mat-form-field>
-                      </mat-cell>
-                    </ng-container>
-                    <ng-container matColumnDef="Program_Type">
-                      <mat-header-cell *matHeaderCellDef>Program_Type</mat-header-cell>
-                      <mat-cell *matCellDef="let element">
-                        <mat-form-field floatPlaceholder="{{ editing ? 'float' : 'never'}}">
-                          <input [(ngModel)]="element.Program_Type" placeholder="Program_Type" [disabled]="!editing" matInput>
-                        </mat-form-field>
-                      </mat-cell>
-                    </ng-container>
-
-                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-                    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
-                  </mat-table>
-                </div>
-              </div>
-						</div>
-						<div fxFlex="10"></div>
-					</div>
-
-					<div fxLayout="row" fxLayout.lt-sm="column">
-						<div fxFlex="40">
-						</div>
-						<div fxFlex="48">
-							<button mat-raised-button (click)="cancelbtn_click();" id="cancel">
-								<mat-icon class="iconmod">clear</mat-icon>Cancel</button>
-							<div flex fxFlex="5"></div>
-
-							<button mat-raised-button (click)="submitbtn_click();" id="submit">
-								<mat-icon class="iconmod">done_all</mat-icon>Submit</button>
-						</div>
+                  </mat-cell>
+                </ng-container>
+              </ng-container>
 
 
-					</div>
-				</mat-card-content>
-			</mat-card>
-		</div>
-		<div fxFlex="9">
-		</div>
-	</div>
+              <mat-header-cell *matHeaderCellDef></mat-header-cell>
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let data; columns: displayedColumns"></mat-row>
+            </mat-table>
+          </div>
+          <br />
+          <div fxLayout="row" fxLayout.lt-sm="column">
+            <div fxFlex="40">
+            </div>
+            <div fxFlex="48">
+              <button mat-raised-button (click)="cancelbtn_click();" id="cancel">
+                <mat-icon class="iconmod">clear</mat-icon>Cancel
+              </button>
+              <div flex fxFlex="5"></div>
+
+              <button mat-raised-button (click)="submitbtn_click();" id="submit">
+                <mat-icon class="iconmod">done_all</mat-icon>Submit
+              </button>
+            </div>
+
+
+          </div>
+        </mat-card-content>
+      </div>
+    </mat-card>
+  </div>
 </div>

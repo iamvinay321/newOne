@@ -666,7 +666,7 @@ export class ExecuteComponent implements OnInit {
     //console.log(this.ts);
     this.StorageSessionService.setCookies('ts', this.ts);
   }
-  Execute_res_data: any[];
+  Execute_res_data: any;
   Execute_Now() {
     const body = {
       'V_APP_CD': this.SL_APP_CD,
@@ -713,7 +713,13 @@ export class ExecuteComponent implements OnInit {
   public report: ReportData = new ReportData;
   GenerateReportTable() {
     //console.log("in GenerateReportTable");
-    this.app.loadingCharts = true;
+    if (!this.app.loadingCharts)
+      this.app.loadingCharts = true;
+    if (this.app.fromNonRepForm) {
+      //this.PFrame.display_page = false;
+      this.app.fromNonRepForm = false;
+      this.Execute_res_data = this.StorageSessionService.getCookies('executeresdata');
+    }
     // this.app.text_mgs = 'Loading Table..';
     // "&V_DSPLY_WAIT_SEC=100&V_MNL_WAIT_SEC=180&REST_Service=Report&Verb=GET
     const body = {
@@ -728,6 +734,7 @@ export class ExecuteComponent implements OnInit {
       REST_Service: 'Report',
       Verb: 'POST'
     };
+    console.log(body);
     this.https.post(this.aptUrlPost_report, body)
       .subscribe(
         res => {
@@ -741,7 +748,7 @@ export class ExecuteComponent implements OnInit {
           console.info('The URL to redirecting form is :');
           console.log(this.report.RESULT);
           console.log(res.json());
-          var timeout = res.json().RESULT.toString().substring(0,7)=="TIMEOUT";
+          var timeout = res.json().RESULT.toString().substring(0, 7) == "TIMEOUT";
           console.log(timeout);
           /*const dt = JSON.stringify(res);
           console.log(dt);*/
@@ -755,16 +762,16 @@ export class ExecuteComponent implements OnInit {
 
             this.router.navigateByUrl('InputArtForm', { skipLocationChange: true });
 
-          } else if (this.report.RESULT == 'FORM' && this.report.V_EXE_CD[0] == 'NONREPEATABLE_MANUAL_TASK') {
-            // non-repetable NonRepetForm
-            //this.router.navigateByUrl('NonRepetForm');
-            this.router.navigateByUrl('Forms', { skipLocationChange: true });
+          } else if (this.report.V_EXE_CD[0] == 'NONREPEATABLE_MANUAL_TASK') {
+            // non-Repeatable NonRepeatForm
+            this.router.navigateByUrl('NonRepeatForm');
+            //this.router.navigateByUrl('Forms', { skipLocationChange: true });
 
           } else if (this.report.RESULT == 'FORM' && this.report.V_EXE_CD[0] == 'REPEATABLE_MANUAL_TASK') {
-            //repetable
-            this.router.navigateByUrl('RepetForm', { skipLocationChange: true });
+            //Repeatable
+            this.router.navigateByUrl('RepeatForm', { skipLocationChange: true });
 
-            //this.router.navigateByUrl('RepetForm');
+            //this.router.navigateByUrl('RepeatForm');
           } else if (this.report.RESULT == 'TABLE') {
 
             this.router.navigateByUrl('ReportTable', { skipLocationChange: true });
@@ -788,8 +795,10 @@ export class ExecuteComponent implements OnInit {
           // }
         }
       );
-    if (this.app.loadingCharts && this.ctrl_variables.show_ALL) {
-      this.chart_JSON_call();
+    if (!this.app.fromNonRepForm) {
+      if (this.app.loadingCharts && this.ctrl_variables.show_ALL) {
+        this.chart_JSON_call();
+      }
     }
 
     // while(true)
@@ -1172,13 +1181,19 @@ export class ExecuteComponent implements OnInit {
   Roll_cd: any[] = [];
   Label: any[] = [];
 
-  ctrl_variables :any;
+  ctrl_variables: any;
+  ngAfterViewInit() {
+    if (this.app.fromNonRepForm) {
+      this.GenerateReportTable();
+    }
+  }
   ngOnInit() {
     const exec = this;
     this.http.get('../../../../assets/control-variable.json').subscribe(res => {
-      this.ctrl_variables = res;  
-      console.log(res);
+      this.ctrl_variables = res;
+      console.log(this.ctrl_variables);
     });
+
     setTimeout(function () {
       exec.wSocket.listenOn = '102';
       exec.msg.getMessage.subscribe(res => {

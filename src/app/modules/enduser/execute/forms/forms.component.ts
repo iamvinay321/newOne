@@ -1,4 +1,5 @@
 import { MatTableDataSource } from '@angular/material';
+import {AppComponent} from '../../../../app.component';
 import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -7,9 +8,9 @@ import * as dateFormat from 'dateformat';
 import { Globals } from './../../../../service/globals';
 import { Headers, RequestMethod, RequestOptions } from '@angular/http';
 import { FileUrls, FileUrlProcessing } from './POJO';
-import  { Http} from '@angular/http';
+import { Http } from '@angular/http';
 import { FormBuild } from './FormBuild';
-import { EndUserService} from '../../../../service/EndUser-service';
+import { EndUserService } from '../../../../service/EndUser-service';
 @Component({
   selector: 'app-forms',
   templateUrl: './forms.component.html',
@@ -92,6 +93,8 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
   //@ override
   public filesUrl: FileUrls;
   constructor(private dataStored: StorageSessionService,
+    public app: AppComponent,
+    private router: Router,
     private route: Router, private globals: Globals,
     private http: HttpClient,
     private htp: Http,
@@ -99,7 +102,7 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
     private endUser: EndUserService
   ) {
     this.filesUrl = new FileUrls(this.StorageSessionService);
-   }
+  }
   V_SRC_CD = this.StorageSessionService.getSession('agency');
   V_USR_NM = this.StorageSessionService.getSession('email');
 
@@ -127,6 +130,7 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
       this.artf = true;
       this.srvc_cd = this.Form_Data['SRVC_CD'];
       this.srvc_cd_sl = this.srvc_cd[0];
+      this.StorageSessionService.setCookies('srvc_cd_sl',this.srvc_cd_sl);
       this.col1 = this.V_SRC_CD;
       this.col2 = this.Form_Data['APP_CD'][0];
       this.col3 = this.Form_Data['PRCS_CD'][0];
@@ -144,10 +148,10 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
       this.PVPS = this.Form_Data['PVP'][0];
       this.PVP = JSON.parse(this.PVPS);
       console.info('----------------------->');
-        console.log(this.PVP);
-/*
-      Checking the old table
-*/
+      console.log(this.PVP);
+      /*
+            Checking the old table
+      */
       if ('V_Table_Name' in this.PVP) {
         this.V_TABLE_NAME = this.PVP['V_Table_Name'][0];
         console.info('V_TABLE_NAME --------------------->');
@@ -203,7 +207,19 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
       this.Check_RPT_NRPT = this.dataStored.getCookies('report_table')['V_EXE_CD'][0];
 
       this.Field_Data = this.dataStored.getCookies('report_table')['RVP'];
-
+      console.log("Field Data 1:");
+      console.log(JSON.parse(this.Field_Data));
+      var Field_DataObj =JSON.parse(this.Field_Data);
+      var key_array = Object.keys(Field_DataObj);
+      this.Field_Names = '';
+      for(let i=0 ; i<key_array.length; i++){
+        if(i!=0){
+          this.Field_Names += '|';
+          this.Field_Values += '|';
+        }
+        this.Field_Names += "\""+ key_array[i] + "\"";
+        this.Field_Values += "\""+ Field_DataObj[key_array[i]] + "\"";
+      }
       this.V_SRVC_ID = this.dataStored.getCookies('report_table')['SRVC_ID'][0];
 
       this.V_UNIQUE_ID = this.dataStored.getCookies('report_table')['UNIQUE_ID'];
@@ -214,6 +230,12 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
 
       this.s_data = this.Field_Data;
       this.Field_Data.push('V_abcd');
+      this.Field_Names += '|\"V_abcd\"';
+      this.Field_Values += '|\"\"';
+      console.log("Field_Names");
+      console.log(this.Field_Names);
+      console.log("Field_Values");
+      console.log(this.Field_Values);
       console.log(this.Field_Data);
       this.Field_Data = this.Field_Data.filter(function (item) {
         return item.indexOf('V_') !== 0;
@@ -270,7 +292,7 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
           this.displayedColumnsClone.splice(index6, 1);
           this.displayedColumns = this.displayedColumnsClone;
         }
-        if(this.a)
+        if (this.a)
           this.displayedColumns.push('action');
         //---------Removed Action Label & tick icon from non-repeatable form----------//
       }
@@ -280,12 +302,13 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
       console.log(this.tp);
       console.log(this.Field_Data);
 
+
       this.srvc_cd = this.Form_Data['SRVC_CD'];
       this.srvc_cd_sl = this.srvc_cd[0];
       for (let i = 0; i < this.Field_Data.length; i++) {
         this.tm[this.Field_Data[i]] = ' ';
       }
-      
+
       this.tableFieldValue();
     }
   }
@@ -332,7 +355,7 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
     this.addbtn_click();
     setTimeout(() => {
       this.oldfiles();
- }, 3000);
+    }, 3000);
 
   }
   /*
@@ -387,7 +410,7 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
     this.fd = [];
     this.http.get(this.apiUrlGet + 'V_SRVC_CD=' + this.col4 + '&V_APP_CD=' + this.col2 + '&V_PRCS_CD=' + this.col3 + '&V_SRC_CD=' + this.col1 + '&REST_Service=Artifacts&Verb=GET').subscribe(
       res => {
-       // this.oldFileData=res.js;
+        // this.oldFileData=res.js;
         this.artfct_nm = res['ARTFCT_NM'];
         console.log('---------old file-----------');
         console.log(this.artfct_nm);
@@ -441,16 +464,16 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
   checkoptions(opt) {
     this.progress = true;
     this.options = [];
-  this.http.get(this.apiUrlGet +
-    'V_SRC_CD=QA%20Test&V_APP_CD=Update%20Program&V_PRCS_CD=Add%20Bimonthly%20Status&V_PARAM_NM=' + opt +
-    '&V_SRVC_CD=Get%20Params&REST_Service=ProcessParametersOptions&Verb=GET')
-    // getParameterAllOption(application:string,process:string,paramName:string,srcCode:string)
-   // this.http.get(this.apiUrlGet + 'V_SRVC_CD=' + this.V_SRVC_CD + '&V_APP_CD=' + 'Program%20Assessment' + '&V_PRCS_CD=' + 'Program%20RM' + '&RVP=' + opt + '&V_SRVC_CD=' + this.srvc_cd_sl + '&REST_Service=ProcessParametersOptions&Verb=GET')
+    this.http.get(this.apiUrlGet +
+      'V_SRC_CD=QA%20Test&V_APP_CD=Update%20Program&V_PRCS_CD=Add%20Bimonthly%20Status&V_PARAM_NM=' + opt +
+      '&V_SRVC_CD=Get%20Params&REST_Service=ProcessParametersOptions&Verb=GET')
+      // getParameterAllOption(application:string,process:string,paramName:string,srcCode:string)
+      // this.http.get(this.apiUrlGet + 'V_SRVC_CD=' + this.V_SRVC_CD + '&V_APP_CD=' + 'Program%20Assessment' + '&V_PRCS_CD=' + 'Program%20RM' + '&RVP=' + opt + '&V_SRVC_CD=' + this.srvc_cd_sl + '&REST_Service=ProcessParametersOptions&Verb=GET')
 
-   .subscribe(
-      res => {
+      .subscribe(
+        res => {
           this.options = res[opt];
-      });
+        });
     this.progress = false;
   }
   change(r: number) {
@@ -514,6 +537,13 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
     }
     this.V_PVP += '}';
     console.log(this.V_PVP);
+    
+    this.sendFieldValue(-1);
+    this.submitForm_request();
+  }
+  
+  submitForm_request() {
+    this.V_PVP = this.V_PVP.substring(0,this.V_PVP.length-1)+",\"Task\":\""+this.task_updated+"\""+"}";
     const body = {
       'V_USR_NM': this.V_USR_NM,
       'V_EXE_CD': this.Check_RPT_NRPT,
@@ -528,21 +558,45 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
       'V_UNIQUE_ID': this.V_UNIQUE_ID,
       'TimeZone': this.dat
     };
+    
     console.log(body);
+
     this.http.post('https://' + this.domain_name + '/rest/Submit/FormSubmit', body).subscribe(
       res => {
         console.log(res);
-        this.StorageSessionService.setCookies('report_table', res);
-        this.getFormData();
+        var timeout = res['RESULT'][0].toString().substring(0, 7) == "TIMEOUT";
+        console.log(timeout);
+        /*const dt = JSON.stringify(res);
+        console.log(dt);*/
+        if (timeout && this.ctrl_variables.call_repeat_on_TIMEOUT) {
+          this.app.fromNonRepForm= true;
+          this.router.navigate(["/EndUser/Execute"]);
+        } else {
+          //this.repeatCallTable(false);
+          console.log('https://' + this.domain_name + '/rest/Submit/FormSubmit');
+          this.StorageSessionService.setCookies('report_table', res);
+          this.getFormData();
+        }
+
       }
     );
 
   }
-/*
- This is getting from table values
- @NONREPUTABLE_MANUAL_TASK
-*/
-tableData: string[] = [];
+  ctrl_variables: any;
+
+  repeat: any = 0;
+  repeatCallTable(data: any): void {
+    if (data && this.repeat < this.ctrl_variables.repeat_count) {
+      this.repeat++;
+      this.submitForm_request();
+    }
+  }
+  
+  /*
+   This is getting from table values
+   @NONREPUTABLE_MANUAL_TASK
+  */
+  tableData: string[] = [];
   tableFieldValue() {
     if (this.V_TABLE_NAME !== '') {
       const url = this.apiUrlGet + 'V_Table_Name=' + this.V_TABLE_NAME + '&V_Schema_Name=' + this.V_SCHEMA_NAME + '&V_Key_Names=' + this.V_KEY_NAME + '&V_Key_Values=' + this.V_KEY_VALUE + '&V_SRVC_CD=' + this.V_SRVC_CD + '&V_USR_NM=' + this.V_USR_NM + '&V_SRC_CD=' + this.V_SRC_CD + '&V_PRCS_ID=' + this.V_PRCS_ID + '&REST_Service=Forms_Record&Verb=GET';
@@ -588,7 +642,7 @@ tableData: string[] = [];
           this.td.push(this.tm);
           console.log('this.displayedColumns', this.displayedColumns);
           this.dataSource = new MatTableDataSource(this.td);
-          console.log('tableDataqqq',this.dataSource)
+          console.log('tableDataqqq', this.dataSource)
           if (this.td.length == 0) {
             this.tm = {};
             this.td = [];
@@ -620,7 +674,7 @@ tableData: string[] = [];
       // this.td.push(JSON.parse(this.Field_Data));
       console.log(this.td);
       this.dataSource = new MatTableDataSource(this.td);
-      console.log('tableData',this.dataSource)
+      console.log('tableData', this.dataSource)
     }
   }
 
@@ -643,7 +697,10 @@ tableData: string[] = [];
     }
     console.log(this.td[r]['up']);
   }
+  date_updated:any;
+  task_updated:any;
   sendFieldValue(r: number) {
+    /*
     if (this.td[r]['up'] === true) {
       this.UpdateFieldValue(r);
     } else {
@@ -656,7 +713,25 @@ tableData: string[] = [];
         this.Field_Values += '|';
       }
       this.Field_Names = this.Field_Names.slice(0, -1);
-      this.Field_Values = this.Field_Values.slice(0, -1);
+      this.Field_Values = this.Field_Values.slice(0, -1);*/
+      console.log(this.Field_Names + '==' + this.Field_Values);
+      this.date_updated = (<HTMLInputElement>document.querySelector(".f_inp")).value;
+      var temp;
+      var month= this.date_updated.substring(0,this.date_updated.indexOf('/'));
+      var left = this.date_updated.substring(this.date_updated.indexOf('/')+1);
+      var date = left.substring(0,left.indexOf('/'));
+      var year = left.substring(left.indexOf('/')+1);
+      this.date_updated= year+"-";
+      if(month<10)
+        this.date_updated+="0";
+      this.date_updated+=month+"-";
+      if(date<10)
+        this.date_updated+="0";
+      this.date_updated+=date;
+      console.log("Date: "+this.date_updated);
+      console.log("Month"+month+"Date"+date+"Year"+year);
+      this.task_updated = (<HTMLInputElement>document.querySelector("#task_read")).value;
+      this.Field_Values = "\""+this.date_updated+"\"|\""+this.task_updated+"\"|\""+"\"";
       console.log(this.Field_Names + '==' + this.Field_Values);
       if (this.V_TABLE_NAME !== '') {
         const body = {
@@ -673,6 +748,7 @@ tableData: string[] = [];
           'REST_Service': 'Forms_Record',
           'Verb': 'POST'
         };
+        console.log("Posted in '/rest/E_DB/SP?'>>");
         console.log(body);
         this.http.post(this.apiUrlGet, body).subscribe(
           res => {
@@ -681,7 +757,7 @@ tableData: string[] = [];
           });
       }
       console.log(this.V_ID);
-    }
+    //}
   }
 
 
@@ -762,6 +838,10 @@ tableData: string[] = [];
   }
 
   ngOnInit() {
+    this.http.get('../../../../assets/control-variable.json').subscribe(res => {
+      this.ctrl_variables = res;
+      console.log(res);
+    });
     this.getFormData();
 
   }
