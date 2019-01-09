@@ -82,7 +82,6 @@ import { EnduserComponent } from './modules/enduser/enduser.component';
 import { SystemadminComponent } from './modules/systemadmin/systemadmin.component';
 import { UseradminComponent } from './modules/useradmin/useradmin.component';
 import {EndUserService } from './service/EndUser-service';
-import { FormComponent } from './modules/enduser/execute/form/form.component';
 
 import { RepeatableFormComponent} from './modules/enduser/execute/repeatable-form/repeatable-form.component';
 
@@ -156,7 +155,6 @@ const appRoutes: Routes = [
 
 
   { path: 'InputArtForm', component: InputArtComponent},
-  { path: 'Form', component: FormComponent},
   {path: 'RepeatForm', component: RepeatableFormComponent},
   { path: 'Execute', component: ExecuteComponent},
   {path: 'NonRepeatForm', component: NonRepeatableFormComponent},
@@ -221,9 +219,7 @@ const appRoutes: Routes = [
     EnduserComponent,
     SystemadminComponent,
     UseradminComponent,
-    FormComponent,
     SplitFormsPipe,
-
 
     // OrganizationComponent,
     // MembershipComponent

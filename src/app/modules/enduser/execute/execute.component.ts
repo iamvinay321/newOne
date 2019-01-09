@@ -738,7 +738,7 @@ export class ExecuteComponent implements OnInit {
     this.https.post(this.aptUrlPost_report, body)
       .subscribe(
         res => {
-          // console.log(res.json());
+          console.log(res.json());
           this.StorageSessionService.setCookies('report_table', res.json());
           this.check_data = res.json();
           this.app.loadingCharts = false;
@@ -757,15 +757,15 @@ export class ExecuteComponent implements OnInit {
           } else {
             this.repeatCallTable(false);
           }
-
+          this.StorageSessionService.setCookies('App_Prcs',{'V_APP_CD': this.APP_CD, 'V_PRCS_CD': this.PRCS_CD});
           if (this.report.RESULT == 'INPUT_ARTFCT_TASK') {
 
             this.router.navigateByUrl('InputArtForm', { skipLocationChange: true });
 
           } else if (this.report.V_EXE_CD[0] == 'NONREPEATABLE_MANUAL_TASK') {
             // non-Repeatable NonRepeatForm
-            this.router.navigateByUrl('NonRepeatForm');
-            //this.router.navigateByUrl('Forms', { skipLocationChange: true });
+            //this.router.navigateByUrl('NonRepeatForm');
+            this.router.navigateByUrl('Forms', { skipLocationChange: true });
 
           } else if (this.report.RESULT == 'FORM' && this.report.V_EXE_CD[0] == 'REPEATABLE_MANUAL_TASK') {
             //Repeatable

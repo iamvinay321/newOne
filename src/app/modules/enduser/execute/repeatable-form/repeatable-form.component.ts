@@ -7,143 +7,100 @@ import {FormControl, FormGroup, Validators} from '@angular/forms';
 import {Globals} from '../../../../service/globals';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
+import { FormComponent } from '../form/form.component';
 
 @Component({
   selector: 'app-repeatable-form',
   templateUrl: './repeatable-form.component.html',
   styleUrls: ['./repeatable-form.component.css']
 })
-export class RepeatableFormComponent implements OnInit {
+export class RepeatableFormComponent extends FormComponent implements OnInit {
 // domain_name = this.globals.domain_name;
   //  private apiUrlGet = "https://" + this.domain_name + "/rest/E_DB/SP?";
   formData: GetFormData;
   public form: FormGroup;
-  public tableDispl: FormGroup;
-  public param: any[] = [];
-  public keys: any[] = [];
-  public dynamicForm: any[] = [];
-  public dynamicFormRe: any[] = [];
+  V_ID: any;
 
-  constructor(private storage: StorageSessionService,
-              private http: HttpClient,
-              private router: Router) {
-    this.formData = new GetFormData(this.storage, this.http);
-    this.param = this.formData.getFormParameter();
-    this.getFormParAndTableCheck();
-    const group: any = {};
-    this.param.forEach((e) => {
-      group[e] = new FormControl();
-    });
-    this.form = new FormGroup(group);
+  constructor(
+    public StorageSessionService: StorageSessionService,
+    public http: HttpClient,
+    public router: Router,
+    public globals: Globals
+  ) {
+    super(StorageSessionService,http,router,globals);
   }
 
-  getFormParAndTableCheck() {
-    let form = new ReportData();
-    console.info('Table name and form checking in PVP');
-    const tmp = this.storage.getCookies('report_table')['PVP'][0];
-    console.log(JSON.parse(tmp));
-    form = JSON.parse(tmp);
-    console.log('Data=');
-    console.log(form);
-
-    if (form.V_Table_Name[0] != '' && form.V_Table_Name[0] != undefined) {
-      this.formData.fetchingFormData(form, this);
-    }
-  }
-
-  onSubmit() {
-    console.log(JSON.stringify(this.form.value));
-    this.formData.submitForm(JSON.stringify(this.form.value), this);
-  }
-
-  displayTableForm(data: any[]): void {
-    const dt = JSON.stringify(data);
-    const dt1: any[] = JSON.parse(dt);
-    const keys: any[] = Object.keys(data);
-    this.keys = Object.keys(data);
-    const dt2: any[] = dt1[keys[0]];
-    const dynamicForm: any[] = [];
-    // iterating for keys values
-    dt2.forEach(function (e, i) {
-      //iterating for keys each time
-      const group: any = {};
-      keys.forEach(function (el, j) {
-        console.log('the key name is =' + el + ' the values is=' + dt1[el][i]);
-        group[el] = dt1[el][i];
-      });
-      dynamicForm.push(group);
-    });
-    this.dynamicForm = dynamicForm;
-  }
-
-  checkBoxClickValue(form, value): void {
-    console.log('a form is =');
-    console.log(form);
-    console.log(value);
-    console.log('array contains or not form');
-    console.log(this.dynamicForm.includes(form));
-  }
-
-  /*
-    add form
-  */
   addForm(form): void {
     console.log('add form call');
-    console.log(form);
+    let body_FORMrec = {
+      "Field_Names": this.Field_Names,
+      "Field_Values": this.Field_Values,
+      "V_Table_Name": this.V_TABLE_NAME,
+      "V_Schema_Name": this.V_SCHEMA_NAME,
+      "V_Key_Names": this.V_KEY_NAME,
+      "V_Key_Values": this.V_KEY_VALUE,
+      "V_SRVC_CD": this.V_SRVC_CD,
+      "V_USR_NM": this.V_USR_NM,
+      "V_SRC_CD": this.V_SRC_CD,
+      "V_PRCS_ID": this.V_PRCS_ID,
+      "REST_Service": "Forms_Record",
+      "Verb": "POST"
+    }
+    console.log("Body: "+body_FORMrec+"\nURL:"+this.apiUrlGet);
+    this.http.post(this.apiUrlGet, body_FORMrec).subscribe(
+      res => {
+        console.log("Response:\n"+res);
+      });
   }
 
-  /*
-    update form
-  */
   updateForm(form): void {
     console.log('update form call');
-    console.log(form);
-  }
-
-  /*
-   delete form
-  */
-  deleteForm(form): void {
-    console.log('delete form call');
-    console.log(form);
-  }
-
-  /*
-    call again getFormParameter method after form
-    submited , and its contains the table name
-  */
-  formSubmitResponse(result, data: any[]): void {
-    if (result) {
-      let reportData = new ReportData();
-      console.log(data);
-      const dt = JSON.stringify(data);
-      reportData = JSON.parse(dt);
-      console.log(reportData);
-      if (reportData.RESULT == 'INPUT_ARTFCT_TASK') {
-
-        this.router.navigateByUrl('InputArtForm');
-
-      } else if (reportData.RESULT == 'FORM' && reportData.V_EXE_CD[0] == 'NONREPEATABLE_MANUAL_TASK') {
-        // non-Repeatable NonRepeatForm
-        this.router.navigateByUrl('NonRepeatForm');
-
-      } else if (reportData.RESULT == 'FORM' && reportData.V_EXE_CD[0] == 'REPEATABLE_MANUAL_TASK') {
-        //Repeatable
-
-        this.router.navigateByUrl('RepeatForm');
-      } else if (reportData.RESULT == 'TABLE') {
-
-        this.router.navigateByUrl('ReportTable');
+    //------------Adding paramter only if it is changed----------//
+    var body_FORMrec: {[key: string]: any} = {};
+    body_FORMrec["V_ID"]= this.V_ID;
+    body_FORMrec["REST_Service"]= "Forms_Record";
+    body_FORMrec["Verb"]= "PATCH";
+    var prop = ["Field_Names","Field_Values","V_Table_Name","V_Schema_Name","V_SRVC_CD","V_USR_NM","V_SRC_CD","V_PRCS_ID"];
+    let Current_record = {
+      "Field_Names": this.Field_Names,
+      "Field_Values": this.Field_Values,
+      "V_Table_Name": this.V_TABLE_NAME,
+      "V_Schema_Name": this.V_SCHEMA_NAME,
+      "V_SRVC_CD": this.V_SRVC_CD,
+      "V_USR_NM": this.V_USR_NM,
+      "V_SRC_CD": this.V_SRC_CD,
+      "V_PRCS_ID": this.V_PRCS_ID,
+    }
+    for(let i=0; i<prop.length; i++){
+      if(Current_record[prop[i]] == this.Initial_record[prop[i]]){
+        body_FORMrec[prop[i]] = Current_record[prop[i]];
       }
     }
+    
+    console.log("Body: "+body_FORMrec+"\nURL:"+this.apiUrlGet);
+    this.http.put(this.apiUrlGet, body_FORMrec).subscribe(
+      res => {
+        console.log("Response:\n"+res);
+      });
+  }
+  
+  deleteForm(form): void {
+    console.log('delete form call');
+    var del_URL = "https://"+this.domain_name+"/rest/E_DB/SP?V_Table_Name="+this.V_TABLE_NAME+"&V_Schema_Name="+this.V_SCHEMA_NAME+"&V_SRVC_CD="+this.V_SRVC_CD+"&V_USR_NM="+this.V_USR_NM+"&V_SRC_CD="+this.V_SRC_CD+"&V_PRCS_ID="+this.V_PRCS_ID+"&REST_Service=Forms_Record&Verb=DELETE";
+    del_URL = encodeURI(del_URL);
+    this.http.delete(del_URL).subscribe(
+      res => {
+        console.log("Response:\n"+res);
+    });
   }
 
   ngOnInit() {
   }
-  cancelbtn_click() {
+
+  onCancel() {
     console.log('cancelbtn_click');
   }
-  submitbtn_click() {
+  onSubmit() {
     console.log('submitbtn_click');
   }
 

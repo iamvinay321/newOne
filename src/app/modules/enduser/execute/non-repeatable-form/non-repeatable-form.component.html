@@ -1,72 +1,46 @@
 <div fxLayout="row" fxLayout.lt-sm="column">
-  <div fxFlex="9">
-  </div>
-  <div fxFlex="82">
-    <mat-card class="CustomeLayout">
-      <div *ngIf="!artf">
-        <mat-card-title>
-          <div fxLayout="row" fxLayout.lt-sm="column">
-            <div fxFlex="40">
-            </div>
-            <div fxFlex="48" class="title_form">
-              {{srvc_cd_sl}}
-            </div>
-          </div>
+	<div fxFlex="9">
+	</div>
+	<div fxFlex="82">
+		<mat-card class="CustomeLayout">
+			<mat-card-title>
+				<div fxLayout="row" fxLayout.lt-sm="column">
+					<div fxFlex="40">
+					</div>
+					<div fxFlex="48" class="title_form">
+						{{srvc_cd_sl}}
+					</div>
+				</div>
 
-          <hr />
-        </mat-card-title>
-        <mat-card-content>
-          <div *ngIf="!a" style="position: relative;">
-            <mat-table class="adventColor" #table [dataSource]="dataSource" style="overflow: auto">
-              <ng-container class="adventColor" *ngFor="let mc of displayedColumns" matColumnDef="{{mc}}">
-                <ng-container class="adventColor" *ngIf="mc!='action'">
-                  <mat-header-cell class="adventColor" *matHeaderCellDef>{{mc | splitForms}}</mat-header-cell>
-                  <mat-cell class="adventColor" *matCellDef="let data">
-                    <ng-container class="adventColor">
-                      <mat-form-field *ngIf="!showDate(mc)">
-                        <input matInput type="text" [readonly]="data['show']" (click)="checkoptions(mc)" [(ngModel)]="data[mc]"
-                          [matAutocomplete]="auto" id="task_read">
-                        <mat-autocomplete #auto="matAutocomplete">
-                          <mat-option style="text-align:center;" *ngFor="let option of options" [value]="option">
-                            {{option}}
-                          </mat-option>
-                        </mat-autocomplete>
-                      </mat-form-field>
-                      <mat-form-field class="form_input" *ngIf="showDate(mc)">
-                        <input [(ngModel)]="data[mc]" [readonly]="data['show']" matInput [matDatepicker]="picker" class="f_inp">
-                        <mat-datepicker-toggle matSuffix [for]="picker" *ngIf="!data['show']"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                      </mat-form-field>
-                    </ng-container>
-                  </mat-cell>
-                </ng-container>
-              </ng-container>
+				<hr />
+			</mat-card-title>
+			<mat-card-content>
+				<div style="position: relative;">
+					<div fxLayout="row">
+						<div fxFlex="30" style="background:orange;height: 20px;"></div>
+						<div fxFlex="3"></div>
+						<div fxFlex="30" style="background:orange;height: 20px;"></div>
+						<div fxFlex="3"></div>
+						<div fxFlex="30" style="background:orange;height: 20px;"></div>
+						<div fxFlex="3"></div>
+					</div>
+				</div>
+				<div fxLayout="row" fxLayout.lt-sm="column">
+					<div fxFlex="40">
+					</div>
+					<div fxFlex="48">
+						<button mat-raised-button (click)="onCancel();" id="cancel">
+							<mat-icon class="iconmod">clear</mat-icon>Cancel
+						</button>
+						<div flex fxFlex="5"></div>
 
+						<button mat-raised-button (click)="onSubmit();" id="submit">
+							<mat-icon class="iconmod">done_all</mat-icon>Submit
+						</button>
+					</div>
+				</div>
+			</mat-card-content>
 
-              <mat-header-cell *matHeaderCellDef></mat-header-cell>
-              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-              <mat-row *matRowDef="let data; columns: displayedColumns"></mat-row>
-            </mat-table>
-          </div>
-          <br />
-          <div fxLayout="row" fxLayout.lt-sm="column">
-            <div fxFlex="40">
-            </div>
-            <div fxFlex="48">
-              <button mat-raised-button (click)="cancelbtn_click();" id="cancel">
-                <mat-icon class="iconmod">clear</mat-icon>Cancel
-              </button>
-              <div flex fxFlex="5"></div>
-
-              <button mat-raised-button (click)="submitbtn_click();" id="submit">
-                <mat-icon class="iconmod">done_all</mat-icon>Submit
-              </button>
-            </div>
-
-
-          </div>
-        </mat-card-content>
-      </div>
-    </mat-card>
-  </div>
+		</mat-card>
+	</div>
 </div>
