@@ -729,6 +729,7 @@ export class ExecuteComponent implements OnInit {
       V_PRCS_ID: this.Execute_res_data['V_PRCS_ID'],
       V_PRCS_TXN_ID: this.Execute_res_data['V_PRCS_TXN_ID'],
       V_NAV_DIRECTION: this.Execute_res_data['V_NAV_DIRECTION'],
+      V_TIMEOUT_SEC: 300,
       V_DSPLY_WAIT_SEC: 100,
       V_MNL_WAIT_SEC: 180,
       REST_Service: 'Report',
@@ -764,15 +765,15 @@ export class ExecuteComponent implements OnInit {
 
           } else if (this.report.V_EXE_CD[0] == 'NONREPEATABLE_MANUAL_TASK') {
             // non-Repeatable NonRepeatForm
-            //this.router.navigateByUrl('NonRepeatForm');
-            this.router.navigateByUrl('Forms', { skipLocationChange: true });
+            this.router.navigateByUrl('NonRepeatForm');
+            //this.router.navigateByUrl('Forms', { skipLocationChange: true });
 
-          } else if (this.report.RESULT == 'FORM' && this.report.V_EXE_CD[0] == 'REPEATABLE_MANUAL_TASK') {
+          } else if (this.report.V_EXE_CD[0] == 'REPEATABLE_MANUAL_TASK') {
             //Repeatable
-            this.router.navigateByUrl('RepeatForm', { skipLocationChange: true });
+            this.router.navigateByUrl('RepeatForm');
 
             //this.router.navigateByUrl('RepeatForm');
-          } else if (this.report.RESULT == 'TABLE') {
+          }  if (this.report.RESULT == 'TABLE') {
 
             this.router.navigateByUrl('ReportTable', { skipLocationChange: true });
           }

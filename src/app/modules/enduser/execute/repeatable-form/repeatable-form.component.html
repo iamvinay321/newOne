@@ -15,32 +15,43 @@
 				<hr />
 			</mat-card-title>
 			<mat-card-content>
-				<div style="position: relative;">
-					<div fxLayout="row">
-						<div fxFlex="30" style="background:orange;height: 20px;"></div>
-						<div fxFlex="3"></div>
-						<div fxFlex="30" style="background:orange;height: 20px;"></div>
-						<div fxFlex="3"></div>
-						<div fxFlex="30" style="background:orange;height: 20px;"></div>
-						<div fxFlex="3"></div>
-					</div>
-				</div>
-				<div fxLayout="row" fxLayout.lt-sm="column">
-					<div fxFlex="40">
-					</div>
-					<div fxFlex="48">
-						<button mat-raised-button (click)="onCancel();" id="cancel">
+				<div style="overflow: auto;white-space: nowrap;">
+						<div *ngFor="let label of RVP_labels" style="display:inline-block;" [style.width.%]="formWidth[label]" [style.marginLeft.%]="margin">
+							<h4 style="text-align:center;margin-bottom: 0px;">{{label}}</h4>
+							<br />
+							<mat-form-field class="form_input" *ngIf="fieldType[label]==='plain'">
+								<input matInput type="text" class="form-input" [matAutocomplete]="auto" class="f_inp" [(ngModel)]="plainInput">
+								<mat-autocomplete #auto="matAutocomplete">
+									<mat-option style="text-align:center;" *ngFor="let option of options[label]" [value]="option">
+										{{option}}
+									</mat-option>
+								</mat-autocomplete>
+							</mat-form-field>
+							<mat-form-field class="form_input" *ngIf="fieldType[label]==='date'">
+								<input matInput [matDatepicker]="picker" type="text" class="f_inp" [(ngModel)]="dateEntry" (value)="date_value">
+								<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+								<mat-datepicker #picker></mat-datepicker>
+							</mat-form-field>
+							<mat-form-field class="form_input" *ngIf="fieldType[label]==='Phone Dash'">
+								<input matInput type="text" maxlength="12" class="form-input" [matAutocomplete]="auto" class="f_inp" [ngModel]="phoneDash_Input"
+								 (ngModelChange)="onChange_PhoneDash($event)">
+								<mat-autocomplete #auto="matAutocomplete">
+									<mat-option style="text-align:center;" *ngFor="let option of options[label]" [value]="option">
+										{{option}}
+									</mat-option>
+								</mat-autocomplete>
+							</mat-form-field>
+						</div>
+						<button style="margin-left: 0.5%;width: 80px;display:inline-block;" mat-raised-button (click)="onCancel();" id="cancel">
 							<mat-icon class="iconmod">clear</mat-icon>Cancel
 						</button>
-						<div flex fxFlex="5"></div>
 
-						<button mat-raised-button (click)="onSubmit();" id="submit">
+						<button style="margin-left: 0.5%;width: 80px;display:inline-block;" mat-raised-button (click)="onSubmit();" id="submit">
 							<mat-icon class="iconmod">done_all</mat-icon>Submit
 						</button>
-					</div>
 				</div>
 			</mat-card-content>
-	
-	</mat-card>
-</div>
+
+		</mat-card>
+	</div>
 </div>

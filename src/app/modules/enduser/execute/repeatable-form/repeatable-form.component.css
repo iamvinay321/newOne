@@ -1,91 +1,176 @@
-.dynamicContent{
-    margin-left:auto;
-    margin-right: auto;
-    position: relative;
+#body{
+    height: auto;
+    margin-top:4%;
+    margin-bottom:4%;
+  }
+  *{
+    font-size: 14px;
+  }
+  mat-radio-button {
+
+  }
+  #mat_card{
+    background-color:rgb(248, 248, 248);
+    margin: inherit;
+  }
+  #overlay * {
+    margin: 0;
+    position: absolute;
+    top: 30%;
+    left: 40%;
+    margin-right: -50%;
 }
-.flexLeft{
-    display: table-row;
-    float: left;
-    width: 250px;
-    margin-left:5px;
-    margin-bottom:18px; 
-    position: relative;
-
-    }
-    .flexLeft *{
-       display: list-item;
-       list-style: none;
-       margin:4px;
-       text-align: center;
-    }
-
-
-
-    ol{
-	list-style:none;
+#cancel{
+  background-color: lightcoral;
 }
-.containerG{
-	  
-   
-    background-color: #eee;
-    overflow: scroll;
+#submit{
+  background-color: lightgreen;
 }
-input[type="text"]{font: 15px/24px 'Muli', sans-serif; color: #333;  box-sizing: border-box; letter-spacing: 1px;}
-#customers {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
+#add{
+  background-color: lightblue;
+}
+.iconmod{
+  color: mediumslateblue;
+  font-size: 20px;
+  margin-top: 5px;
+}
+.iconmod:hover{
+  color: rgb(178, 169, 240);
+}
+
+.TableForm{
+  max-height: 700px;
+  width: auto;
+  overflow: hidden;
+}
+.mat-table{
+  max-height: 700px;
+  width: auto;
+  overflow: hidden;
+  }
+.mat-header-row {
+
+  height: auto;
+
+  margin-bottom:5px;
+  width:max-content;
+  overflow: hidden;
+}
+.ng-containe{
+  overflow: hidden;
+}
+.mat-row{
+  overflow: hidden;
+  height: auto;
+  width: max-content;
+}
+.mat-header-cell{
+  display: block!important;
+
+  color:rgba(26, 17, 17, 0.973);
+  width:auto;
+  font-size: 14px!important;
+}
+
+.title_form {
+  font-size: 16px;
+  font-weight: 600;
+}
+.mat-input-element{
+  font-size:16px!important;
+  text-align: center;
+}
+.mat-card-title{
+  font-size: 1.25rem!important;
+}
+#he{
+  text-align: center;
+  font-size: 15px;
+  /*padding-left: 30px;*/
+}
+.alignRadioCenter{
+  margin-left:auto;
+  margin-right: auto;
+  display: -webkit-flex;
+    display: flex;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-align-content: center;
+    align-content: center;
+}
+table{
+  margin-left:80px;
+}
+
+mat-checkbox{
+  display: list-item;
+  list-style: none;
+}
+li{
+  margin-left: 0px;
+  align-content: inherit;
+}
+#p{
+  text-align: center;
+  font-size: 20px;
+}
+#tab3{
+  padding-bottom: 10px;
+}
+mat-checkbox{
+  float: left!important;
+}
+@media only screen and (max-width: 767px){
+
+
+  .mat-header-cell {
+      border: 1px dashed rgb(190, 190, 190);
+      height:auto;
+      vertical-align: middle;
+      font-size: 16px!important;
+  }
+  .mat-header-row {
+
+    position: sticky;
+    z-index: 1000;
+    width: auto;
+    top: 0;
+    left: 0;
+
+  }
+  mat-cell{
+    background-color: transparent;
+  }
+  .mat-cell {
+    height:auto;
+   padding-top: 15px;
+    vertical-align: middle;
+
+  }
+
+  .mat-sort-header-container {
+    display: flex;
+    color:rgb(218, 218, 218);
+    cursor: pointer;
+    justify-content: flex-end;
+  }
+
+}
+.mat-column- {
+  display: flex;
+  justify-content: flex-end;
+}
+::ng-deep .mat-input-infix{
+    background: white;
+    border: 1px solid rgb(200,200,200);
+    border-radius:3px;
+  }
+  ::ng-deep .mat-input-underline,.mat-form-field-underline{
+    display: none;
+  }
+::ng-deep mat-form-field{
     width: 100%;
 }
-
-#customers td, #customers th {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
-#customers tr:nth-child(even){background-color: #f2f2f2;}
-
-#customers tr:hover {background-color: #ddd;}
-
-#customers th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #4CAF50;
-    color: white;
-}
-
-/*
-ssssssssssssssssss
-*/
-ol{
-	list-style:none;
-}
-.containerG{
-	  
-   
-    background-color: #eee;
-    overflow: scroll;
-}
-input[type="text"]{font: 15px/24px 'Muli', sans-serif; color: #333;  box-sizing: border-box; letter-spacing: 1px;}
-#customers {
-    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
-    border-collapse: collapse;
+.f_inp{
     width: 100%;
-}
-
-#customers td, #customers th {
-    border: 1px solid #ddd;
-    padding: 8px;
-}
-
-#customers tr:nth-child(even){background-color: #f2f2f2;}
-
-#customers tr:hover {background-color: #ddd;}
-
-#customers th {
-    padding-top: 12px;
-    padding-bottom: 12px;
-    text-align: left;
-    background-color: #4CAF50;
-    color: white;
 }

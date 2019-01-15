@@ -498,6 +498,7 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
     this.V_PVP = '';
     const now = new Date();
     this.dat = dateFormat(now, 'ddd mmm dd yyyy hh:MM:ss TT o');
+    console.log(this.dat);
     let q = 1;
     for (let j = 0; j < this.displayedColumns.length - 1; j++) {
       this.tnames = '';
@@ -515,6 +516,7 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
           }
         }
         if (this.tvalues === '') { this.tvalues += '"' + this.td[i][this.displayedColumns[j]]; } else { this.tvalues += '|' + this.td[i][this.displayedColumns[j]]; }
+        console.log(this.td);
       }
       this.tvalues += '"';
       this.V_PVPP = '';
@@ -522,6 +524,7 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
       if (this.V_PVP.length != 0) {
         this.V_PVP += ',' + this.V_PVPP;
       } else { this.V_PVP += this.V_PVPP; }
+      console.log(this.V_PVP);
     }
 
     for (const [key, value] of Object.entries(this.tp)) {
@@ -669,7 +672,11 @@ export class FormsComponent implements OnInit, FileUrlProcessing {
       this.tm['id'] = this.g;
       this.tm['show'] = false;
       this.tm['up'] = false;
+      console.log(this.tm);
+      console.log(this.Field_Data)
       Object.assign(this.tm, JSON.parse(this.Field_Data));
+      console.log(this.tm);
+      console.log(this.Field_Data);
       this.td.push(this.tm);
       // this.td.push(JSON.parse(this.Field_Data));
       console.log(this.td);

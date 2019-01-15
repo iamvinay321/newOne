@@ -20,6 +20,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
   formData: GetFormData;
   public form: FormGroup;
   V_ID: any;
+  ctrl_variables: Object;
 
   constructor(
     public StorageSessionService: StorageSessionService,
@@ -95,10 +96,17 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.http.get('../../../../assets/control-variable.json').subscribe(res => {
+      this.ctrl_variables = res;
+      console.log(res);
+    });
+    
+    this.getFormData();
   }
 
   onCancel() {
-    console.log('cancelbtn_click');
+    console.log("Cancelled");
+    this.router.navigateByUrl("End_User");
   }
   onSubmit() {
     console.log('submitbtn_click');
