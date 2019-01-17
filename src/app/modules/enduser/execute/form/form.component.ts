@@ -143,6 +143,9 @@ export class FormComponent implements OnInit {
 
     //------------Getting RVP Data--------------//
     this.RVP_Data = this.Form_Data['RVP'];
+    if(this.V_TABLE_NAME.length > 0){
+      this.rewriteOld_data();
+    }
     console.log("Field Data 1:");
     console.log(JSON.parse(this.RVP_Data));
     var RVP_DataObj = JSON.parse(this.RVP_Data);
@@ -267,6 +270,21 @@ export class FormComponent implements OnInit {
           "V_USR_NM": this.V_USR_NM,
           "V_SRC_CD": this.V_SRC_CD,
           "V_PRCS_ID": this.V_PRCS_ID,
+        }
+        var res_keys = Object.keys(res);
+        var foundKey:boolean;
+        for(let i=0; i<this.RVP_Keys.length; i++){
+          foundKey = false;
+          for(let j=0; j<res_keys.length; i++){
+            if(this.RVP_Keys[i] == res_keys[j]){
+              foundKey = true;
+              break;
+            }
+          }
+          if(foundKey){
+            this.RVP_Data[this.RVP_Keys[i]] = res[res_keys[i]];
+            //RVP property updated if found in result
+          }
         }
       });
   }

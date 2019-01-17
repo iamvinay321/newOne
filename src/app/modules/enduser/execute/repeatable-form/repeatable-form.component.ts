@@ -1,12 +1,12 @@
-import {Component, OnInit} from '@angular/core';
-import {GetFormData} from '../getDataForm';
-import {StorageSessionService} from '../../../../service/storage-session.service';
+import { Component, OnInit } from '@angular/core';
+import { GetFormData } from '../getDataForm';
+import { StorageSessionService } from '../../../../service/storage-session.service';
 
-import {EndUserService} from '../../../../service/EndUser-service';
-import {FormControl, FormGroup, Validators} from '@angular/forms';
-import {Globals} from '../../../../service/globals';
-import {HttpClient} from '@angular/common/http';
-import {Router} from '@angular/router';
+import { EndUserService } from '../../../../service/EndUser-service';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Globals } from '../../../../service/globals';
+import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 import { FormComponent } from '../form/form.component';
 
 @Component({
@@ -15,12 +15,19 @@ import { FormComponent } from '../form/form.component';
   styleUrls: ['./repeatable-form.component.css']
 })
 export class RepeatableFormComponent extends FormComponent implements OnInit {
-// domain_name = this.globals.domain_name;
+  // domain_name = this.globals.domain_name;
   //  private apiUrlGet = "https://" + this.domain_name + "/rest/E_DB/SP?";
   formData: GetFormData;
   public form: FormGroup;
-  V_ID: any;
+  input: any[][] = [];
+  rows = [0];
+  totalRow = 1;
+  edit_or_done: string[] = ["edit"];
+  isDisabled: boolean[] = [true];
   ctrl_variables: Object;
+  phoneDash_arr: Array<any> = [];
+  plainInput_arr: Array<any> = [];
+  dateEntry_arr: Array<any> = [];
 
   constructor(
     public StorageSessionService: StorageSessionService,
@@ -28,7 +35,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     public router: Router,
     public globals: Globals
   ) {
-    super(StorageSessionService,http,router,globals);
+    super(StorageSessionService, http, router, globals);
   }
 
   addForm(form): void {
@@ -47,24 +54,38 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
       "REST_Service": "Forms_Record",
       "Verb": "POST"
     }
-    console.log("Body: "+body_FORMrec+"\nURL:"+this.apiUrlGet);
+    console.log("Body: " + body_FORMrec + "\nURL:" + this.apiUrlGet);
     this.http.post(this.apiUrlGet, body_FORMrec).subscribe(
       res => {
-        console.log("Response:\n"+res);
+        console.log("Response:\n" + res);
       });
   }
 
   updateForm(form): void {
     console.log('update form call');
     //------------Adding paramter only if it is changed----------//
-    var body_FORMrec: {[key: string]: any} = {};
-    body_FORMrec["V_ID"]= this.V_ID;
-    body_FORMrec["REST_Service"]= "Forms_Record";
-    body_FORMrec["Verb"]= "PATCH";
-    var prop = ["Field_Names","Field_Values","V_Table_Name","V_Schema_Name","V_SRVC_CD","V_USR_NM","V_SRC_CD","V_PRCS_ID"];
+    var Field_Names = '';
+    var Field_Values = "";
+    var key_array = Object.keys(form)
+    for (let i = 0; i < key_array.length; i++) {
+      if (i != 0) {
+        Field_Names += '|';
+        Field_Values += '|';
+      }
+      Field_Names += "\"" + key_array[i] + "\"";
+      Field_Values += "\"" + form[key_array[i]] + "\"";
+    }
+
+    Field_Names += '|\"V_abcd\"';
+    Field_Values += '|\"\"';
+    var body_FORMrec: { [key: string]: any } = {};
+    body_FORMrec["V_ID"] = this.V_ID;
+    body_FORMrec["REST_Service"] = "Forms_Record";
+    body_FORMrec["Verb"] = "PATCH";
+    var prop = ["Field_Names", "Field_Values", "V_Table_Name", "V_Schema_Name", "V_SRVC_CD", "V_USR_NM", "V_SRC_CD", "V_PRCS_ID"];
     let Current_record = {
-      "Field_Names": this.Field_Names,
-      "Field_Values": this.Field_Values,
+      "Field_Names": Field_Names,
+      "Field_Values": Field_Values,
       "V_Table_Name": this.V_TABLE_NAME,
       "V_Schema_Name": this.V_SCHEMA_NAME,
       "V_SRVC_CD": this.V_SRVC_CD,
@@ -72,27 +93,27 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
       "V_SRC_CD": this.V_SRC_CD,
       "V_PRCS_ID": this.V_PRCS_ID,
     }
-    for(let i=0; i<prop.length; i++){
-      if(Current_record[prop[i]] == this.Initial_record[prop[i]]){
+    for (let i = 0; i < prop.length; i++) {
+      if (Current_record[prop[i]] == this.Initial_record[prop[i]]) {
         body_FORMrec[prop[i]] = Current_record[prop[i]];
       }
     }
-    
-    console.log("Body: "+body_FORMrec+"\nURL:"+this.apiUrlGet);
+
+    console.log("Body: " + body_FORMrec + "\nURL:" + this.apiUrlGet);
     this.http.put(this.apiUrlGet, body_FORMrec).subscribe(
       res => {
-        console.log("Response:\n"+res);
+        console.log("Response:\n" + res);
       });
   }
-  
+
   deleteForm(form): void {
     console.log('delete form call');
-    var del_URL = "https://"+this.domain_name+"/rest/E_DB/SP?V_Table_Name="+this.V_TABLE_NAME+"&V_Schema_Name="+this.V_SCHEMA_NAME+"&V_SRVC_CD="+this.V_SRVC_CD+"&V_USR_NM="+this.V_USR_NM+"&V_SRC_CD="+this.V_SRC_CD+"&V_PRCS_ID="+this.V_PRCS_ID+"&REST_Service=Forms_Record&Verb=DELETE";
+    var del_URL = "https://" + this.domain_name + "/rest/E_DB/SP?V_Table_Name=" + this.V_TABLE_NAME + "&V_Schema_Name=" + this.V_SCHEMA_NAME + "&V_SRVC_CD=" + this.V_SRVC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_SRC_CD=" + this.V_SRC_CD + "&V_PRCS_ID=" + this.V_PRCS_ID + "&REST_Service=Forms_Record&Verb=DELETE";
     del_URL = encodeURI(del_URL);
     this.http.delete(del_URL).subscribe(
       res => {
-        console.log("Response:\n"+res);
-    });
+        console.log("Response:\n" + res);
+      });
   }
 
   ngOnInit() {
@@ -100,10 +121,38 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
       this.ctrl_variables = res;
       console.log(res);
     });
-    
     this.getFormData();
+    for (let i = 0; i < this.RVP_labels.length; i++) {
+      this.input[this.RVP_labels[i]] = [];
+    }
   }
 
+  addRow() {
+    
+    var areAllDisabled = true;
+    for (let i = 0; i < this.totalRow; i++) {
+      if (!this.isDisabled[i]) {
+        areAllDisabled = false;
+      }
+    }
+    if (areAllDisabled) {
+      this.rows.push(this.totalRow);
+      ++this.totalRow;
+      this.edit_or_done[this.totalRow-1] = "done";
+      this.isDisabled[this.totalRow-1] = false;
+    //  this.isDisabled[this.totalRow - 1] = false;
+    //  this.edit_or_done[this.totalRow - 1] = "done";
+    }
+  }
+
+  editTick_click(i) {
+    this.isDisabled[i] = !this.isDisabled[i];
+    if (this.edit_or_done[i] === "edit") {
+      this.edit_or_done[i] = "done";
+    } else {
+      this.edit_or_done[i] = "edit";
+    }
+  }
   onCancel() {
     console.log("Cancelled");
     this.router.navigateByUrl("End_User");
@@ -112,6 +161,10 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     console.log('submitbtn_click');
   }
 
+}
+export class entryRow {
+  row: number;
+  key: string;
 }
 
 

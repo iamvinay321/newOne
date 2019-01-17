@@ -25,7 +25,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
   public param: any;
   editing = true;
   ctrl_variables: any;
-  
+  input:any[]= [];
   V_PVP: any;
   Field_Length: any;
   currentDate: string;
@@ -83,14 +83,9 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
   build_PVP(){
     this.currentDate = dateFormat(new Date(), "ddd mmm dd yyyy hh:MM:ss TT o");
     //-------Update PVP--------//
-    console.log(this.dateEntry);
-    this.date_value = this.dateEntry.toString();
-    this.PVP_Updated;
+    
     for(let i=0; i<this.RVP_Keys.length; i++){
-      if(this.RVP_Keys[i] === 'Date_Reported')
-        this.PVP_Updated[this.RVP_Keys[i]] = this.date_value;
-      else
-      this.PVP_Updated[this.RVP_Keys[i]] = this.plainInput.toString();
+      this.PVP_Updated[this.RVP_Keys[i]] = this.input[this.RVP_labels[i]].toString();
     }
     
     
@@ -122,7 +117,24 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
           //this.repeatCallTable(false);
           console.log('https://' + this.domain_name + '/rest/Submit/FormSubmit');
           this.StorageSessionService.setCookies('report_table', res);
-          this.router.navigateByUrl('RepeatForm');
+          if (res['RESULT'] == 'INPUT_ARTFCT_TASK') {
+
+            this.router.navigateByUrl('InputArtForm');
+
+          } else if (res['V_EXE_CD'][0] == 'NONREPEATABLE_MANUAL_TASK') {
+            
+            this.router.navigateByUrl('NonRepeatForm');
+            
+
+          } else if (res['V_EXE_CD'][0] == 'REPEATABLE_MANUAL_TASK') {
+            
+            this.router.navigateByUrl('RepeatForm');
+
+            
+          }  if (res['RESULT'] == 'TABLE') {
+
+            this.router.navigateByUrl('ReportTable');
+          }
         }
     });
   }
