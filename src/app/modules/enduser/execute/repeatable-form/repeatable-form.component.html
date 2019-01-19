@@ -14,44 +14,71 @@
 
 				<hr />
 			</mat-card-title>
-			<mat-card-content>
+			<mat-card-content *ngIf="V_READ!='N'">
 				<div style="overflow: auto;white-space: nowrap;">
 					<div *ngFor="let iter of rows">
-					<div *ngFor="let label of RVP_labels" style="display:inline-block;" [style.width.%]="formWidth[label]"
-					 [style.marginLeft.%]="margin">
-						<h4 style="text-align:center;margin-bottom: 0px;">{{label}}</h4>
-						<br />
-						<mat-form-field class="form_input" *ngIf="fieldType[label]==='plain'">
-							<input matInput type="text" class="form-input" [(disabled)]="isDisabled[iter]" [matAutocomplete]="auto" class="f_inp" [(ngModel)]="input[label][iter]">
-							<mat-autocomplete #auto="matAutocomplete">
-								<mat-option style="text-align:center;" *ngFor="let option of options[label]" [value]="option">
-									{{option}}
-								</mat-option>
-							</mat-autocomplete>
-						</mat-form-field>
-						<mat-form-field class="form_input" *ngIf="fieldType[label]==='date'">
-							<input matInput [matDatepicker]="picker" type="text" [(disabled)]="isDisabled[iter]" class="f_inp" [(ngModel)]="input[label][iter]" (value)="date_value">
-							<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-							<mat-datepicker #picker></mat-datepicker>
-						</mat-form-field>
-						<mat-form-field class="form_input" *ngIf="fieldType[label]==='Phone Dash'">
-							<input matInput type="text" maxlength="12" class="form-input" [(disabled)]="isDisabled[iter]" [matAutocomplete]="auto" class="f_inp" [(ngModel)]="input[label][iter]">
-							<mat-autocomplete #auto="matAutocomplete">
-								<mat-option style="text-align:center;" *ngFor="let option of options[label]" [value]="option">
-									{{option}}
-								</mat-option>
-							</mat-autocomplete>
-						</mat-form-field>
-					</div>
-					<div style="display:inline-block;margin-left: 0.5px;">
-						<button mat-icon-button *ngIf="iter===0" (click)="addRow()"><mat-icon style="color:red;font-size: larger;font-weight: bold;">add</mat-icon></button>
-						<br />
-						<button mat-icon-button (click)="editTick_click(iter)"><mat-icon style="color:blue;font-size: larger;">{{edit_or_done[iter]}}</mat-icon></button>
-						<button mat-icon-button><mat-icon style="color:blue;font-size: larger;">delete</mat-icon></button>
+						<div class="row" *ngIf="!deleted[iter]">
+							<div *ngFor="let label of RVP_labels" style="display:inline-block;" [style.width.%]="formWidth[label]"
+							 [style.marginLeft.%]="margin">
+								<h4 style="text-align:center;margin-bottom: 0px;" *ngIf="iter===0">{{label}}</h4>
+								<br *ngIf="iter>0"/>
+								<mat-form-field class="form_input" *ngIf="fieldType[label]==='plain' && iter>0">
+									<input matInput type="text" class="form-input" [(disabled)]="isDisabled[iter]" [matAutocomplete]="auto" class="f_inp"
+									 [(ngModel)]="input[label][iter]">
+									<mat-autocomplete #auto="matAutocomplete">
+										<mat-option style="text-align:center;" *ngFor="let option of options[label]" [value]="option">
+											{{option}}
+										</mat-option>
+									</mat-autocomplete>
+								</mat-form-field>
+								<mat-form-field class="form_input" *ngIf="fieldType[label]==='date' && iter>0">
+									<input matInput [matDatepicker]="picker" type="text" [(disabled)]="isDisabled[iter]" class="f_inp" [(ngModel)]="input[label][iter]"
+									 (value)="date_value">
+									<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+									<mat-datepicker #picker></mat-datepicker>
+								</mat-form-field>
+								<mat-form-field class="form_input" *ngIf="fieldType[label]==='Phone Dash' && iter>0">
+									<input matInput type="text" maxlength="12" class="form-input" [(disabled)]="isDisabled[iter]"
+									 [matAutocomplete]="auto" class="f_inp" [(ngModel)]="input[label][iter]">
+									<mat-autocomplete #auto="matAutocomplete">
+										<mat-option style="text-align:center;" *ngFor="let option of options[label]" [value]="option">
+											{{option}}
+										</mat-option>
+									</mat-autocomplete>
+								</mat-form-field>
+							</div>
+							<div style="display:inline-block;margin-left: 0.5px;">
+								<button mat-icon-button *ngIf="iter===0 && V_CREATE==='Y'" (click)="addRow()">
+									<mat-icon style="color:red;font-size: larger;font-weight: bold;">add</mat-icon>
+								</button>
+								<br />
+								<button mat-icon-button (click)="editTick_click(iter)" *ngIf="iter>0 && V_UPDATE==='Y'">
+									<mat-icon style="color:blue;font-size: larger;">{{edit_or_done[iter]}}</mat-icon>
+								</button>
+								<button mat-icon-button (click)="delete_click(iter)" *ngIf="iter>0 && V_DELETE==='Y'">
+									<mat-icon style="color:blue;font-size: larger;">delete</mat-icon>
+								</button>
+							</div>
+						</div>
 					</div>
 				</div>
+				<br><br><br>
+				<div fxLayout="row" fxLayout.lt-sm="column">
+					<div fxFlex="40">
+					</div>
+					<div fxFlex="48">
+						<button mat-raised-button (click)="onCancel();" id="cancel">
+							<mat-icon class="iconmod">clear</mat-icon>Cancel
+						</button>
+						<div flex fxFlex="5"></div>
+
+						<button mat-raised-button (click)="onSubmit();" id="submit">
+							<mat-icon class="iconmod">done_all</mat-icon>Submit
+						</button>
+					</div>
 				</div>
 			</mat-card-content>
+			<mat-card-content *ngIf="V_READ==='N'"><h4 style="text-align: center;">{{ctrl_variables['message_access_denied']}}</h4></mat-card-content>
 		</mat-card>
 	</div>
 </div>

@@ -39,16 +39,15 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     public router: Router,
     public globals: Globals
   ) {
-    super(StorageSessionService,http,router,globals);
+    super(StorageSessionService,http,router,globals,app);
   }
 
   ngOnInit() {
-
-    this.http.get('../../../../assets/control-variable.json').subscribe(res => {
-      this.ctrl_variables = res;
-      console.log(res);
-    });
     this.getFormData();
+    for(let i=0; i<this.RVP_labels.length; i++){
+      this.input[this.RVP_labels[i]] = this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")][0];
+    }
+    
   }
 
   onSubmit() {
@@ -108,34 +107,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     this.http.post("https://" + this.domain_name + "/rest/Submit/FormSubmit", body_buildPVP).subscribe(
       res => {
         console.log(res);
-        var timeout = res['RESULT'][0].toString().substring(0, 7) == "TIMEOUT";
-        console.log(timeout);
-        if (timeout && this.ctrl_variables.call_repeat_on_TIMEOUT) {
-          this.app.fromNonRepForm= true;
-          this.router.navigate(["/EndUser/Execute"]);
-        } else {
-          //this.repeatCallTable(false);
-          console.log('https://' + this.domain_name + '/rest/Submit/FormSubmit');
-          this.StorageSessionService.setCookies('report_table', res);
-          if (res['RESULT'] == 'INPUT_ARTFCT_TASK') {
-
-            this.router.navigateByUrl('InputArtForm');
-
-          } else if (res['V_EXE_CD'][0] == 'NONREPEATABLE_MANUAL_TASK') {
-            
-            this.router.navigateByUrl('NonRepeatForm');
-            
-
-          } else if (res['V_EXE_CD'][0] == 'REPEATABLE_MANUAL_TASK') {
-            
-            this.router.navigateByUrl('RepeatForm');
-
-            
-          }  if (res['RESULT'] == 'TABLE') {
-
-            this.router.navigateByUrl('ReportTable');
-          }
-        }
+        this.invoke_router(res);
     });
   }
 
@@ -144,73 +116,4 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     this.router.navigateByUrl("End_User");
   }
 
-}
-export interface TableFormRVP {
-  Program_Manager: any;
-  ALF_Phase: any;
-  Program_Deputy: any;
-  PAE: any;
-  Assistant_Program_Manager: any;
-  Office: any;
-  Program_Level: any;
-  Program_Type: any;
-  SubType: any;
-  Program_LoB: any;
-  Program_Description: any;
-  Program_Status: any;
-  Program_Score: any;
-  Program_Trend: any;
-  Program_Start_Date: any;
-  Program_End_Date: any;
-  LCCE: any;
-  EAC: any;
-}
-export interface TableEx {
-  V_USR_NM: any;
-  Program_Score: any;
-  Program_Manager: any;
-  Program_Start_Date: any;
-  Program_Status: any;
-  Program_Trend: any;
-  Program_Type: any;
-  // V_SRC_CD: string;
-  // V_PRCS_ID: any;
-}
-export class Data {
-  PARAM_NM: string[];
-  PVP: any[];
-  V_SRVC_CD: any[];
-}
-
-export class FormPass {
-  V_TABLE_NAME: string;
-  V_SCHEMA_NAME: string;
-  V_KEY_NAMEA: string;
-  V_KEY_NAME: string;
-  V_KEY_VALUE: string;
-  V_SRVC_CD: string;
-  constructor() {
-
-  }
-}
-export class ReportData {
-  PARAM_NM: string[];
-  PARAM_VAL: string[];
-  RESULT: string;
-  V_EXE_CD: string[];
-  CONT_ON_ERR_FLG: string[];
-
-  constructor() {
-
-  }
-
-}
-
-export class FormPass1 {
-  SRVC_ID: any[];
-  UNIQUE_ID: string[];
-  V_EXE_CD: string[];
-  constructor() {
-
-  }
 }
