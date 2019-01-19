@@ -440,10 +440,10 @@ export class ExecuteComponent implements OnInit {
 
     //------- Changed the Rest call for Parameters (By : Balraj Saini) Added Two flags --------
 
-    this.https.get(this.apiUrlGet + 'V_APP_CD=' + this.SL_APP_CD + '&V_PRCS_CD=' + this.SL_PRC_CD + '&V_SRC_CD=' + this.V_SRC_CD + '&ResetOptimised=' + this.ResetOptimised + '&Lazyload=' + this.Lazyload + '&REST_Service=ProcessParameters&Verb=GET').subscribe(
+    this.https.get(this.apiUrlGet + 'V_APP_CD=' + this.SL_APP_CD + '&V_PRCS_CD=' + this.SL_PRC_CD + '&V_SRC_CD=' + this.V_SRC_CD + '&ResetOptimised=' + this.ResetOptimised + '&Lazyload=false' + '&REST_Service=ProcessParameters&Verb=GET').subscribe(
       res => {
         console.log(res.json());
-        console.log(this.apiUrlGet + 'V_APP_CD=' + this.SL_APP_CD + '&V_PRCS_CD=' + this.SL_PRC_CD + '&V_SRC_CD=' + this.V_SRC_CD + '&ResetOptimised=' + this.ResetOptimised + '&Lazyload=' + this.Lazyload + '&REST_Service=ProcessParameters&Verb=GET');
+        console.log(this.apiUrlGet + 'V_APP_CD=' + this.SL_APP_CD + '&V_PRCS_CD=' + this.SL_PRC_CD + '&V_SRC_CD=' + this.V_SRC_CD + '&ResetOptimised=' + this.ResetOptimised + '&Lazyload=false' + '&REST_Service=ProcessParameters&Verb=GET');
         FormData = res.json();
         const ref = { disp_dyn_param: false };
         const got_res = this.data.exec_schd_restCall(FormData, ref);
