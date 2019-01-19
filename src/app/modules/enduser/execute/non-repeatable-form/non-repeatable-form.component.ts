@@ -10,6 +10,7 @@ import { Globals } from '../../../../service/globals';
 import { HttpClient } from '@angular/common/http'
 import { Router } from '@angular/router';
 import * as dateFormat from 'dateformat';
+import { HostListener } from "@angular/core";
 import { MatTableDataSource } from '@angular/material';
 import { getISODayOfWeek } from 'ngx-bootstrap/chronos/units/day-of-week';
 import { encode } from 'punycode';
@@ -23,6 +24,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
   // domain_name = this.globals.domain_name;
   //  private apiUrlGet = "https://" + this.domain_name + "/rest/E_DB/SP?";
   public param: any;
+  mobileView=false;
   editing = true;
   ctrl_variables: any;
   input:any[]= [];
@@ -32,18 +34,42 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
   PVP_Updated: any ={};
   date_value: any;
   dateEntry: any;
+  screenHeight: number;
+  screenWidth: number;
+  desktopView: boolean = true;
   constructor(
     public StorageSessionService: StorageSessionService,
     public app: AppComponent,
     public http: HttpClient,
     public router: Router,
-    public globals: Globals,
-    public form: FormComponent
+    public globals: Globals
   ) {
     super(StorageSessionService,http,router,globals,app);
   }
-
+  @HostListener('window:resize', ['$event'])
+    onResize(event?) {
+      this.screenHeight = window.innerHeight;
+      this.screenWidth = window.innerWidth;
+      if(this.screenWidth<=900)
+      {
+        this.mobileView=true;
+        this.desktopView=false;
+      }else{
+        this.mobileView=false;
+        this.desktopView=true;
+      }
+  }
   ngOnInit() {
+    this.screenHeight = window.innerHeight;
+      this.screenWidth = window.innerWidth;
+      if(this.screenWidth<=900)
+      {
+        this.mobileView=true;
+        this.desktopView=false;
+      }else{
+        this.mobileView=false;
+        this.desktopView=true;
+      }
     this.getFormData();
     for(let i=0; i<this.RVP_labels.length; i++){
       this.input[this.RVP_labels[i]] = this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")][0];

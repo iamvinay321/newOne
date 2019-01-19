@@ -14,32 +14,33 @@
 
 				<hr />
 			</mat-card-title>
-			<mat-card-content *ngIf="V_READ!='N'">
-					<div *ngFor="let label of RVP_labels" style="float:left;" [style.width.%]="formWidth[label]" [style.marginLeft.%]="margin">
-						<h4 style="text-align:center;margin-bottom: 0px;">{{label}}</h4>
-						<br/>
-						<mat-form-field class="form_input" *ngIf="fieldType[label]==='plain'">
-							<input matInput type="text" class="form-input" [matAutocomplete]="auto" class="f_inp" [(ngModel)]="input[label]">
-							<mat-autocomplete #auto="matAutocomplete">
-								<mat-option style="text-align:center;" *ngFor="let option of options[label]" [value]="option">
-									{{option}}
-								</mat-option>
-							</mat-autocomplete>
-						</mat-form-field>
-						<mat-form-field class="form_input" *ngIf="fieldType[label]==='date'">
-							<input matInput [matDatepicker]="picker" type="text" class="f_inp" [(ngModel)]="input[label]" (value)="date_value">
-							<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-							<mat-datepicker #picker></mat-datepicker>
-						</mat-form-field>
-						<mat-form-field class="form_input" *ngIf="fieldType[label]==='Phone Dash'">
-							<input matInput type="text" maxlength="12" class="form-input" [matAutocomplete]="auto" class="f_inp" [ngModel]="phoneDash_Input" (ngModelChange)="onChange_PhoneDash($event)">
-							<mat-autocomplete #auto="matAutocomplete">
-								<mat-option style="text-align:center;" *ngFor="let option of options[label]" [value]="option">
-									{{option}}
-								</mat-option>
-							</mat-autocomplete>
-						</mat-form-field>
-					</div>
+			<mat-card-content *ngIf="V_READ!='N' && desktopView">
+				<div *ngFor="let label of RVP_labels" style="float:left;" [style.width.%]="formWidth[label]" [style.marginLeft.%]="margin">
+					<h4 style="text-align:center;margin-bottom: 0px;">{{label}}</h4>
+					<br />
+					<mat-form-field class="form_input" *ngIf="fieldType[label]==='plain'">
+						<input matInput type="text" class="form-input" [matAutocomplete]="auto" class="f_inp" [(ngModel)]="input[label]">
+						<mat-autocomplete #auto="matAutocomplete">
+							<mat-option style="text-align:center;" *ngFor="let option of options[label]" [value]="option">
+								{{option}}
+							</mat-option>
+						</mat-autocomplete>
+					</mat-form-field>
+					<mat-form-field class="form_input" *ngIf="fieldType[label]==='date'">
+						<input matInput [matDatepicker]="picker" type="text" class="f_inp" [(ngModel)]="input[label]" (value)="date_value">
+						<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+						<mat-datepicker #picker></mat-datepicker>
+					</mat-form-field>
+					<mat-form-field class="form_input" *ngIf="fieldType[label]==='Phone Dash'">
+						<input matInput type="text" maxlength="12" class="form-input" [matAutocomplete]="auto" class="f_inp" [ngModel]="phoneDash_Input"
+						 (ngModelChange)="onChange_PhoneDash($event)">
+						<mat-autocomplete #auto="matAutocomplete">
+							<mat-option style="text-align:center;" *ngFor="let option of options[label]" [value]="option">
+								{{option}}
+							</mat-option>
+						</mat-autocomplete>
+					</mat-form-field>
+				</div>
 				<br><br><br><br><br><br>
 				<div fxLayout="row" fxLayout.lt-sm="column">
 					<div fxFlex="40">
@@ -56,7 +57,49 @@
 					</div>
 				</div>
 			</mat-card-content>
-			<mat-card-content *ngIf="V_READ==='N'"><h4 style="text-align: center;">{{ctrl_variables['message_access_denied']}}</h4></mat-card-content>
+			<mat-card-content *ngIf="V_READ!='N' && mobileView">
+				<div fxLayout="column">
+					<div *ngFor="let label of RVP_labels" fxFlex="100">
+						<h4 style="text-align:center;margin-bottom: 0px;">{{label}}</h4>
+						<br />
+						<mat-form-field class="form_input" *ngIf="fieldType[label]==='plain'">
+							<input matInput type="text" class="form-input" [matAutocomplete]="auto" class="f_inp" [(ngModel)]="input[label]">
+							<mat-autocomplete #auto="matAutocomplete">
+								<mat-option style="text-align:center;" *ngFor="let option of options[label]" [value]="option">
+									{{option}}
+								</mat-option>
+							</mat-autocomplete>
+						</mat-form-field>
+						<mat-form-field class="form_input" *ngIf="fieldType[label]==='date'">
+							<input matInput [matDatepicker]="picker" type="text" class="f_inp" [(ngModel)]="input[label]" (value)="date_value">
+							<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+							<mat-datepicker #picker></mat-datepicker>
+						</mat-form-field>
+						<mat-form-field class="form_input" *ngIf="fieldType[label]==='Phone Dash'">
+							<input matInput type="text" maxlength="12" class="form-input" [matAutocomplete]="auto" class="f_inp" [ngModel]="phoneDash_Input"
+							 (ngModelChange)="onChange_PhoneDash($event)">
+							<mat-autocomplete #auto="matAutocomplete">
+								<mat-option style="text-align:center;" *ngFor="let option of options[label]" [value]="option">
+									{{option}}
+								</mat-option>
+							</mat-autocomplete>
+						</mat-form-field>
+					</div>
+				</div>
+				<br><br><br><br><br><br>
+				<div fxLayout="column">
+						<button fxFlex="100" mat-raised-button (click)="onCancel();" id="cancel">
+							<mat-icon class="iconmod">clear</mat-icon>Cancel
+						</button>
+						<br/>
+						<button fxFlex="100" mat-raised-button (click)="onSubmit();" id="submit" *ngIf="V_EXECUTE==='Y'">
+							<mat-icon class="iconmod">done_all</mat-icon>Submit
+						</button>
+				</div>
+			</mat-card-content>
+			<mat-card-content *ngIf="V_READ==='N'">
+				<h4 style="text-align: center;">{{ctrl_variables['message_access_denied']}}</h4>
+			</mat-card-content>
 
 		</mat-card>
 	</div>

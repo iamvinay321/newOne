@@ -39,8 +39,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     public http: HttpClient,
     public router: Router,
     public globals: Globals,
-    public app: AppComponent,
-    public form1: FormComponent
+    public app: AppComponent
   ) {
     super(StorageSessionService, http, router, globals, app);
   }
