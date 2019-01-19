@@ -83,8 +83,8 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     this.currentDate = dateFormat(new Date(), "ddd mmm dd yyyy hh:MM:ss TT o");
     //-------Update PVP--------//
     
-    for(let i=0; i<this.RVP_Keys.length; i++){
-      this.PVP_Updated[this.RVP_Keys[i]] = this.input[this.RVP_labels[i]].toString();
+    for(let i=0; i<this.RVP_labels.length; i++){
+      this.PVP_Updated[this.RVP_labels[i].split(" ").join("_")] = this.input[this.RVP_labels[i]].toString();
     }
     
     
