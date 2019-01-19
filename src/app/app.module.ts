@@ -53,6 +53,7 @@ import { PlatformComponent } from './modules/systemadmin/platform/platform.compo
 import { DeploymentsnavbarComponent } from './modules/systemadmin/deploymentsnavbar/deploymentsnavbar.component';
 import {MatListModule} from '@angular/material/list';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {FormComponent} from './modules/enduser/execute/form/form.component';
 import {MatButtonToggleModule} from '@angular/material/button-toggle';
 import { OrganizationComponent } from './modules/useradmin/organization/organization.component';
 import { MembershipComponent } from './modules/useradmin/membership/membership.component';
@@ -199,6 +200,7 @@ const appRoutes: Routes = [
     MachineComponent,
     MachinespecsComponent,
     PlatformComponent,
+    FormComponent,
     ConnectionComponent,
     RepeatableFormComponent,
     NonRepeatableFormComponent,

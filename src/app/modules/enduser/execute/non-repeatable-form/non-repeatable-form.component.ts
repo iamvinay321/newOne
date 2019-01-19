@@ -37,7 +37,8 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     public app: AppComponent,
     public http: HttpClient,
     public router: Router,
-    public globals: Globals
+    public globals: Globals,
+    public form: FormComponent
   ) {
     super(StorageSessionService,http,router,globals,app);
   }
