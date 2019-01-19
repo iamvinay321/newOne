@@ -35,6 +35,7 @@ export class FormComponent implements OnInit {
   V_CREATE: any;
   V_UPDATE: any;
   V_DELETE: any;
+  V_EXECUTE: any;
 
   constructor(
     public StorageSessionService: StorageSessionService,
@@ -187,6 +188,8 @@ export class FormComponent implements OnInit {
     this.V_UPDATE = this.Form_Data['V_UPDATE'][0];
 
     this.V_DELETE = this.Form_Data['V_DELETE'][0];
+
+    this.V_EXECUTE = this.Form_Data['V_EXECUTE'][0];
 
     this.SL_APP_CD = this.StorageSessionService.getCookies('executedata')['SL_APP_CD'];
 

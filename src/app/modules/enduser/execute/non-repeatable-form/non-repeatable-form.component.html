@@ -50,7 +50,7 @@
 						</button>
 						<div flex fxFlex="5"></div>
 
-						<button mat-raised-button (click)="onSubmit();" id="submit">
+						<button mat-raised-button (click)="onSubmit();" id="submit" *ngIf="V_EXECUTE==='Y'">
 							<mat-icon class="iconmod">done_all</mat-icon>Submit
 						</button>
 					</div>
