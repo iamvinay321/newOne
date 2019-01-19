@@ -5,7 +5,6 @@ import {Router} from '@angular/router';
 import {StorageSessionService} from '../../../../service/storage-session.service';
 import {Globals} from '../../../../service/globals';
 import {ReportData, ScopeLimiting} from './Classes';
-import {FileUrls} from '../forms/POJO';
 
 @Component({
   selector: 'app-input-art',
@@ -25,12 +24,12 @@ export class InputArtComponent {
   process: string;
   service: string;
   // @ override
-  public filesUrl: FileUrls;
+  //public filesUrl: FileUrls;
 
   constructor(private storage: StorageSessionService,
               private http: HttpClient,
               private globals: Globals,) {
-    this.filesUrl = new FileUrls(this.storage);
+    //this.filesUrl = new FileUrls(this.storage);
     this.reportData = new ReportData(this.storage);
     console.log('---------------');
     console.log(this.reportData.getProcess());
@@ -68,7 +67,7 @@ Fire this function when user click on upload buttons
     //  this.fileType = selectedFile.type;
     const formData: FormData = new FormData();
     const files: any = {};
-    files['File_Path'] = this.filesUrl.getFileUrl();
+    //files['File_Path'] = this.filesUrl.getFileUrl();
     files['File_Name'] = selectedFile.name;
     formData.append('Source_File', selectedFile);
     formData.append('FileInfo', JSON.stringify(files));
@@ -92,28 +91,28 @@ Fire this function when user click on upload buttons
       this.scope.setUrl(this.reportData.getAgency());
       this.scope.V_SCOPE_LMTNG_LVL = values;
       this.scope.V_SCOPE_LMTNG_CD = this.reportData.getAgency();
-      this.filesUrl.setFileUrl(this.reportData.getAgency());
+      //this.filesUrl.setFileUrl(this.reportData.getAgency());
     } else if (values === 'application') {
       this.scope.setUrl(this.reportData.getAgency() + '/' + this.reportData.getApplication());
       this.scope.V_SCOPE_LMTNG_LVL = values;
       this.scope.V_SCOPE_LMTNG_CD = this.reportData.getApplication();
-      this.filesUrl.setFileUrl(this.reportData.getAgency() + '/' + this.reportData.getApplication());
+      //this.filesUrl.setFileUrl(this.reportData.getAgency() + '/' + this.reportData.getApplication());
     } else if (values === 'process') {
       this.scope.setUrl(this.reportData.getAgency() + '/' + this.reportData.getApplication() + '/' + this.reportData.getProcess());
       this.scope.V_SCOPE_LMTNG_LVL = values;
       this.scope.V_SCOPE_LMTNG_CD = this.reportData.getProcess();
-      this.filesUrl.setFileUrl(this.reportData.getAgency() + '/' +
-        this.reportData.getApplication() + '/' + this.reportData.getApplication());
+      //this.filesUrl.setFileUrl(this.reportData.getAgency() + '/' +
+        this.reportData.getApplication() + '/' + this.reportData.getApplication();
     } else if (values === 'service') {
       this.scope.setUrl(this.reportData.getAgency() + '/' + this.reportData.getApplication() + '/' +
         this.reportData.getProcess() + '/' + this.reportData.getService());
       this.scope.V_SCOPE_LMTNG_LVL = values;
       this.scope.V_SCOPE_LMTNG_CD = this.reportData.getService();
-      this.filesUrl.setFileUrl(this.reportData.getAgency() + '/' + this.reportData.getApplication() + '/' +
-        this.reportData.getApplication() + '/' + this.reportData.getService());
+      //this.filesUrl.setFileUrl(this.reportData.getAgency() + '/' + this.reportData.getApplication() + '/' +
+        this.reportData.getApplication() + '/' + this.reportData.getService();
     }
     // console.info('The given build file scope URLS:');
-    console.log(this.filesUrl.getFileUrl());
+    //console.log(this.filesUrl.getFileUrl());
   }
 
   addbtn_click() {

@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, forwardRef } from '@angular/core';
-import { GetFormData } from '../getDataForm';
+//import { GetFormData } from '../getDataForm';
 import { StorageSessionService } from '../../../../service/storage-session.service';
 
 import { EndUserService } from '../../../../service/EndUser-service';
@@ -19,7 +19,7 @@ import * as dateFormat from 'dateformat';
 export class RepeatableFormComponent extends FormComponent implements OnInit {
   // domain_name = this.globals.domain_name;
   //  private apiUrlGet = "https://" + this.domain_name + "/rest/E_DB/SP?";
-  formData: GetFormData;
+  //formData: GetFormData;
   public form: FormGroup;
   input: any[][] = [];
   rows = [0];

@@ -8,7 +8,7 @@ import * as dateFormat from 'dateformat';
 import { MatTableDataSource } from '@angular/material';
 import { getISODayOfWeek } from 'ngx-bootstrap/chronos/units/day-of-week';
 import { encode } from 'punycode';
-import { GetFormData } from '../getDataForm';
+//import { GetFormData } from '../getDataForm';
 import { StorageSessionService } from '../../../../service/storage-session.service';
 import { FormatWidth } from '@angular/common';
 import { isNumber } from '@ng-bootstrap/ng-bootstrap/util/util';

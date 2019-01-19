@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { GetFormData } from '../getDataForm';
+//import { GetFormData } from '../getDataForm';
 import { StorageSessionService } from '../../../../service/storage-session.service';
 import {FormComponent} from '../form/form.component';
 import {AppComponent} from '../../../../app.component';

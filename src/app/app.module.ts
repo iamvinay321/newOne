@@ -66,7 +66,6 @@ import { AuthorizeroleComponent } from './modules/useradmin/authorizerole/author
 import { MatPaginatorModule, MatSortModule, MatTableModule } from '@angular/material';
 import { MyFilterPipe1 } from './modules/enduser/schd-actn/myFilterPipe1';
 import { RepeatAfterComponent } from './modules/enduser/schd-actn/repeat-after/repeat-after.component';
-import { FormsComponent } from './modules/enduser/execute/forms/forms.component';
 import { BsDropdownModule } from 'ngx-bootstrap';
 import { ColorPickerModule } from 'ngx-color-picker';
 import { DashboardComponent } from './modules/enduser/dashboard/dashboard.component';
@@ -151,8 +150,6 @@ const appRoutes: Routes = [
   { path: 'Repeat', component: RepeatProcessComponent },
   { path: 'Cl', component: DialogScheduleComponent },
 
-  { path: 'Forms', component: FormsComponent},
-
 
   { path: 'InputArtForm', component: InputArtComponent},
   {path: 'RepeatForm', component: RepeatableFormComponent},
@@ -211,7 +208,6 @@ const appRoutes: Routes = [
     AssignroleComponent,
     AuthorizeroleComponent,
     RepeatAfterComponent,
-    FormsComponent,
     DashboardComponent,
     ProcessComponent,
     DialogChartsComponent,
