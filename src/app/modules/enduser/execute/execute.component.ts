@@ -87,7 +87,7 @@ export class ExecuteComponent implements OnInit {
   //-------Balraj Code--------
 
   ResetOptimised = false;
-  Lazyload = true;
+  Lazyload = false;
 
   check_data = {};
   executedata = {};
