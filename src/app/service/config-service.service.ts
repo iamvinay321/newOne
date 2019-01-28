@@ -4,6 +4,7 @@ import { Http, Response, Headers } from '@angular/http';
 import { StorageSessionService } from './storage-session.service';
 import { Observable } from 'rxjs/Observable';
 import { Globals } from './globals';
+import { CommonUtils } from '../common/utils';
 
 @Injectable()
 export class ConfigServiceService {
@@ -285,7 +286,7 @@ export class ConfigServiceService {
     return this.http.get(this.apiUrlGet + "V_UNIQUE_ID=" + UNIQUE_ID + "&V_SRC_ID=" + SL_SRC_ID + "&V_APP_ID=" + SL_APP_ID + "&V_PRCS_ID=" + SL_PRCS_ID + "&V_SRVC_ID=" + SL_SRVC_ID + "&FULL_DTL_FLG=Y&AVL_DTL_FLG=N&REST_Service=DeploymentStatus&Verb=GET")
   }
   getAppCode(vSRCcd) {
-    this.V_SRC_CD= vSRCcd;
+    this.V_SRC_CD = vSRCcd;
     console.log(this.apiUrlGet + "V_CD_TYP=APP&V_SRC_CD=" + this.V_SRC_CD + "&SCREEN=PROFILE&REST_Service=Masters&Verb=GET");
     return this.http.get(this.apiUrlGet + "V_CD_TYP=APP&V_SRC_CD=" + this.V_SRC_CD + "&SCREEN=PROFILE&REST_Service=Masters&Verb=GET");
   }
@@ -307,134 +308,75 @@ export class ConfigServiceService {
   Execute_AP_PR(SL_APP_CD, SL_PRC_CD) {
     return this.http.get(this.apiUrlGet + "V_APP_CD=" + SL_APP_CD + "&V_PRCS_CD=" + SL_PRC_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=PorcessParameters&Verb=GET");
   }
-  exec_schd_restCall(FormData,ref) {
-    var currentKey;
-    var currentVal;
-    var ParametrValue: any[];
-    var ParameterName: any[];
+  exec_schd_restCall(FormData, ref) {
+    let ParametrValue: any[] = FormData['PARAM_VAL']
+    const ParameterName: any[] = FormData['PARAM_NM'];
+    const ParameterType: any[] = FormData['FLD_TYPE'];
     var result: any = {};
-    var Data:any =[];
+    var Data: any = [];
     var k;
 
-    ParametrValue = FormData['PARAM_VAL'];
-    ParameterName = FormData['PARAM_NM'];
-    for (let i = 0; i < ParametrValue.length; i++) {
-      //-----------Balraj Code---------
-      currentVal = ParametrValue[i].split(',');
-      currentKey = ParameterName[i];
-      console.log(currentKey);
-      result[currentKey] = currentVal;
-      if (ParameterName[i].includes('Date') && !(ParameterName[i].includes('DateTime'))) {
-        Data[i] = {
-          type: 'date',
-          name: Object.keys(result)[i],
-          value: Object.values(result)[i][0],
-          placeholder: Object.keys(result)[i]
+    if (!CommonUtils.isValidValue(ParametrValue)) {
+      ParametrValue = [];
+    }
 
-        };
-
+    for (let i = 0; i < ParameterName.length; i++) {
+      let currentVal = [];
+      if (CommonUtils.isValidValue(ParametrValue[i])) {
+        currentVal = ParametrValue[i].split(',');
+      } else {
+        currentVal[0] = null;
       }
-      else if (ParameterName[i].charAt(0) == '?') {
-        Data[i] = {
-          type: 'radio',
-          name: Object.keys(result)[i],
-          value: Object.values(result)[i][0],
-          placeholder: Object.keys(result)[i]
-        };
+      const currentKey = ParameterName[i];
+      result[currentKey] = currentVal[0];
+      const fieldObj: any = {};
+      fieldObj.name = ParameterName[i];
+      fieldObj.value = currentVal[0];
+      fieldObj.placeholder = ParameterName[i];
+      if (!CommonUtils.isValidValue(ParameterType[i])) {
+        fieldObj.type = ParameterType[i];
+      } else {
+        fieldObj.type = "input";
       }
-      else if (ParameterName[i].charAt(ParameterName[i].length - 1) == '?') {
-        Data[i] = {
-          type: 'checkbox',
-          name: Object.keys(result)[i],
-          value: Object.values(result)[i][0],
-          placeholder: Object.keys(result)[i]
-        };
-      }
-      else if (ParameterName[i].includes('Time') && !(ParameterName[i].includes('DateTime'))) {
-        Data[i] = {
-          type: 'time',
-          name: Object.keys(result)[i],
-          value: Object.values(result)[i][0],
-          placeholder: Object.keys(result)[i]
-        };
-      }
-      else if (ParameterName[i].includes('DateTime')) {
-        Data[i] = {
-          type: 'datetime',
-          name: Object.keys(result)[i],
-          value: Object.values(result)[i][0],
-          placeholder: Object.keys(result)[i]
-        };
-      }
-      else if (ParameterName[i].includes('Password')) {
-        Data[i] = {
-          type: 'password',
-          name: Object.keys(result)[i],
-          value: Object.values(result)[i][0],
-          placeholder: Object.keys(result)[i]
-        };
-      }
-      else if (ParameterName[i].includes('Range')) {
-        Data[i] = {
-          type: 'range',
-          name: Object.keys(result)[i],
-          value: Object.values(result)[i][0],
-          placeholder: Object.keys(result)[i]
-        };
-      }
-      else if (ParameterName[i].includes('Color')) {
-        Data[i] = {
-          type: 'color',
-          name: Object.keys(result)[i],
-          value: Object.values(result)[i][0],
-          placeholder: Object.keys(result)[i]
-        };
-      }
-      else {
-        Data[i] = {
-          type: 'input',
-          name: Object.keys(result)[i],
-          value: Object.values(result)[i][0],
-          placeholder: Object.keys(result)[i]
-        };
-      }
-      if (ParametrValue.length > 0)
+      Data.push(fieldObj);
+      if (ParametrValue.length > 0) {
         ref['disp_dyn_param'] = true;
+      }
       k = i;
     }
     var b;
     (ParametrValue.length > 0) ? b = true : b = false;
-    return {Data: Data,Result:result,B:b,K:k};
+    return { Data: Data, Result: result, B: b, K: k };
   }
 
 
-    functionDemo(){
-      return this.http.get("https://" + this.domain_name + "/rest/E_DB/SP?V_SRC_CD=exeserver&V_EXE_TYP=E_REST&V_USR_NM=exeserver@adventbusiness.com&REST_Service=UserExes&Verb=GET");
-    }
-
-    //__________________________________________________User >> execute page ALL REST API________
-
-    getDropDownListValue(V_APP_CD: any, V_PRCS_CD: any, V_PARAM_NM: any){
-      this.http.get(this.apiUrlGet + "V_SRC_CD=" + this.V_SRC_CD + "&V_APP_CD=" + V_APP_CD + "&V_PRCS_CD=" + V_PRCS_CD + "&V_PARAM_NM=" + V_PARAM_NM + "&V_SRVC_CD=Pull%20FPDS%20Contracts&REST_Service=ProcessParametersOptions&Verb=GET").subscribe(
-        res => {
-          return res.json();
-        }
-      );
-    }
-
-
-    //_______________________________CHART STYLING CONFIG____________________________________
-
-    getchartstyling(V_APP_ID, V_PRCS_ID, V_SRC_ID) {
-      return this.http.get(this.apiUrlGet + "V_USR_NM=" + this.V_USR_NM + "&V_SRC_ID=" + V_SRC_ID + "&V_APP_ID=" + V_APP_ID + "&V_PRCS_ID=" + V_PRCS_ID + "&REST_Service=User_Preference&Verb=GET");
-    }
-
-    setchartstyling(V_APP_ID, V_PRCS_ID, V_SRC_ID, V_PRF_NM, V_PRF_VAL) {
-      return this.http.get(this.apiUrlGet + "V_USR_NM=" + this.V_USR_NM + "&V_PRF_NM=" + V_PRF_NM + "&V_PRF_VAL=" + V_PRF_VAL + "&V_SRC_ID=" + V_SRC_ID + "&V_APP_ID=" + V_APP_ID + "&V_PRCS_ID=" + V_PRCS_ID + "&REST_Service=User_Preference&Verb=PATCH");
-    }
-
-    //________________________________________________________________________________________
+  functionDemo() {
+    return this.http.get("https://" + this.domain_name + "/rest/E_DB/SP?V_SRC_CD=exeserver&V_EXE_TYP=E_REST&V_USR_NM=exeserver@adventbusiness.com&REST_Service=UserExes&Verb=GET");
   }
+
+  //__________________________________________________User >> execute page ALL REST API________
+
+  getDropDownListValue(V_APP_CD: any, V_PRCS_CD: any, V_PARAM_NM: any) {
+    this.http.get(this.apiUrlGet + "V_SRC_CD=" + this.V_SRC_CD + "&V_APP_CD=" + V_APP_CD + "&V_PRCS_CD=" + V_PRCS_CD + "&V_PARAM_NM=" + V_PARAM_NM + "&V_SRVC_CD=Pull%20FPDS%20Contracts&REST_Service=ProcessParametersOptions&Verb=GET").subscribe(
+      res => {
+        return res.json();
+      }
+    );
+  }
+
+
+  //_______________________________CHART STYLING CONFIG____________________________________
+
+  getchartstyling(V_APP_ID, V_PRCS_ID, V_SRC_ID) {
+    return this.http.get(this.apiUrlGet + "V_USR_NM=" + this.V_USR_NM + "&V_SRC_ID=" + V_SRC_ID + "&V_APP_ID=" + V_APP_ID + "&V_PRCS_ID=" + V_PRCS_ID + "&REST_Service=User_Preference&Verb=GET");
+  }
+
+  setchartstyling(V_APP_ID, V_PRCS_ID, V_SRC_ID, V_PRF_NM, V_PRF_VAL) {
+    return this.http.get(this.apiUrlGet + "V_USR_NM=" + this.V_USR_NM + "&V_PRF_NM=" + V_PRF_NM + "&V_PRF_VAL=" + V_PRF_VAL + "&V_SRC_ID=" + V_SRC_ID + "&V_APP_ID=" + V_APP_ID + "&V_PRCS_ID=" + V_PRCS_ID + "&REST_Service=User_Preference&Verb=PATCH");
+  }
+
+  //________________________________________________________________________________________
+}
 
 
 

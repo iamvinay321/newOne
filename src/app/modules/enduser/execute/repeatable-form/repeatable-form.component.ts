@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { FormComponent } from '../form/form.component';
 import { AppComponent } from '../../../../app.component';
 import * as dateFormat from 'dateformat';
+import { ConfigServiceService } from '../../../../service/config-service.service';
 
 @Component({
   selector: 'app-repeatable-form',
@@ -32,16 +33,17 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
   dateEntry_arr: Array<any> = [];
   deleted: boolean[] = [false];
   currentDate: any;
-  PVP_Updated: any ={};
+  PVP_Updated: any = {};
 
   constructor(
     public StorageSessionService: StorageSessionService,
     public http: HttpClient,
     public router: Router,
     public globals: Globals,
-    public app: AppComponent
+    public app: AppComponent,
+    public dataConfig: ConfigServiceService,
   ) {
-    super(StorageSessionService, http, router, globals, app);
+    super(StorageSessionService, http, router, globals, app, dataConfig);
   }
 
   addForm(form): void {
@@ -83,32 +85,28 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
 
   updateForm(form): void {
     console.log('update form call');
-    
-    var Field_Names = '';
-    var Field_Values = "";
-    var key_array = Object.keys(form)
-    for (let i = 0; i < key_array.length; i++) {
-      if (i != 0) {
-        Field_Names += '|';
-        Field_Values += '|';
+
+    var Field_Names = [];
+    var Field_Values = [];
+    var key_array = Object.keys(form);
+    delete form["iteration"];
+    for (const field_name in form) {
+      if (form.hasOwnProperty(field_name)) {
+        Field_Names.push("\"" + field_name + "\"");
+        Field_Values.push("\"" + form[field_name] + "\"");
       }
-      Field_Names += "\"" + key_array[i] + "\"";
-      Field_Values += "\"" + form[key_array[i]] + "\"";
     }
 
-    Field_Names += '|\"V_abcd\"';
-    Field_Values += '|\"\"';
-    
     let body_FORMrec = {
-      "Field_Names": Field_Names,
-      "Field_Values": Field_Values,
+      "Field_Names": Field_Names.join("|"),
+      "Field_Values": Field_Values.join("|"),
       "V_Table_Name": this.V_TABLE_NAME,
       "V_Schema_Name": this.V_SCHEMA_NAME,
       "V_SRVC_CD": this.V_SRVC_CD,
       "V_USR_NM": this.V_USR_NM,
       "V_SRC_CD": this.V_SRC_CD,
       "V_PRCS_ID": this.V_PRCS_ID,
-      "V_ID": this.V_ID[form["iteration"]-1],
+      "V_ID": this.V_ID,
       "REST_Service": "Forms_Record",
       "Verb": "PATCH"
     }
@@ -124,7 +122,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     console.log('delete form call');
     console.log(form["iteration"]);
 
-    var del_URL = "https://" + this.domain_name + "/rest/E_DB/SP?V_Table_Name=" + this.V_TABLE_NAME + "&V_Schema_Name=" + this.V_SCHEMA_NAME + "&V_ID="+this.V_ID[form["iteration"]-1] + "&V_SRVC_CD=" + this.V_SRVC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_SRC_CD=" + this.V_SRC_CD + "&V_PRCS_ID=" + this.V_PRCS_ID + "&REST_Service=Forms_Record&Verb=DELETE";
+    var del_URL = "https://" + this.domain_name + "/rest/E_DB/SP?V_Table_Name=" + this.V_TABLE_NAME + "&V_Schema_Name=" + this.V_SCHEMA_NAME + "&V_ID=" + this.V_ID[form["iteration"] - 1] + "&V_SRVC_CD=" + this.V_SRVC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_SRC_CD=" + this.V_SRC_CD + "&V_PRCS_ID=" + this.V_PRCS_ID + "&REST_Service=Forms_Record&Verb=DELETE";
     console.log(del_URL);
     del_URL = encodeURI(del_URL);
     console.log(del_URL);
@@ -134,23 +132,23 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
         console.log("Response:\n" + res);
       });
   }
-  
-  build_PVP(form){
+
+  build_PVP(form) {
     this.currentDate = dateFormat(new Date(), "ddd mmm dd yyyy hh:MM:ss TT o");
     //-------Update PVP--------//
     console.log(form);
     var PVP_str = "{";
     var key;
-    for(let i=0; i<this.RVP_labels.length; i++){
+    for (let i = 0; i < this.RVP_labels.length; i++) {
       key = this.RVP_labels[i].split(" ").join("_");
-      PVP_str += "\""+ key + "\"" + ":[";
-      for(let j=0; j<this.totalRow-1; j++){
+      PVP_str += "\"" + key + "\"" + ":[";
+      for (let j = 0; j < this.totalRow - 1; j++) {
         PVP_str += "\"" + form[key][j] + "\"";
-        if(j<this.totalRow-2)
+        if (j < this.totalRow - 2)
           PVP_str += ",";
       }
       PVP_str += "]";
-      if(i<this.RVP_labels.length-1)
+      if (i < this.RVP_labels.length - 1)
         PVP_str += ",";
     }
     PVP_str += "}";
@@ -171,12 +169,12 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
       "TimeZone": this.currentDate
     }
     console.log(body_buildPVP);
-    
+
     this.http.post("https://" + this.domain_name + "/rest/Submit/FormSubmit", body_buildPVP).subscribe(
       res => {
         console.log(res);
         this.invoke_router(res);
-    });
+      });
   }
 
   ngOnInit() {
@@ -186,13 +184,13 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     }
     var row_present = this.RVP_DataObj[this.RVP_labels[0].split(" ").join("_")].length;
     this.totalRow += row_present;
-    for(let i=1; i<this.totalRow; i++){
+    for (let i = 1; i < this.totalRow; i++) {
       this.rows.push(i);
     }
     console.log("Iterations :");
     console.log(this.rows);
-    for(let i=0; i<this.totalRow; i++){
-      for(let j=0; j<this.RVP_labels.length; j++){
+    for (let i = 0; i < this.totalRow; i++) {
+      for (let j = 0; j < this.RVP_labels.length; j++) {
         this.input[this.RVP_labels[j]][i] = this.RVP_DataObj[this.RVP_labels[j].split(" ").join("_")][i];
       }
     }
@@ -217,37 +215,37 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
 
   editTick_click(i) {
     this.isDisabled[i] = !this.isDisabled[i];
-    
+
     if (this.edit_or_done[i] === "edit") {
       this.edit_or_done[i] = "done";
-    } else{
+    } else {
       this.edit_or_done[i] = "edit";
       var form: any = [];
       for (let j = 0; j < this.RVP_labels.length; j++) {
         form[this.RVP_labels[j].split(" ").join("_")] = this.input[this.RVP_labels[j]][i];
-        if(form[this.RVP_labels[j].split(" ").join("_")]==null){
+        if (form[this.RVP_labels[j].split(" ").join("_")] == null) {
           form[this.RVP_labels[j].split(" ").join("_")] = "";
         }
       }
       form["iteration"] = i;
       console.log(form);
-      if(this.V_TABLE_NAME === null || this.V_TABLE_NAME.length>0)
+      if (this.V_TABLE_NAME === null || this.V_TABLE_NAME.length > 0)
         this.updateForm(form);
     }
   }
 
   delete_click(i) {
     this.deleted[i] = true;
-    var form: any =[];
+    var form: any = [];
     for (let j = 0; j < this.RVP_labels.length; j++) {
       form[this.RVP_labels[j].split(" ").join("_")] = this.input[this.RVP_labels[j]][i];
-      if(form[this.RVP_labels[j].split(" ").join("_")]==null){
+      if (form[this.RVP_labels[j].split(" ").join("_")] == null) {
         form[this.RVP_labels[j].split(" ").join("_")] = "";
       }
     }
     form["iteration"] = i;
     console.log(form);
-    if(this.V_TABLE_NAME === null || this.V_TABLE_NAME.length>0)
+    if (this.V_TABLE_NAME === null || this.V_TABLE_NAME.length > 0)
       this.deleteForm(form);
   }
 
@@ -260,13 +258,13 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     console.log('submitting');
     var form: any = [];
     var temp: any;
-    for(let i=0; i<this.RVP_labels.length; i++){
-      for(let j=1; j<this.totalRow; j++){
+    for (let i = 0; i < this.RVP_labels.length; i++) {
+      for (let j = 1; j < this.totalRow; j++) {
         temp = this.input[this.RVP_labels[i]][j]
-        if(temp==null){
-          temp="";
+        if (temp == null) {
+          temp = "";
         }
-        if(j===1)
+        if (j === 1)
           form[this.RVP_labels[i].split(" ").join("_")] = [temp];
         else
           form[this.RVP_labels[i].split(" ").join("_")].push(temp);
@@ -279,7 +277,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
         areAllDisabled = false;
       }
     }
-    if(areAllDisabled)
+    if (areAllDisabled)
       this.build_PVP(form);
   }
 

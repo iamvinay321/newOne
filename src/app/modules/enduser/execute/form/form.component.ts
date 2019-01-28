@@ -13,6 +13,8 @@ import { StorageSessionService } from '../../../../service/storage-session.servi
 import { FormatWidth } from '@angular/common';
 import { isNumber } from '@ng-bootstrap/ng-bootstrap/util/util';
 import { AppComponent } from '../../../../app.component';
+import { ConfigServiceService } from '../../../../service/config-service.service';
+import { CommonUtils } from '../../../../common/utils';
 
 @Component({
   selector: 'app-form',
@@ -42,7 +44,8 @@ export class FormComponent implements OnInit {
     public http: HttpClient,
     public router: Router,
     public globals: Globals,
-    public app: AppComponent
+    public app: AppComponent,
+    public dataConfig: ConfigServiceService,
   ) { }
 
   domain_name = this.globals.domain_name;
@@ -89,6 +92,7 @@ export class FormComponent implements OnInit {
     });
 
     this.Form_Data = this.StorageSessionService.getCookies('report_table');
+
     console.info('The form data stored in local storage: ');
     console.log(this.Form_Data);
 
@@ -113,9 +117,9 @@ export class FormComponent implements OnInit {
     console.log(this.options);
     console.log(this.formWidth);
     console.log(this.fieldType);
-    
+
   }
-  
+
   labels_toShow(): any {
     //----------------Lables to Show---------------//
     this.RVP_Keys = Object.keys(this.RVP_DataObj);
@@ -131,37 +135,37 @@ export class FormComponent implements OnInit {
   }
 
   setField_RVP(): any {
-     //------------Getting RVP Data--------------//
-     this.RVP_Data = this.Form_Data['RVP'];
-     if (this.V_TABLE_NAME.length > 0) {
-       this.rewriteOld_data();
-     }
-     console.log("Field Data 1:");
-     console.log(JSON.parse(this.RVP_Data));
-     this.RVP_DataObj = JSON.parse(this.RVP_Data);
-     console.log(this.RVP_DataObj);
-     var key_array = Object.keys(this.RVP_DataObj);
- 
-     //----------Field Names & Field Values as {"str1"|"str2"}-----------//
-     this.Field_Names = '';
-     this.Field_Values = "";
-     for (let i = 0; i < key_array.length; i++) {
-       if (i != 0) {
-         this.Field_Names += '|';
-         this.Field_Values += '|';
-       }
-       this.Field_Names += "\"" + key_array[i] + "\"";
-       this.Field_Values += "\"" + this.RVP_DataObj[key_array[i]] + "\"";
-     }
-     this.RVP_Data.push('V_abcd');
-     this.Field_Names += '|\"V_abcd\"';
-     this.Field_Values += '|\"\"';
- 
-     console.log("Field_Names");
-     console.log(this.Field_Names);
-     console.log("Field_Values");
-     console.log(this.Field_Values);
-     console.log(this.StorageSessionService.getCookies('App_Prcs'));
+    //------------Getting RVP Data--------------//
+    this.RVP_Data = this.Form_Data['RVP'];
+    if (this.V_TABLE_NAME.length > 0) {
+      this.rewriteOld_data();
+    }
+    console.log("Field Data 1:");
+    console.log(JSON.parse(this.RVP_Data));
+    this.RVP_DataObj = JSON.parse(this.RVP_Data);
+    console.log(this.RVP_DataObj);
+    var key_array = Object.keys(this.RVP_DataObj);
+
+    //----------Field Names & Field Values as {"str1"|"str2"}-----------//
+    this.Field_Names = '';
+    this.Field_Values = "";
+    for (let i = 0; i < key_array.length; i++) {
+      if (i != 0) {
+        this.Field_Names += '|';
+        this.Field_Values += '|';
+      }
+      this.Field_Names += "\"" + key_array[i] + "\"";
+      this.Field_Values += "\"" + this.RVP_DataObj[key_array[i]] + "\"";
+    }
+    this.RVP_Data.push('V_abcd');
+    this.Field_Names += '|\"V_abcd\"';
+    this.Field_Values += '|\"\"';
+
+    console.log("Field_Names");
+    console.log(this.Field_Names);
+    console.log("Field_Values");
+    console.log(this.Field_Values);
+    console.log(this.StorageSessionService.getCookies('App_Prcs'));
   }
 
   getOther_records(): any {
@@ -182,7 +186,7 @@ export class FormComponent implements OnInit {
     this.V_UNIQUE_ID = this.Form_Data['UNIQUE_ID'];
 
     this.V_READ = this.Form_Data['V_READ'][0];
-    
+
     this.V_CREATE = this.Form_Data['V_CREATE'][0];
 
     this.V_UPDATE = this.Form_Data['V_UPDATE'][0];
@@ -215,29 +219,26 @@ export class FormComponent implements OnInit {
     } else {
       this.V_SCHEMA_NAME = '';
     }
+    const key_name_ar = [];
+    const key_val_ar = []
     if ('V_Key_Names' in this.PVP) {
-      var V_KEY_NAME_arr = this.PVP['V_Key_Names'];
+      const V_KEY_NAME_arr = this.PVP['V_Key_Names'];
+      const V_KEY_VALUE_arr = this.PVP['V_Key_Values'] ? this.PVP['V_Key_Values'] : [];
       for (let i = 0; i < V_KEY_NAME_arr.length; i++) {
-        this.V_KEY_NAME += V_KEY_NAME_arr[i] + '|';
+        // this.V_KEY_NAME += V_KEY_NAME_arr[i] + '|'
+        if (key_name_ar.indexOf(V_KEY_NAME_arr[i]) === -1) {
+          key_name_ar.push(V_KEY_NAME_arr[i]);
+          if (CommonUtils.isValidValue(V_KEY_VALUE_arr[i])) {
+            key_val_ar.push(V_KEY_VALUE_arr[i]);
+          } else {
+            key_val_ar.push("");
+          }
+        }
       }
-
-      if (this.V_KEY_NAME == null || this.V_KEY_NAME == '|') {
-        this.V_KEY_NAME = '';
-      }
-      this.V_KEY_NAME = this.V_KEY_NAME.slice(0, -1);
     }
+    this.V_KEY_NAME = key_name_ar.join("|");
+    this.V_KEY_VALUE = key_val_ar.join("|");
 
-    if ('0' in this.PVP) {
-      var V_KEY_VALUE_arr = this.PVP['V_Key_Values'];
-      for (let i = 0; i < V_KEY_VALUE_arr.length; i++) {
-        this.V_KEY_VALUE += V_KEY_VALUE_arr[i] + '|';
-      }
-
-      if (this.V_KEY_VALUE == null || this.V_KEY_VALUE === '|') {
-        this.V_KEY_VALUE = '';
-      }
-      this.V_KEY_VALUE = this.V_KEY_VALUE.slice(0, -1);
-    }
     console.info('This is completed data of V_TABLE_NAME parameter :');
     console.log('V_SRVC_CD=>' + this.V_SRVC_CD + 'V_TABLE_NAME=>' + this.V_TABLE_NAME + 'V_KEY_NAME=>' + this.V_KEY_NAME + 'V_KEY_VALUE=>' + this.V_KEY_VALUE + 'V_SCHEMA_NAME=>' + this.V_SCHEMA_NAME);
   }
@@ -302,13 +303,15 @@ export class FormComponent implements OnInit {
 
   }
   set_fieldType(): any {
-    var test = {};
-    var allTypes = this.Form_Data["FLD_TYPE"][0].split(",");
+    const allTypes = this.Form_Data["FLD_TYPE"][0].split(",");
     for (let i = 0; i < this.RVP_labels.length; i++) {
-      var temp = allTypes[i].trim();
-      test[this.RVP_labels[i]] = temp.substring(1, temp.length - 1);
+      const temp = allTypes[i].trim();
+      let fieldType = temp.substring(1, temp.length - 1);
+      if (fieldType === "Normal String") {
+        fieldType = "input";
+      }
+      this.fieldType[this.RVP_labels[i]] = fieldType;
     }
-    console.log(test);
   }
 
   rewriteOld_data() {
@@ -333,7 +336,7 @@ export class FormComponent implements OnInit {
         var foundKey: boolean;
         for (let i = 0; i < this.RVP_Keys.length; i++) {
           foundKey = false;
-          for (let j = 0; j < res_keys.length; i++) {
+          for (let j = 0; j < res_keys.length; j++) {
             if (this.RVP_Keys[i] == res_keys[j]) {
               foundKey = true;
               break;
@@ -372,9 +375,8 @@ export class FormComponent implements OnInit {
       this.fieldType[initParam] = 'password';
     }
     else {
-      this.fieldType[initParam] = 'plain';
+      this.fieldType[initParam] = 'input';
       //this.fieldType[initParam] = 'Phone Dash';
     }
   }
-
 }

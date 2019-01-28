@@ -88,7 +88,6 @@
   <h3 style="text-align: center;" *ngIf="Data!='' &&  Data!=undefined">{{Label['Parameters']}}</h3>
   <div class="dynamicContent">
     <div class="padding-input flexLeft" *ngFor="let pr of Data">
-
       <ng-container *ngIf="pr.type==='date'">
         <label class="f_label">{{pr.placeholder | removeWt}}</label>
          <mat-form-field class="form_input">
@@ -153,7 +152,6 @@
           </mat-option>
         </mat-autocomplete>
      </mat-form-field> -->
-
    </ng-container>
 
    </div>
@@ -186,9 +184,7 @@
     <button mat-raised-button mat-button color="primary" [disabled]="!Schedule_btn" (click)="add();repeatURL();openEmojiDialog()">
       <mat-icon class="iconmod">schedule</mat-icon>Execute Later</button>
 
-
-
-  </div>
+ </div>
 
 
 </div>
