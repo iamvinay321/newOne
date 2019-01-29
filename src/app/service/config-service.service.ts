@@ -324,20 +324,38 @@ export class ConfigServiceService {
       let currentVal = [];
       if (CommonUtils.isValidValue(ParametrValue[i])) {
         currentVal = ParametrValue[i].split(',');
+        // remove empty values
+        currentVal = currentVal.filter(function (el) {
+          return el !== "";
+        });
+        currentVal = CommonUtils.removeDuplicate(currentVal);
       } else {
         currentVal[0] = null;
       }
       const currentKey = ParameterName[i];
-      result[currentKey] = currentVal[0];
+      result[currentKey] = currentVal;
       const fieldObj: any = {};
       fieldObj.name = ParameterName[i];
-      fieldObj.value = currentVal[0];
       fieldObj.placeholder = ParameterName[i];
       if (!CommonUtils.isValidValue(ParameterType[i])) {
         fieldObj.type = ParameterType[i];
       } else {
         fieldObj.type = "input";
       }
+      if (fieldObj.type === "checkbox" || fieldObj.type === "openlist") {
+        // need value as array 
+        fieldObj.value = [currentVal[0]];
+      } else {
+        fieldObj.value = currentVal[0];
+      }
+
+      // log incorrect values if found
+      if (fieldObj.type === "checkbox" || fieldObj.type === "radio" || fieldObj.type === "openlist") {
+        if (currentVal.length === 1 && currentVal[0] == null) {
+          console.error("Invalid values provided for parameter " + fieldObj.name);
+        }
+      }
+
       Data.push(fieldObj);
       if (ParametrValue.length > 0) {
         ref['disp_dyn_param'] = true;

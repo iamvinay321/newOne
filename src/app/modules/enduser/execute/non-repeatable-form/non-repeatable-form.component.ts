@@ -14,7 +14,6 @@ import { HostListener } from "@angular/core";
 import { MatTableDataSource } from '@angular/material';
 import { getISODayOfWeek } from 'ngx-bootstrap/chronos/units/day-of-week';
 import { encode } from 'punycode';
-import { ConfigServiceService } from '../../../../service/config-service.service';
 @Component({
   selector: 'app-non-repeatable-form',
   templateUrl: './non-repeatable-form.component.html',
@@ -43,10 +42,9 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     public app: AppComponent,
     public http: HttpClient,
     public router: Router,
-    public globals: Globals,
-    public dataConfig: ConfigServiceService,
+    public globals: Globals
   ) {
-    super(StorageSessionService,http,router,globals,app, dataConfig);
+    super(StorageSessionService,http,router,globals,app);
   }
   @HostListener('window:resize', ['$event'])
     onResize(event?) {

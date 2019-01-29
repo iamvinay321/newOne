@@ -5,4 +5,9 @@ export class CommonUtils {
         }
         return true;
     }
+
+    public static removeDuplicate(arr: any[]) {
+        let x = (arr) => arr.filter((v, i) => arr.indexOf(v) === i)
+        return x(arr);
+    }
 }

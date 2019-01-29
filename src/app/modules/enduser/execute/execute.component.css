@@ -1,110 +1,141 @@
-.form_input{
-   text-align: center;
-   width: 100%;
+.form_input {
+    text-align: center;
+    width: 100%;
 }
 
-.disabled_input{
-    padding:10px;border:1px solid slategrey;
-    text-align: center;width: 40%;
+.disabled_input {
+    padding: 10px;
+    border: 1px solid slategrey;
+    text-align: center;
+    width: 40%;
 }
-.params{
+
+.params {
     overflow: auto;
     justify-content: left;
 }
-::ng-deep div.cdk-overlay-pane{
-    width:max-content;
-}
-::ng-deep div.mat-autocomplete-panel.ng-star-inserted {
-    width:max-content;
+
+::ng-deep div.cdk-overlay-pane {
+    width: max-content;
 }
 
-@media only screen and (max-width: 767px){
-.params{
-    max-height: 220px
+::ng-deep div.mat-autocomplete-panel.ng-star-inserted {
+    width: max-content;
 }
-.mat-form-field-underline{
-    display: none;
+
+@media only screen and (max-width: 767px) {
+    .params {
+        max-height: 220px
+    }
+    .mat-form-field-underline {
+        display: none;
+    }
 }
+
+mat-list-item div {
+    text-align: center;
+    width: 100%;
 }
-mat-list-item div{
-    text-align:center;
-    width:100%;    
-}
-mat-list{
-    border:1px solid #ccc;
+
+mat-list {
+    border: 1px solid #ccc;
     border-radius: .25rem;
-    
     width: 100%;
     padding-top: 0;
     font-size: 1rem;
     line-height: 1.5;
     height: 200px;
 }
-.scroll *{
-    height: auto;
-    text-align:center;
+
+mat-radio-group {
+    text-align: left;
+    display: flex;
+    flex-direction: column;
 }
-   .padding-input{
-       padding-left: 10px;
-       text-align: center;
-       align-content: center;
-   }
-   @media only screen and (max-width: 767px){
-    .padding-input{
+
+::ng-deep .form_list .mat-input-infix {
+    background: none !important;
+    border: none !important;
+    padding: 10px;
+}
+
+::ng-deep .form_list .mat-list-text{
+    text-align: left;
+}
+
+.scroll * {
+    height: auto;
+    text-align: center;
+}
+
+.padding-input {
+    padding-left: 10px;
+    text-align: center;
+    align-content: center;
+}
+
+@media only screen and (max-width: 767px) {
+    .padding-input {
         padding-left: 10px;
-       text-align: center;
-       align-content: center;
-       width: 100%;
+        text-align: center;
+        align-content: center;
+        width: 100%;
     }
-   }
-   .parent{
-       text-align: center;
-       align-content: center;
-   }
-   .active{
-    background-color:rgba(0,0,0,0.7) !important;
+}
+
+.parent {
+    text-align: center;
+    align-content: center;
+}
+
+.active {
+    background-color: rgba(0, 0, 0, 0.7) !important;
     color: white;
-  }
-  .iconmod{
-      margin-right: 7px;
-  }
-  ::ng-deep .mat-input-underline {
+}
+
+.iconmod {
+    margin-right: 7px;
+}
+
+::ng-deep .mat-input-underline {
     display: none;
 }
 
-::ng-deep .mat-form-field-wrapper{
+::ng-deep .mat-form-field-wrapper {
     padding: 0;
     margin: 0;
 }
-.f_label{
+
+.f_label {
     margin-top: 15px;
 }
-::ng-deep .mat-input-infix{
+
+::ng-deep .mat-input-infix {
     background: white;
-    border:1px solid rgb(200,200,200);
+    border: 1px solid rgb(200, 200, 200);
     border-radius: 3px;
     padding-bottom: 5px;
-  }
+}
 
-  .dynamicFormContent{
+.dynamicFormContent {
     display: inline-block;
-  position: relative;
-  width: 95%;
-margin-bottom:8px;
-  background-size: contain;
-  margin-left:auto;
-  margin-right: auto;
+    position: relative;
+    width: 95%;
+    margin-bottom: 8px;
+    background-size: contain;
+    margin-left: auto;
+    margin-right: auto;
+}
 
-    
+.dynamicContent {
+    margin-left: 10%;
 }
-.dynamicContent{
-    margin-left:10%;
-}
-.flexLeft{
+
+.flexLeft {
     display: table-row;
     float: left;
-    width:250px;
-    margin-left:5px;
-    margin-bottom:18px; 
+    width: 250px;
+    margin-left: 5px;
+    margin-bottom: 18px;
     position: relative;
-    }
+}

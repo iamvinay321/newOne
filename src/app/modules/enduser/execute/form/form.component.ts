@@ -44,8 +44,7 @@ export class FormComponent implements OnInit {
     public http: HttpClient,
     public router: Router,
     public globals: Globals,
-    public app: AppComponent,
-    public dataConfig: ConfigServiceService,
+    public app: AppComponent
   ) { }
 
   domain_name = this.globals.domain_name;

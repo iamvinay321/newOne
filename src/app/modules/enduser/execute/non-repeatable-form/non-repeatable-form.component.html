@@ -31,12 +31,6 @@
 						<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 						<mat-datepicker #picker></mat-datepicker>
 					</mat-form-field>
-					<mat-form-field class="form_input" *ngIf="fieldType[label]==='radio'">
-						<mat-radio-button [(ngModel)]="input[label]" style="background-color: #f4f6f7"></mat-radio-button>
-					</mat-form-field>
-					<mat-form-field class="form_input" *ngIf="fieldType[label]==='checkbox'">
-						<mat-checkbox [(ngModel)]="input[label]" style="background-color: #f4f6f7"></mat-checkbox>
-					</mat-form-field>
 					<mat-form-field class="form_input" *ngIf="fieldType[label]==='Phone Dash'">
 						<input matInput type="text" maxlength="12" class="form-input" [matAutocomplete]="auto" class="f_inp" [ngModel]="phoneDash_Input"
 						 (ngModelChange)="onChange_PhoneDash($event)">
@@ -46,12 +40,26 @@
 							</mat-option>
 						</mat-autocomplete>
 					</mat-form-field>
-					<mat-form-field class="form_input" *ngIf="fieldType[label]==='radio'">
-						<mat-radio-button [(ngModel)]="input[label]" style="background-color: #f4f6f7"></mat-radio-button>
-					</mat-form-field>
-					<mat-form-field class="form_input" *ngIf="fieldType[label]==='checkbox'">
-						<mat-checkbox [(ngModel)]="input[label]" style="background-color: #f4f6f7"></mat-checkbox>
-					</mat-form-field>
+					<ng-container *ngIf="fieldType[label]==='radio'">
+						<mat-form-field class="form_input form_list">
+							<input matInput style="display: none">
+							<mat-radio-group [(ngModel)]="input[label]">
+								<mat-radio-button style="background-color: #f4f6f7" [value]="listOption" *ngFor="let listOption of options[label]">
+									{{listOption}}
+								</mat-radio-button>
+							</mat-radio-group>
+						</mat-form-field>
+					</ng-container>
+					<ng-container *ngIf="fieldType[label]==='checkbox' && options[label] && options[label].length > 0">
+						<mat-form-field class="form_input form_list">
+							<input matInput style="display: none">
+							<mat-selection-list [(ngModel)]="input[label]">
+								<mat-list-option checkboxPosition="before" [value]="listOption" *ngFor="let listOption of options[label]">
+									{{listOption}}
+								</mat-list-option>
+							</mat-selection-list>
+						</mat-form-field>
+					</ng-container>
 				</div>
 				<br><br><br><br><br><br>
 				<div fxLayout="row" fxLayout.lt-sm="column">
@@ -100,13 +108,13 @@
 				</div>
 				<br><br><br><br><br><br>
 				<div fxLayout="column">
-						<button fxFlex="100" mat-raised-button (click)="onCancel();" id="cancel">
-							<mat-icon class="iconmod">clear</mat-icon>Cancel
-						</button>
-						<br/>
-						<button fxFlex="100" mat-raised-button (click)="onSubmit();" id="submit" *ngIf="V_EXECUTE==='Y'">
-							<mat-icon class="iconmod">done_all</mat-icon>Submit
-						</button>
+					<button fxFlex="100" mat-raised-button (click)="onCancel();" id="cancel">
+						<mat-icon class="iconmod">clear</mat-icon>Cancel
+					</button>
+					<br />
+					<button fxFlex="100" mat-raised-button (click)="onSubmit();" id="submit" *ngIf="V_EXECUTE==='Y'">
+						<mat-icon class="iconmod">done_all</mat-icon>Submit
+					</button>
 				</div>
 			</mat-card-content>
 			<mat-card-content *ngIf="V_READ==='N'">

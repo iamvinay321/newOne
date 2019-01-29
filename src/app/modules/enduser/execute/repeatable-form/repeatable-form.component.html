@@ -46,12 +46,26 @@
 										</mat-option>
 									</mat-autocomplete>
 								</mat-form-field>
-								<mat-form-field class="form_input" *ngIf="fieldType[label]==='radio'">
-									<mat-radio-button [(ngModel)]="input[label][iter]" style="background-color: #f4f6f7"></mat-radio-button>
-								</mat-form-field>
-								<mat-form-field class="form_input" *ngIf="fieldType[label]==='checkbox'">
-									<mat-checkbox [(ngModel)]="input[label][iter]" style="background-color: #f4f6f7"></mat-checkbox>
-								</mat-form-field>
+								<ng-container *ngIf="fieldType[label]==='radio' && options[label] && options[label].length > 0">
+									<mat-form-field class="form_input form_list">
+										<input matInput style="display: none">
+										<mat-radio-group [(ngModel)]="input[label][iter]">
+											<mat-radio-button style="background-color: #f4f6f7" [value]="listOption" *ngFor="let listOption of options[label]">
+												{{listOption}}
+											</mat-radio-button>
+										</mat-radio-group>
+									</mat-form-field>
+								</ng-container>
+								<ng-container *ngIf="fieldType[label]==='checkbox'">
+									<mat-form-field class="form_input form_list">
+										<input matInput style="display: none">
+										<mat-selection-list [(ngModel)]="input[label][iter]">
+											<mat-list-option checkboxPosition="before" [value]="listOption" *ngFor="let listOption of options[label]">
+												{{listOption}}
+											</mat-list-option>
+										</mat-selection-list>
+									</mat-form-field>
+								</ng-container>
 							</div>
 							<div style="display:inline-block;margin-left: 0.5px;">
 								<button mat-icon-button *ngIf="iter===0 && V_CREATE==='Y'" (click)="addRow()">

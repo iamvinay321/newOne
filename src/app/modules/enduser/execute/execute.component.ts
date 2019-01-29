@@ -22,6 +22,7 @@ import { RollserviceService } from '../../../service/rollservice.service';
 import { Observable } from 'rxjs/Observable';
 import { Globals } from './../../../service/globals';
 import { MatTableDataSource } from '@angular/material';
+import { CommonUtils } from '../../../common/utils';
 
 export class ReportData {
   public RESULT: string;
@@ -632,6 +633,15 @@ export class ExecuteComponent implements OnInit {
     );
   }
   filteredOptions: Observable<string[]>;
+
+  getListOptions(parameterName: string) {
+    if (CommonUtils.isValidValue(this.result[parameterName])) {
+      return Object.values(this.result[parameterName]);
+    } else {
+      return [];
+    }
+  }
+
   getDropDownListValue(e: any) {
 
     //---------Balraj Code--------
