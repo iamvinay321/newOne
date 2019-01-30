@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { FormComponent } from '../form/form.component';
 import { AppComponent } from '../../../../app.component';
 import * as dateFormat from 'dateformat';
+import { CommonUtils } from '../../../../common/utils';
 
 @Component({
   selector: 'app-repeatable-form',
@@ -94,39 +95,39 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
         Field_Values_Ar.push("\"" + form[field_name] + "\"");
       }
     }
-    
+
     const Field_Names = Field_Names_Ar.join("|");
     const Field_Values = Field_Values_Ar.join("|");
 
     var body_req: any[] = [];
 
-    if(Field_Names !== this.Field_Names_initial){
+    if (Field_Names !== this.Field_Names_initial) {
       body_req["Field_Names"] = Field_Names;
     }
-    if(Field_Values !== this.Field_Values_initial){
+    if (Field_Values !== this.Field_Values_initial) {
       body_req["Field_Values"] = Field_Values;
     }
     body_req["V_ID"] = this.V_ID[form["iteration"] - 1];
-    body_req["REST_Service"]= "Forms_Record";
-    body_req["Verb"]= "PATCH";
+    body_req["REST_Service"] = "Forms_Record";
+    body_req["Verb"] = "PATCH";
     /*let body_FORMrec = {
       "Field_Names": Field_Names,
       "Field_Values": Field_Values,*/
-      /*"V_Table_Name": this.V_TABLE_NAME,
-      "V_Schema_Name": this.V_SCHEMA_NAME,
-      "V_SRVC_CD": this.V_SRVC_CD,
-      "V_USR_NM": this.V_USR_NM,
-      "V_SRC_CD": this.V_SRC_CD,
-      "V_PRCS_ID": this.V_PRCS_ID,*/
-      /*"V_ID": this.V_ID[form["iteration"] - 1],
-      "REST_Service": "Forms_Record",
-      "Verb": "PATCH"
-    }*/
+    /*"V_Table_Name": this.V_TABLE_NAME,
+    "V_Schema_Name": this.V_SCHEMA_NAME,
+    "V_SRVC_CD": this.V_SRVC_CD,
+    "V_USR_NM": this.V_USR_NM,
+    "V_SRC_CD": this.V_SRC_CD,
+    "V_PRCS_ID": this.V_PRCS_ID,*/
+    /*"V_ID": this.V_ID[form["iteration"] - 1],
+    "REST_Service": "Forms_Record",
+    "Verb": "PATCH"
+  }*/
 
     //console.log(body_FORMrec);
     console.log(body_req);
     //this.http.put(this.apiUrlGet, body_FORMrec).subscribe(
-    this.http.put(this.apiUrlGet, body_req).subscribe(  
+    this.http.put(this.apiUrlGet, body_req).subscribe(
       res => {
         console.log("Response:\n" + res);
       });
@@ -209,13 +210,16 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
         this.input[this.RVP_labels[j]][i] = this.RVP_DataObj[this.RVP_labels[j].split(" ").join("_")][i];
       }
     }
-    
+
     var form: any[][] = [];
     for (let i = 0; i < this.totalRow; i++) {
       for (let j = 0; j < this.RVP_labels.length; j++) {
-        form[this.RVP_labels[j].split(" ").join("_")] = this.input[this.RVP_labels[j]][i];
-        if (form[this.RVP_labels[j].split(" ").join("_")][i] == null) {
-          form[this.RVP_labels[j].split(" ").join("_")][i] = "";
+        const form_key = this.RVP_labels[j].split(" ").join("_");
+        if (CommonUtils.isValidValue(form[form_key])) {
+          form[form_key] = this.input[this.RVP_labels[j]][i];
+          if (!CommonUtils.isValidValue(form[form_key][i])) {
+            form[this.RVP_labels[j].split(" ").join("_")][i] = "";
+          }
         }
       }
     }
