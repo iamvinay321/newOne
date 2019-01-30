@@ -320,7 +320,9 @@ export class FormComponent implements OnInit {
     this.http.get(encoded_url).subscribe(
       res => {
         console.log(res);
-        this.V_ID = JSON.parse(res['V_ID']);
+        if (CommonUtils.isValidValue(res['V_ID']) && res['V_ID'].length > 0) {
+          this.V_ID = JSON.parse(res['V_ID']);
+        }
         this.Initial_record = {
           "Field_Names": this.Field_Names,
           "Field_Values": this.Field_Values,

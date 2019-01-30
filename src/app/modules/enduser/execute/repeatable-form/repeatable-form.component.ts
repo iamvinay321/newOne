@@ -88,9 +88,8 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     var Field_Names_Ar = [];
     var Field_Values_Ar = [];
     var key_array = Object.keys(form);
-    delete form["iteration"];
     for (const field_name in form) {
-      if (form.hasOwnProperty(field_name)) {
+      if (form.hasOwnProperty(field_name) && field_name !== "iteration") {
         Field_Names_Ar.push("\"" + field_name + "\"");
         Field_Values_Ar.push("\"" + form[field_name] + "\"");
       }
@@ -99,7 +98,14 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     const Field_Names = Field_Names_Ar.join("|");
     const Field_Values = Field_Values_Ar.join("|");
 
-    var body_req: any[] = [];
+    let body_req = {
+      "V_Table_Name": this.V_TABLE_NAME,
+      "V_Schema_Name": this.V_SCHEMA_NAME,
+      "V_SRVC_CD": this.V_SRVC_CD,
+      "V_USR_NM": this.V_USR_NM,
+      "V_SRC_CD": this.V_SRC_CD,
+      "V_PRCS_ID": this.V_PRCS_ID,
+    }
 
     if (Field_Names !== this.Field_Names_initial) {
       body_req["Field_Names"] = Field_Names;
@@ -107,30 +113,26 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     if (Field_Values !== this.Field_Values_initial) {
       body_req["Field_Values"] = Field_Values;
     }
-    body_req["V_ID"] = this.V_ID[form["iteration"] - 1];
+    body_req["Verb"] = "POST";
+    let httpMethod = this.http.post.bind(this.http);
+    if (CommonUtils.isValidValue(this.V_ID) && CommonUtils.isValidValue(this.V_ID[form["iteration"] - 1])) {
+      body_req["V_ID"] = this.V_ID[form["iteration"] - 1];
+      body_req["Verb"] = "PATCH";
+      httpMethod = this.http.put.bind(this.http);
+    }
     body_req["REST_Service"] = "Forms_Record";
-    body_req["Verb"] = "PATCH";
-    /*let body_FORMrec = {
-      "Field_Names": Field_Names,
-      "Field_Values": Field_Values,*/
-    /*"V_Table_Name": this.V_TABLE_NAME,
-    "V_Schema_Name": this.V_SCHEMA_NAME,
-    "V_SRVC_CD": this.V_SRVC_CD,
-    "V_USR_NM": this.V_USR_NM,
-    "V_SRC_CD": this.V_SRC_CD,
-    "V_PRCS_ID": this.V_PRCS_ID,*/
-    /*"V_ID": this.V_ID[form["iteration"] - 1],
-    "REST_Service": "Forms_Record",
-    "Verb": "PATCH"
-  }*/
 
     //console.log(body_FORMrec);
     console.log(body_req);
     //this.http.put(this.apiUrlGet, body_FORMrec).subscribe(
-    this.http.put(this.apiUrlGet, body_req).subscribe(
+    httpMethod(this.apiUrlGet, body_req).subscribe(
       res => {
         console.log("Response:\n" + res);
-      });
+      }),
+      err => {
+        console.error("failure response recieved in post");
+        console.error(err);
+      }
   }
 
   deleteForm(form): void {
