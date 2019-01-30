@@ -84,19 +84,19 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
   updateForm(form): void {
     console.log('update form call');
 
-     var Field_Names = [];
-    var Field_Values = [];
+    var Field_Names_Ar = [];
+    var Field_Values_Ar = [];
     var key_array = Object.keys(form);
     delete form["iteration"];
     for (const field_name in form) {
       if (form.hasOwnProperty(field_name)) {
-        Field_Names.push("\"" + field_name + "\"");
-        Field_Values.push("\"" + form[field_name] + "\"");
+        Field_Names_Ar.push("\"" + field_name + "\"");
+        Field_Values_Ar.push("\"" + form[field_name] + "\"");
       }
     }
     
-    Field_Names = Field_Names.join("|");
-    Field_Values = Field_Values.join("|");
+    const Field_Names = Field_Names_Ar.join("|");
+    const Field_Values = Field_Values_Ar.join("|");
 
     var body_req: any[] = [];
 
