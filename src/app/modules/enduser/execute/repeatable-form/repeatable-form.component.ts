@@ -45,42 +45,6 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     super(StorageSessionService, http, router, globals, app);
   }
 
-  addForm(form): void {
-    console.log('add form call');
-    var Field_Names = '';
-    var Field_Values = "";
-    var key_array = Object.keys(form)
-    for (let i = 0; i < key_array.length; i++) {
-      if (i != 0) {
-        Field_Names += '|';
-        Field_Values += '|';
-      }
-      Field_Names += "\"" + key_array[i] + "\"";
-      Field_Values += "\"" + form[key_array[i]] + "\"";
-    }
-
-    Field_Names += '|\"V_abcd\"';
-    Field_Values += '|\"\"';
-    let body_FORMrec = {
-      "Field_Names": Field_Names,
-      "Field_Values": Field_Values,
-      "V_Table_Name": this.V_TABLE_NAME,
-      "V_Schema_Name": this.V_SCHEMA_NAME,
-      "V_Key_Names": this.V_KEY_NAME,
-      "V_Key_Values": this.V_KEY_VALUE,
-      "V_SRVC_CD": this.V_SRVC_CD,
-      "V_USR_NM": this.V_USR_NM,
-      "V_SRC_CD": this.V_SRC_CD,
-      "V_PRCS_ID": this.V_PRCS_ID,
-      "REST_Service": "Forms_Record",
-      "Verb": "POST"
-    }
-    console.log(body_FORMrec);
-    /*this.http.post(this.apiUrlGet, body_FORMrec).subscribe(
-      res => {
-        console.log("Response:\n" + res);
-      });*/
-  }
 
   updateForm(form): void {
     console.log('update form call');
@@ -90,8 +54,8 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     var key_array = Object.keys(form);
     for (const field_name in form) {
       if (form.hasOwnProperty(field_name) && field_name !== "iteration") {
-        Field_Names_Ar.push("\"" + field_name + "\"");
-        Field_Values_Ar.push("\"" + form[field_name] + "\"");
+        Field_Names_Ar.push("`" + field_name + "`");
+        Field_Values_Ar.push("'" + form[field_name] + "'");
       }
     }
 
@@ -105,6 +69,8 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
       "V_USR_NM": this.V_USR_NM,
       "V_SRC_CD": this.V_SRC_CD,
       "V_PRCS_ID": this.V_PRCS_ID,
+      "V_Key_Names": this.V_KEY_NAME,
+      "V_Key_Values": this.V_KEY_VALUE,
     }
 
     if (Field_Names !== this.Field_Names_initial) {

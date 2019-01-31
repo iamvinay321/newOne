@@ -153,8 +153,8 @@ export class FormComponent implements OnInit {
         this.Field_Names += '|';
         this.Field_Values += '|';
       }
-      this.Field_Names += "\"" + key_array[i] + "\"";
-      this.Field_Values += "\"" + this.RVP_DataObj[key_array[i]] + "\"";
+      this.Field_Names += "`" + key_array[i] + "`";
+      this.Field_Values += "'" + this.RVP_DataObj[key_array[i]] + "'";
     }
     this.RVP_Data.push('V_abcd');
     this.Field_Names += '|\"V_abcd\"';
