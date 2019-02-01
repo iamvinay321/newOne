@@ -207,9 +207,9 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     }
     console.log("Iterations :");
     console.log(this.rows);
-    for (let i = this.totalRow; i > 0; i--) {
+    for (let i = 1; i < this.totalRow; i++) {
       for (let j = 0; j < this.RVP_labels.length; j++) {
-        this.input[this.RVP_labels[j]][i] = this.RVP_DataObj[this.RVP_labels[j].split(" ").join("_")][i];
+        this.input[this.RVP_labels[j]][i] = this.RVP_DataObj[this.RVP_labels[j].split(" ").join("_")][i-1];
       }
     }
     this.cdr.detectChanges();
