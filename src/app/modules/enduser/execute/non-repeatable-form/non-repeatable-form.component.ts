@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 //import { GetFormData } from '../getDataForm';
 import { StorageSessionService } from '../../../../service/storage-session.service';
-import {FormComponent} from '../form/form.component';
-import {AppComponent} from '../../../../app.component';
+import { FormComponent } from '../form/form.component';
+import { AppComponent } from '../../../../app.component';
 
 import { EndUserService } from '../../../../service/EndUser-service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -10,7 +10,7 @@ import { Globals } from '../../../../service/globals';
 import { HttpClient } from '@angular/common/http'
 import { Router } from '@angular/router';
 import * as dateFormat from 'dateformat';
-import { HostListener } from "@angular/core";
+import { HostListener, ChangeDetectorRef } from "@angular/core";
 import { MatTableDataSource } from '@angular/material';
 import { getISODayOfWeek } from 'ngx-bootstrap/chronos/units/day-of-week';
 import { encode } from 'punycode';
@@ -24,14 +24,14 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
   // domain_name = this.globals.domain_name;
   //  private apiUrlGet = "https://" + this.domain_name + "/rest/E_DB/SP?";
   public param: any;
-  mobileView=false;
+  mobileView = false;
   editing = true;
   ctrl_variables: any;
-  input:any[]= [];
+  input: any[] = [];
   V_PVP: any;
   Field_Length: any;
   currentDate: string;
-  PVP_Updated: any ={};
+  PVP_Updated: any = {};
   date_value: any;
   dateEntry: any;
   screenHeight: number;
@@ -42,49 +42,53 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     public app: AppComponent,
     public http: HttpClient,
     public router: Router,
-    public globals: Globals
+    public globals: Globals,
+    public cdr: ChangeDetectorRef,
   ) {
-    super(StorageSessionService,http,router,globals,app);
+    super(StorageSessionService, http, router, globals, app, cdr);
   }
   @HostListener('window:resize', ['$event'])
-    onResize(event?) {
-      this.screenHeight = window.innerHeight;
-      this.screenWidth = window.innerWidth;
-      if(this.screenWidth<=900)
-      {
-        this.mobileView=true;
-        this.desktopView=false;
-      }else{
-        this.mobileView=false;
-        this.desktopView=true;
-      }
+  onResize(event?) {
+    this.screenHeight = window.innerHeight;
+    this.screenWidth = window.innerWidth;
+    if (this.screenWidth <= 900) {
+      this.mobileView = true;
+      this.desktopView = false;
+    } else {
+      this.mobileView = false;
+      this.desktopView = true;
+    }
   }
   ngOnInit() {
+    this.registerDataChangeHandler(this.updateInput.bind(this));
     this.screenHeight = window.innerHeight;
-      this.screenWidth = window.innerWidth;
-      if(this.screenWidth<=900)
-      {
-        this.mobileView=true;
-        this.desktopView=false;
-      }else{
-        this.mobileView=false;
-        this.desktopView=true;
-      }
+    this.screenWidth = window.innerWidth;
+    if (this.screenWidth <= 900) {
+      this.mobileView = true;
+      this.desktopView = false;
+    } else {
+      this.mobileView = false;
+      this.desktopView = true;
+    }
     this.getFormData();
-    for(let i=0; i<this.RVP_labels.length; i++){
+    this.updateInput();
+
+  }
+
+  updateInput() {
+    for (let i = 0; i < this.RVP_labels.length; i++) {
       this.input[this.RVP_labels[i]] = this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")][0];
     }
-    
   }
 
   onSubmit() {
-    if(this.V_TABLE_NAME !== ''){
+    if (this.V_TABLE_NAME !== '') {
       this.submit_formsRecord();
     }
     this.build_PVP();
   }
 
-  submit_formsRecord(){
+  submit_formsRecord() {
     let body_FORMrec = {
       "Field_Names": this.Field_Names,
       "Field_Values": this.Field_Values,
@@ -102,19 +106,19 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     console.log(body_FORMrec);
     this.http.post(this.apiUrlGet, body_FORMrec).subscribe(
       res => {
-        console.log("Response:\n"+res);
+        console.log("Response:\n" + res);
       });
   }
 
-  build_PVP(){
+  build_PVP() {
     this.currentDate = dateFormat(new Date(), "ddd mmm dd yyyy hh:MM:ss TT o");
     //-------Update PVP--------//
-    
-    for(let i=0; i<this.RVP_labels.length; i++){
+
+    for (let i = 0; i < this.RVP_labels.length; i++) {
       this.PVP_Updated[this.RVP_labels[i].split(" ").join("_")] = this.input[this.RVP_labels[i]].toString();
     }
-    
-    
+
+
     let body_buildPVP = {
       "V_USR_NM": this.V_USR_NM,
       "V_EXE_CD": this.Check_RPT_NRPT,
@@ -130,15 +134,15 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
       "TimeZone": this.currentDate
     }
     console.log(body_buildPVP);
-    console.log("Body: "+body_buildPVP+"\nURL:"+"https://" + this.domain_name + "/rest/Submit/FormSubmit");
+    console.log("Body: " + body_buildPVP + "\nURL:" + "https://" + this.domain_name + "/rest/Submit/FormSubmit");
     this.http.post("https://" + this.domain_name + "/rest/Submit/FormSubmit", body_buildPVP).subscribe(
       res => {
         console.log(res);
         this.invoke_router(res);
-    });
+      });
   }
 
-  onCancel(){
+  onCancel() {
     console.log("Cancelled");
     this.router.navigateByUrl("End_User");
   }

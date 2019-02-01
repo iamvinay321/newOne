@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { EndUserService } from '../../../../service/EndUser-service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Globals } from '../../../../service/globals';
@@ -44,11 +44,13 @@ export class FormComponent implements OnInit {
     public http: HttpClient,
     public router: Router,
     public globals: Globals,
-    public app: AppComponent
+    public app: AppComponent,
+    public cdr: ChangeDetectorRef,
   ) { }
 
   domain_name = this.globals.domain_name;
   public apiUrlGet = 'https://' + this.domain_name + '/rest/E_DB/SP?';
+  public dataChangeHandler: any;
   V_SRC_CD = this.StorageSessionService.getSession('agency');
   V_USR_NM = this.StorageSessionService.getSession('email');
   Form_Data: any;
@@ -142,6 +144,10 @@ export class FormComponent implements OnInit {
     console.log("Field Data 1:");
     console.log(JSON.parse(this.RVP_Data));
     this.RVP_DataObj = JSON.parse(this.RVP_Data);
+    this.updateInitialFieldNameAndValues();
+  }
+
+  updateInitialFieldNameAndValues(){
     console.log(this.RVP_DataObj);
     var key_array = Object.keys(this.RVP_DataObj);
 
@@ -165,6 +171,10 @@ export class FormComponent implements OnInit {
     console.log("Field_Values");
     console.log(this.Field_Values);
     console.log(this.StorageSessionService.getCookies('App_Prcs'));
+  }
+
+  registerDataChangeHandler(handler: any){
+    this.dataChangeHandler = handler;
   }
 
   getOther_records(): any {
@@ -323,16 +333,6 @@ export class FormComponent implements OnInit {
         if (CommonUtils.isValidValue(res['V_ID']) && res['V_ID'].length > 0) {
           this.V_ID = JSON.parse(res['V_ID']);
         }
-        this.Initial_record = {
-          "Field_Names": this.Field_Names,
-          "Field_Values": this.Field_Values,
-          "V_Table_Name": this.V_TABLE_NAME,
-          "V_Schema_Name": this.V_SCHEMA_NAME,
-          "V_SRVC_CD": this.V_SRVC_CD,
-          "V_USR_NM": this.V_USR_NM,
-          "V_SRC_CD": this.V_SRC_CD,
-          "V_PRCS_ID": this.V_PRCS_ID,
-        }
         var res_keys = Object.keys(res);
         var foundKey: boolean;
         for (let i = 0; i < this.RVP_Keys.length; i++) {
@@ -344,9 +344,13 @@ export class FormComponent implements OnInit {
             }
           }
           if (foundKey) {
-            this.RVP_Data[this.RVP_Keys[i]] = res[res_keys[i]];
+            this.RVP_DataObj[this.RVP_Keys[i]] = res[res_keys[i]];
             //RVP property updated if found in result
           }
+        }
+        this.updateInitialFieldNameAndValues();
+        if(CommonUtils.isValidValue(this.dataChangeHandler)){
+          this.dataChangeHandler();
         }
       });
   }

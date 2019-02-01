@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, forwardRef } from '@angular/core';
+import { Component, OnInit, Input, forwardRef, ChangeDetectorRef } from '@angular/core';
 //import { GetFormData } from '../getDataForm';
 import { StorageSessionService } from '../../../../service/storage-session.service';
 
@@ -40,9 +40,10 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     public http: HttpClient,
     public router: Router,
     public globals: Globals,
-    public app: AppComponent
+    public app: AppComponent,
+    public cdr: ChangeDetectorRef,
   ) {
-    super(StorageSessionService, http, router, globals, app);
+    super(StorageSessionService, http, router, globals, app, cdr);
   }
 
 
@@ -162,23 +163,9 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
   Field_Names_initial = '';
   Field_Values_initial = "";
   ngOnInit() {
+    this.registerDataChangeHandler(this.updateInput.bind(this));
     this.getFormData();
-    for (let i = 0; i < this.RVP_labels.length; i++) {
-      this.input[this.RVP_labels[i]] = [];
-    }
-    var row_present = this.RVP_DataObj[this.RVP_labels[0].split(" ").join("_")].length;
-    this.totalRow += row_present;
-    for (let i = 1; i < this.totalRow; i++) {
-      this.rows.push(i);
-    }
-    console.log("Iterations :");
-    console.log(this.rows);
-    for (let i = 0; i < this.totalRow; i++) {
-      for (let j = 0; j < this.RVP_labels.length; j++) {
-        this.input[this.RVP_labels[j]][i] = this.RVP_DataObj[this.RVP_labels[j].split(" ").join("_")][i];
-      }
-    }
-
+    this.updateInput();
     var form: any[][] = [];
     for (let i = 0; i < this.totalRow; i++) {
       for (let j = 0; j < this.RVP_labels.length; j++) {
@@ -204,6 +191,28 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     // this.Field_Names_initial += '|\"V_abcd\"';
     // this.Field_Values_initial += '|\"\"';
 
+  }
+
+  updateInput() {
+    for (let i = 0; i < this.RVP_labels.length; i++) {
+      this.input[this.RVP_labels[i]] = [];
+    }
+    this.totalRow = 1;
+    this.rows = [0];
+    this.cdr.detectChanges();
+    var row_present = this.RVP_DataObj[this.RVP_labels[0].split(" ").join("_")].length;
+    this.totalRow += row_present;
+    for (let i = 1; i < this.totalRow; i++) {
+      this.rows.push(i);
+    }
+    console.log("Iterations :");
+    console.log(this.rows);
+    for (let i = this.totalRow; i > 0; i--) {
+      for (let j = 0; j < this.RVP_labels.length; j++) {
+        this.input[this.RVP_labels[j]][i] = this.RVP_DataObj[this.RVP_labels[j].split(" ").join("_")][i];
+      }
+    }
+    this.cdr.detectChanges();
   }
 
   addRow() {
