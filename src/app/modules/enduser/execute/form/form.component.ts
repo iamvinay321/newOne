@@ -331,7 +331,7 @@ export class FormComponent implements OnInit {
       res => {
         console.log(res);
         if (CommonUtils.isValidValue(res['V_ID']) && res['V_ID'].length > 0) {
-          this.V_ID = JSON.parse(res['V_ID']);
+          this.V_ID = res['V_ID'];
         }
         var res_keys = Object.keys(res);
         var foundKey: boolean;
