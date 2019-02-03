@@ -693,7 +693,8 @@ export class ExecuteComponent implements OnInit {
     this.https.post('https://' + this.domain_name + '/rest/Process/Start', body).subscribe(
       res => {
 
-        // console.log(res);
+        console.log("response of start call");
+        console.log(res);
         //
         this.executedata = { SL_APP_CD: this.SL_APP_CD, SL_PRC_CD: this.SL_PRC_CD };
         console.log('this.executedata', this.executedata);
@@ -739,7 +740,7 @@ export class ExecuteComponent implements OnInit {
       V_PRCS_ID: this.Execute_res_data['V_PRCS_ID'],
       V_PRCS_TXN_ID: this.Execute_res_data['V_PRCS_TXN_ID'],
       V_NAV_DIRECTION: this.Execute_res_data['V_NAV_DIRECTION'],
-      V_TIMEOUT_SEC: 300,
+      V_TIMEOUT_SEC: this.globals.TIMEOUT_IN_SECONDS,
       V_DSPLY_WAIT_SEC: 100,
       V_MNL_WAIT_SEC: 180,
       REST_Service: 'Report',

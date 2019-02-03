@@ -109,9 +109,12 @@ export class FormComponent implements OnInit {
 
     this.labels_toShow();
 
-    for (let i = 0; i < this.RVP_labels.length; i++) {
-      this.getOptional_values(this.RVP_labels[i]);
-      this.set_fieldType_OLD(this.RVP_labels[i]);
+    // for (let i = 0; i < this.RVP_labels.length; i++) {
+    //   this.getOptional_values(this.RVP_labels[i]);
+    // }
+
+    for (let i = 0; i < this.RVP_Keys.length; i++) {
+      this.getOptional_values(this.RVP_Keys[i], this.RVP_labels[i]);
     }
     this.set_fieldType();
     this.set_fieldWidth();
@@ -126,14 +129,18 @@ export class FormComponent implements OnInit {
     this.RVP_Keys = Object.keys(this.RVP_DataObj);
     for (let i = 0; i < this.RVP_Keys.length; i++) {
       this.RVP_Values.push(this.RVP_DataObj[this.RVP_Keys[i]]);
-      if (this.RVP_Keys[i].substring(0, 2) == "V_") {
+      // if (this.RVP_Keys[i].substring(0, 2) == "V_") {
 
-      } else {
-        this.RVP_labels.push(this.RVP_Keys[i].replace(new RegExp('_', 'g'), ' '));
-      }
+      // } else {
+      this.RVP_labels.push(this.RVP_Keys[i].replace(new RegExp('_', 'g'), ' '));
+      // }
     }
     console.log(this.RVP_labels);
   }
+
+  // updateLabelForDisplay(label: string){
+
+  // }
 
   setField_RVP(): any {
     //------------Getting RVP Data--------------//
@@ -147,38 +154,38 @@ export class FormComponent implements OnInit {
     this.updateInitialFieldNameAndValues();
   }
 
-  updateInitialFieldNameAndValues(){
+  updateInitialFieldNameAndValues() {
     console.log(this.RVP_DataObj);
     var key_array = Object.keys(this.RVP_DataObj);
 
-    //----------Field Names & Field Values as {"str1"|"str2"}-----------//
-    this.Field_Names = '';
-    this.Field_Values = "";
-    for (let i = 0; i < key_array.length; i++) {
-      if (i != 0) {
-        this.Field_Names += '|';
-        this.Field_Values += '|';
-      }
-      this.Field_Names += "`" + key_array[i] + "`";
-      this.Field_Values += "'" + this.RVP_DataObj[key_array[i]] + "'";
-    }
-    this.RVP_Data.push('V_abcd');
-    this.Field_Names += '|\"V_abcd\"';
-    this.Field_Values += '|\"\"';
+    // //----------Field Names & Field Values as {"str1"|"str2"}-----------//
+    // this.Field_Names = '';
+    // this.Field_Values = "";
+    // for (let i = 0; i < key_array.length; i++) {
+    //   if (i != 0) {
+    //     this.Field_Names += '|';
+    //     this.Field_Values += '|';
+    //   }
+    //   this.Field_Names += "`" + key_array[i] + "`";
+    //   this.Field_Values += "'" + this.RVP_DataObj[key_array[i]] + "'";
+    // }
+    // // this.RVP_Data.push('V_abcd');
+    // // this.Field_Names += '|\"V_abcd\"';
+    // // this.Field_Values += '|\"\"';
 
-    console.log("Field_Names");
-    console.log(this.Field_Names);
-    console.log("Field_Values");
-    console.log(this.Field_Values);
+    // console.log("Field_Names");
+    // console.log(this.Field_Names);
+    // console.log("Field_Values");
+    // console.log(this.Field_Values);
     console.log(this.StorageSessionService.getCookies('App_Prcs'));
   }
 
-  registerDataChangeHandler(handler: any){
+  registerDataChangeHandler(handler: any) {
     this.dataChangeHandler = handler;
   }
 
   getOther_records(): any {
-    this.V_SRVC_CD = this.PVP['V_SRVC_CD'][0];
+    this.V_SRVC_CD = this.PVP['V_SRVC_CD'] ? this.PVP['V_SRVC_CD'][0] : this.Form_Data['SRVC_CD'][0];
 
     this.V_PRCS_TXN_ID = this.PVP['V_PRCS_TXN_ID'][0];
 
@@ -253,22 +260,27 @@ export class FormComponent implements OnInit {
   }
 
   invoke_router(res) {
-    var timeout = res['RESULT'][0].toString().substring(0, 7) == "TIMEOUT";
-    console.log(timeout);
-    if (timeout && this.ctrl_variables.call_repeat_on_TIMEOUT) {
-      this.app.fromNonRepForm = true;
+    let serviceCode = null;
+    if (CommonUtils.isValidValue(res['SRVC_CD']) && res['SRVC_CD'][0] === "END") {
       this.router.navigate(["/EndUser/Execute"]);
     } else {
-      console.log('https://' + this.domain_name + '/rest/Submit/FormSubmit');
-      this.StorageSessionService.setCookies('report_table', res);
-      if (res['RESULT'] == 'INPUT_ARTFCT_TASK') {
-        this.router.navigateByUrl('InputArtForm');
-      } else if (res['V_EXE_CD'][0] == 'NONREPEATABLE_MANUAL_TASK') {
-        this.router.navigateByUrl('NonRepeatForm');
-      } else if (res['V_EXE_CD'][0] == 'REPEATABLE_MANUAL_TASK') {
-        this.router.navigateByUrl('RepeatForm');
-      } if (res['RESULT'] == 'TABLE') {
-        this.router.navigateByUrl('ReportTable');
+      var timeout = res['RESULT'][0].toString().substring(0, 7) == "TIMEOUT";
+      console.log(timeout);
+      if (timeout && this.ctrl_variables.call_repeat_on_TIMEOUT) {
+        this.app.fromNonRepForm = true;
+        this.router.navigate(["/EndUser/Execute"]);
+      } else {
+        console.log('https://' + this.domain_name + '/rest/Submit/FormSubmit');
+        this.StorageSessionService.setCookies('report_table', res);
+        if (res['RESULT'] == 'INPUT_ARTFCT_TASK') {
+          this.router.navigateByUrl('InputArtForm');
+        } else if (res['V_EXE_CD'][0] == 'NONREPEATABLE_MANUAL_TASK') {
+          this.router.navigateByUrl('NonRepeatForm');
+        } else if (res['V_EXE_CD'][0] == 'REPEATABLE_MANUAL_TASK') {
+          this.router.navigateByUrl('RepeatForm');
+        } if (res['RESULT'] == 'TABLE') {
+          this.router.navigateByUrl('ReportTable');
+        }
       }
     }
   }
@@ -336,26 +348,33 @@ export class FormComponent implements OnInit {
         var res_keys = Object.keys(res);
         var foundKey: boolean;
         for (let i = 0; i < this.RVP_Keys.length; i++) {
-          foundKey = false;
-          for (let j = 0; j < res_keys.length; j++) {
-            if (this.RVP_Keys[i] == res_keys[j]) {
-              foundKey = true;
-              break;
-            }
+          // foundKey = false;
+          // for (let j = 0; j < res_keys.length; j++) {
+          //   if (this.RVP_Keys[i] == res_keys[j]) {
+          //     foundKey = true;
+          //     break;
+          //   }
+          let newValue = res[this.RVP_Keys[i]];
+          if (CommonUtils.isValidValue(newValue)) {
+            // newValue = "";
+            this.RVP_DataObj[this.RVP_Keys[i]] = newValue;
           }
-          if (foundKey) {
-            this.RVP_DataObj[this.RVP_Keys[i]] = res[res_keys[i]];
-            //RVP property updated if found in result
-          }
+
+          // if (foundKey) {
+          //   this.RVP_DataObj[this.RVP_Keys[i]] = res[res_keys[i]];
+          //   //RVP property updated if found in result
+          // }
+
         }
+
         this.updateInitialFieldNameAndValues();
-        if(CommonUtils.isValidValue(this.dataChangeHandler)){
+        if (CommonUtils.isValidValue(this.dataChangeHandler)) {
           this.dataChangeHandler();
         }
       });
   }
 
-  getOptional_values(V_PARAM_NM) {
+  getOptional_values(V_PARAM_NM, display_label) {
     const url = this.apiUrlGet + 'V_SRC_CD=' + this.V_SRC_CD + '&V_APP_CD=' + this.SL_APP_CD + '&V_PRCS_CD=' + this.SL_PRC_CD + '&V_PARAM_NM=' + V_PARAM_NM + '&V_SRVC_CD=' + this.V_SRVC_CD + '&REST_Service=ProcessParametersOptions&Verb=GET';
     const encoded_url = encodeURI(url);
     console.log(encoded_url);
@@ -363,7 +382,7 @@ export class FormComponent implements OnInit {
     this.http.get(encoded_url).subscribe(
       res => {
         console.log(res);
-        this.options[V_PARAM_NM] = res[V_PARAM_NM];
+        this.options[display_label] = res[V_PARAM_NM];
       });
   }
 

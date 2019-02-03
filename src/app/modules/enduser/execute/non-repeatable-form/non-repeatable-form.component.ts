@@ -14,6 +14,7 @@ import { HostListener, ChangeDetectorRef } from "@angular/core";
 import { MatTableDataSource } from '@angular/material';
 import { getISODayOfWeek } from 'ngx-bootstrap/chronos/units/day-of-week';
 import { encode } from 'punycode';
+import { CommonUtils } from '../../../../common/utils';
 @Component({
   selector: 'app-non-repeatable-form',
   templateUrl: './non-repeatable-form.component.html',
@@ -79,23 +80,44 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     for (let i = 0; i < this.RVP_labels.length; i++) {
       this.input[this.RVP_labels[i]] = this.RVP_DataObj[this.RVP_labels[i].split(" ").join("_")][0];
     }
+
+    this.Field_Names = '';
+    this.Field_Values = "";
+    for (let i = 0; i < this.RVP_Keys.length; i++) {
+      if (i != 0) {
+        this.Field_Names += '|';
+        this.Field_Values += '|';
+      }
+      this.Field_Names += "`" + this.RVP_Keys[i] + "`";
+      this.Field_Values += "'" + this.RVP_DataObj[this.RVP_Keys[i]] + "'";
+    }
+  }
+
+  prepareFieldValues(){
+    let values = [];
+    for (let i = 0; i < this.RVP_Keys.length; i++) {
+      const Field_Value = "'" + this.input[this.RVP_labels[i]] + "'";
+      values.push(Field_Value);
+    }
+    return values.join("|");
   }
 
   onSubmit() {
     if (this.V_TABLE_NAME !== '') {
       this.submit_formsRecord();
+    } else {
+      this.build_PVP();
     }
-    this.build_PVP();
   }
 
   submit_formsRecord() {
     let body_FORMrec = {
       "Field_Names": this.Field_Names,
-      "Field_Values": this.Field_Values,
+      "Field_Values": this.prepareFieldValues(),
       "V_Table_Name": this.V_TABLE_NAME,
       "V_Schema_Name": this.V_SCHEMA_NAME,
-      "V_Key_Names": this.V_KEY_NAME,
-      "V_Key_Values": this.V_KEY_VALUE,
+      // "V_Key_Names": this.V_KEY_NAME,
+      // "V_Key_Values": this.V_KEY_VALUE,
       "V_SRVC_CD": this.V_SRVC_CD,
       "V_USR_NM": this.V_USR_NM,
       "V_SRC_CD": this.V_SRC_CD,
@@ -103,11 +125,15 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
       "REST_Service": "Forms_Record",
       "Verb": "POST"
     }
-    console.log(body_FORMrec);
     this.http.post(this.apiUrlGet, body_FORMrec).subscribe(
       res => {
         console.log("Response:\n" + res);
+        this.build_PVP();
+        console.log(body_FORMrec);
       });
+    err => {
+      console.log("Error in form record post request:\n" + err);
+    }
   }
 
   build_PVP() {
@@ -115,7 +141,11 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     //-------Update PVP--------//
 
     for (let i = 0; i < this.RVP_labels.length; i++) {
-      this.PVP_Updated[this.RVP_labels[i].split(" ").join("_")] = this.input[this.RVP_labels[i]].toString();
+      let val = this.input[this.RVP_labels[i]];
+      if (CommonUtils.isValidValue(val)) {
+        val = val.toString();
+      }
+      this.PVP_Updated[this.RVP_labels[i].split(" ").join("_")] = val;
     }
 
 

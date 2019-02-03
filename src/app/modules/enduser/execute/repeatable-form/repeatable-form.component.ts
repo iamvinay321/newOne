@@ -69,9 +69,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
       "V_SRVC_CD": this.V_SRVC_CD,
       "V_USR_NM": this.V_USR_NM,
       "V_SRC_CD": this.V_SRC_CD,
-      "V_PRCS_ID": this.V_PRCS_ID,
-      "V_Key_Names": this.V_KEY_NAME,
-      "V_Key_Values": this.V_KEY_VALUE,
+      "V_PRCS_ID": this.V_PRCS_ID
     }
 
     if (Field_Names !== this.Field_Names_initial) {
@@ -86,6 +84,9 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
       body_req["V_ID"] = this.V_ID[form["iteration"] - 1];
       body_req["Verb"] = "PATCH";
       httpMethod = this.http.put.bind(this.http);
+    } else {
+      body_req["V_Key_Names"] = this.V_KEY_NAME;
+      body_req["V_Key_Values"] = this.V_KEY_VALUE;
     }
     body_req["REST_Service"] = "Forms_Record";
 
@@ -209,7 +210,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     console.log(this.rows);
     for (let i = 1; i < this.totalRow; i++) {
       for (let j = 0; j < this.RVP_labels.length; j++) {
-        this.input[this.RVP_labels[j]][i] = this.RVP_DataObj[this.RVP_labels[j].split(" ").join("_")][i-1];
+        this.input[this.RVP_labels[j]][i] = this.RVP_DataObj[this.RVP_labels[j].split(" ").join("_")][i - 1];
       }
     }
     this.cdr.detectChanges();

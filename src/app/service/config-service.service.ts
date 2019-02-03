@@ -337,12 +337,12 @@ export class ConfigServiceService {
       const fieldObj: any = {};
       fieldObj.name = ParameterName[i];
       fieldObj.placeholder = ParameterName[i];
-      if (!CommonUtils.isValidValue(ParameterType[i])) {
-        fieldObj.type = ParameterType[i];
+      if (CommonUtils.isValidValue(ParameterType[i]) && ParameterType[i]!=="") {
+        fieldObj.type = ParameterType[i] || "input";
       } else {
         fieldObj.type = "input";
       }
-      if (fieldObj.type === "checkbox" || fieldObj.type === "openlist") {
+      if (fieldObj.type === "Checkbox" || fieldObj.type === "openlist") {
         // need value as array 
         fieldObj.value = [currentVal[0]];
       } else {
@@ -350,7 +350,7 @@ export class ConfigServiceService {
       }
 
       // log incorrect values if found
-      if (fieldObj.type === "checkbox" || fieldObj.type === "radio" || fieldObj.type === "openlist") {
+      if (fieldObj.type === "Checkbox" || fieldObj.type === "Radio Button" || fieldObj.type === "openlist") {
         if (currentVal.length === 1 && currentVal[0] == null) {
           console.error("Invalid values provided for parameter " + fieldObj.name);
         }

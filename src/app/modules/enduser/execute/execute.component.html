@@ -100,7 +100,7 @@
           <mat-datepicker #picker></mat-datepicker>
         </mat-form-field>
       </ng-container>
-      <ng-container *ngIf="pr.type==='radio'">
+      <ng-container *ngIf="pr.type==='Radio Button'">
         <label class="f_label">{{pr.placeholder | removeWt}}</label>
         <mat-form-field class="form_input form_list" style="background-color: #f4f6f7">
           <input matInput style="display: none">
@@ -109,7 +109,7 @@
           </mat-radio-group>
         </mat-form-field>
       </ng-container>
-      <ng-container *ngIf="pr.type==='checkbox'">
+      <ng-container *ngIf="pr.type==='Checkbox'">
         <label class="f_label">{{pr.placeholder | removeWt}}</label>
         <mat-form-field class="form_input form_list" style="background-color: #f4f6f7">
           <input matInput style="display: none">
@@ -151,7 +151,7 @@
         <label class="f_label">{{pr.placeholder | removeWt}}</label>
         <input [(colorPicker)]="_backgroundColor" [style.background]="_backgroundColor" [(ngModel)]="pr.value" class="f_inp">
       </ng-container>
-      <ng-container *ngIf="pr.type==='input'">
+      <ng-container *ngIf="pr.type==='input' || pr.type==='Normal String'">
         <label class="f_label">{{pr.placeholder | removeWt}}</label>
         <mat-form-field class="form_input">
           <input matInput [name]="pr.name" (value)="pr.value" [matAutocomplete]="auto" (click)="getDropDownListValue(pr.name)"
