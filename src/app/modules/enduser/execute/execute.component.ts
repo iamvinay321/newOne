@@ -780,12 +780,12 @@ export class ExecuteComponent implements OnInit {
 
             this.router.navigateByUrl('InputArtForm', { skipLocationChange: true });
 
-          } else if (this.report.V_EXE_CD[0] == 'NONREPEATABLE_MANUAL_TASK') {
+          } else if (this.report.RESULT[0] == 'NONREPEATABLE_MANUAL_TASK') {
             // non-Repeatable NonRepeatForm
             this.router.navigateByUrl('NonRepeatForm');
             //this.router.navigateByUrl('Forms', { skipLocationChange: true });
 
-          } else if (this.report.V_EXE_CD[0] == 'REPEATABLE_MANUAL_TASK') {
+          } else if (this.report.RESULT[0] == 'REPEATABLE_MANUAL_TASK') {
             //Repeatable
             this.router.navigateByUrl('RepeatForm');
             //this.router.navigateByUrl('RepeatForm');
