@@ -772,28 +772,27 @@ export class ExecuteComponent implements OnInit {
           this.repeatCallTable(true);
         } else {
           this.repeatCallTable(false);
+          if (this.report.RESULT == 'TABLE') {
+
+            this.router.navigateByUrl('ReportTable', { skipLocationChange: true });
+          } else if (this.report.RESULT == 'INPUT_ARTFCT_TASK') {
+
+            this.router.navigateByUrl('InputArtForm', { skipLocationChange: true });
+
+          } else if (this.report.V_EXE_CD[0] == 'NONREPEATABLE_MANUAL_TASK') {
+            // non-Repeatable NonRepeatForm
+            this.router.navigateByUrl('NonRepeatForm');
+            //this.router.navigateByUrl('Forms', { skipLocationChange: true });
+
+          } else if (this.report.V_EXE_CD[0] == 'REPEATABLE_MANUAL_TASK') {
+            //Repeatable
+            this.router.navigateByUrl('RepeatForm');
+
+            //this.router.navigateByUrl('RepeatForm');
+          }
+
         }
         this.StorageSessionService.setCookies('App_Prcs', { 'V_APP_CD': this.APP_CD, 'V_PRCS_CD': this.PRCS_CD });
-        if (this.report.RESULT == 'INPUT_ARTFCT_TASK') {
-
-          this.router.navigateByUrl('InputArtForm', { skipLocationChange: true });
-
-        } else if (this.report.V_EXE_CD[0] == 'NONREPEATABLE_MANUAL_TASK') {
-          // non-Repeatable NonRepeatForm
-          this.router.navigateByUrl('NonRepeatForm');
-          //this.router.navigateByUrl('Forms', { skipLocationChange: true });
-
-        } else if (this.report.V_EXE_CD[0] == 'REPEATABLE_MANUAL_TASK') {
-          //Repeatable
-          this.router.navigateByUrl('RepeatForm');
-
-          //this.router.navigateByUrl('RepeatForm');
-        } if (this.report.RESULT == 'TABLE') {
-
-          this.router.navigateByUrl('ReportTable', { skipLocationChange: true });
-        }
-
-
 
         // if ('V_EXE_CD' in this.check_data) {
         //   this.router.navigateByUrl('forms');
