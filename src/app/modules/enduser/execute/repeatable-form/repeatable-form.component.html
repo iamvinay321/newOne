@@ -115,18 +115,18 @@
 												<mat-form-field class="form_input">
 													<input matInput [required]="configService.isFieldMendatory(label)" maxlength="configService.getMaxLengthForField(fieldType[label])"
 													 [name]="label" (value)="input[label][iter]" (change)="configService.transformFieldValueOnChange($event,label)"
-													 [(ngModel)]="input[label][iter]" [pattern]="configService.getValidationPattern(fieldType[label])" class="f_inp"
+													 [(ngModel)]="input[label][iter]"  class="f_inp"
 													 #name="ngModel">
 													<mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
 														<mat-option style="text-align:center;" *ngFor="let item of searchResult | myfilter:FilterAutoValue"
 														 [value]="item">
 															{{ item }}
 														</mat-option>
-													</mat-autocomplete>
-													<div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
-														{{configService.getFieldInValidMsg(name, label)}}
-													</div>
+													</mat-autocomplete>													
 												</mat-form-field>
+												<div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
+													{{configService.getFieldInValidMsg(name, label)}}
+												</div>
 											</ng-container>
 											<ng-container *ngSwitchCase="'Zip'">
 												<mat-form-field class="form_input">

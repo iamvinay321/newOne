@@ -107,7 +107,7 @@
 								<mat-form-field class="form_input">
 									<input matInput [required]="configService.isFieldMendatory(label)" maxlength="configService.getMaxLengthForField(pr.type)"
 									 [name]="label" (value)="input[label]" (change)="configService.transformFieldValueOnChange($event,label)"
-									 [(ngModel)]="input[label]" [pattern]="configService.getValidationPattern(pr.type)" class="f_inp" #name="ngModel">
+									 [(ngModel)]="input[label]"  class="f_inp" #name="ngModel">
 									<mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
 										<mat-option style="text-align:center;" *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
 											{{ item }}

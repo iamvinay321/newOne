@@ -185,18 +185,18 @@
               <mat-form-field class="form_input">
                 <input matInput [required]="data.isFieldMendatory(pr.name)" maxlength="data.getMaxLengthForField(pr.type)"
                   [name]="pr.name" (value)="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)"
-                  (change)="data.transformFieldValueOnChange($event,pr.type)" [(ngModel)]="pr.value" [pattern]="data.getValidationPattern(pr.type)"
+                  (change)="data.transformFieldValueOnChange($event,pr.type)" [(ngModel)]="pr.value" 
                   class="f_inp" #name="ngModel">
                 <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
                   <mat-option style="text-align:center;" (click)="Update_value(pr.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue"
                     [value]="item">
                     {{ item }}
                   </mat-option>
-                </mat-autocomplete>
-                <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
-                  {{data.getFieldInValidMsg(name, pr.name)}}
-                </div>
+                </mat-autocomplete>               
               </mat-form-field>
+              <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
+                {{data.getFieldInValidMsg(name, pr.name)}}
+              </div>
             </ng-container>
             <ng-container *ngSwitchCase="'Zip'">
               <mat-form-field class="form_input">
