@@ -27,13 +27,13 @@
 										 class="field-help">help</mat-icon>
 									</h4>
 									<br *ngIf="iter>0" />
-									<ng-container *ngIf="itr>0">
+									<ng-container *ngIf="iter>0">
 										<ng-container [ngSwitch]="fieldType[label]">
 											<ng-container *ngSwitchCase="'date'">
 												<mat-form-field class="form_input">
-													<input #name="ngModel" [required]="configService.isFieldMendatory()" [disabled]="configService.isFieldDisabled()" [name]="label"
-													 [value]="input[label][itr]"  [(ngModel)]="input[label][itr]"
-													 matInput [matDatepicker]="picker" class="f_inp">
+													<input #name="ngModel" [required]="configService.isFieldMendatory()" [disabled]="configService.isFieldDisabled()"
+													 [name]="label" [value]="input[label][iter]" [(ngModel)]="input[label][iter]" matInput [matDatepicker]="picker"
+													 class="f_inp">
 													<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
 													<mat-datepicker #picker></mat-datepicker>
 												</mat-form-field>
@@ -43,9 +43,9 @@
 											</ng-container>
 											<ng-container *ngSwitchCase="'time'">
 												<mat-form-field class="form_input">
-													<input #name="ngModel" [required]="configService.isFieldMendatory()" [disabled]="configService.isFieldDisabled()" matInput
-													 [type]="fieldType[label]" [name]="label" [value]="input[label][itr]" 
-													 [(ngModel)]="input[label][itr]" class="f_inp">
+													<input #name="ngModel" [required]="configService.isFieldMendatory()" [disabled]="configService.isFieldDisabled()"
+													 matInput [type]="fieldType[label]" [name]="label" [value]="input[label][iter]" [(ngModel)]="input[label][iter]"
+													 class="f_inp">
 												</mat-form-field>
 												<div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
 													{{configService.getFieldInValidMsg(name, label)}}
@@ -53,9 +53,9 @@
 											</ng-container>
 											<ng-container *ngSwitchCase="'datetime'">
 												<mat-form-field class="form_input" style="background-color: #f4f6f7">
-													<input #name="ngModel" [required]="configService.isFieldMendatory()" [disabled]="configService.isFieldDisabled()" matInput
-													 [name]="label" [value]="input[label][itr]" 
-													 [(ngModel)]="input[label][itr]" [owlDateTimeTrigger]="fdate" [owlDateTime]="fdate">
+													<input #name="ngModel" [required]="configService.isFieldMendatory()" [disabled]="configService.isFieldDisabled()"
+													 matInput [name]="label" [value]="input[label][iter]" [(ngModel)]="input[label][iter]" [owlDateTimeTrigger]="fdate"
+													 [owlDateTime]="fdate">
 													<owl-date-time [attr.id]="label"></owl-date-time>
 												</mat-form-field>
 												<div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
@@ -65,8 +65,8 @@
 											<ng-container *ngSwitchCase="'password'">
 												<mat-form-field class="form_input">
 													<input matInput #name="ngModel" [required]="configService.isFieldMendatory(label)" [disabled]="isDisabled[iter] || configService.isFieldDisabled(label)"
-													 [type]="fieldType[label]" [name]="label" [value]="input[label][itr]" 
-													 [(ngModel)]="input[label][itr]" #name="ngModel" class="f_inp">
+													 [type]="fieldType[label]" [name]="label" [value]="input[label][iter]" [(ngModel)]="input[label][iter]"
+													 #name="ngModel" class="f_inp">
 												</mat-form-field>
 												<div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
 													{{configService.getFieldInValidMsg(name, label)}}
@@ -103,8 +103,7 @@
 											<ng-container *ngSwitchCase="'Text Area'">
 												<mat-form-field class="form_input">
 													<textarea [required]="configService.isFieldMendatory(label)" matInput [disabled]="isDisabled[iter] || configService.isFieldDisabled(label)"
-													 [name]="label" [maxLength]="configService.getFieldMaxLength(label)" (value)="input[label][itr]"
-													 (click)="getDropDownListValue(label)" 
+													 [name]="label" [maxLength]="configService.getFieldMaxLength(label)" (value)="input[label][iter]" (click)="getDropDownListValue(label)"
 													 [(ngModel)]="input[label][iter]" class="f_inp" #name="ngModel">
 													  </textarea>
 												</mat-form-field>
@@ -115,11 +114,11 @@
 											<ng-container *ngSwitchCase="configService.getFieldTypeForChange(fieldType[label])">
 												<mat-form-field class="form_input">
 													<input matInput [required]="configService.isFieldMendatory(label)" maxlength="configService.getMaxLengthForField(fieldType[label])"
-													 [name]="label" (value)="input[label][itr]" 
-													 (change)="configService.transformFieldValueOnChange($event,label)" [(ngModel)]="input[label][iter]"
-													 [pattern]="configService.getValidationPattern(fieldType[label])" class="f_inp" #name="ngModel">
+													 [name]="label" (value)="input[label][iter]" (change)="configService.transformFieldValueOnChange($event,label)"
+													 [(ngModel)]="input[label][iter]" [pattern]="configService.getValidationPattern(fieldType[label])" class="f_inp"
+													 #name="ngModel">
 													<mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
-														<mat-option style="text-align:center;"  *ngFor="let item of searchResult | myfilter:FilterAutoValue"
+														<mat-option style="text-align:center;" *ngFor="let item of searchResult | myfilter:FilterAutoValue"
 														 [value]="item">
 															{{ item }}
 														</mat-option>
@@ -132,12 +131,12 @@
 											<ng-container *ngSwitchCase="'Zip'">
 												<mat-form-field class="form_input">
 													<input type="text" pattern="^[0-9]{5}?$" [required]="configService.isFieldMendatory(label)" maxlength="5"
-													 matInput [disabled]="isDisabled[iter] || configService.isFieldDisabled(label)" [name]="label" (value)="input[label][itr]"
-													 [matAutocomplete]="auto" (click)="getDropDownListValue(label)" 
-													 [(ngModel)]="input[label][iter]" class="f_inp" #name="ngModel">
+													 matInput [disabled]="isDisabled[iter] || configService.isFieldDisabled(label)" [name]="label" (value)="input[label][iter]"
+													 [matAutocomplete]="auto" (click)="getDropDownListValue(label)" [(ngModel)]="input[label][iter]" class="f_inp"
+													 #name="ngModel">
 
 													<mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
-														<mat-option style="text-align:center;"  *ngFor="let item of searchResult | myfilter:FilterAutoValue"
+														<mat-option style="text-align:center;" *ngFor="let item of searchResult | myfilter:FilterAutoValue"
 														 [value]="item">
 															{{ item }}
 														</mat-option>
@@ -150,12 +149,11 @@
 											<ng-container *ngSwitchCase="'Email'">
 												<mat-form-field class="form_input">
 													<input type="email" [required]="configService.isFieldMendatory(label)" matInput [disabled]="isDisabled[iter] || configService.isFieldDisabled(label)"
-													 [name]="label" (value)="input[label][itr]" [matAutocomplete]="auto" (click)="getDropDownListValue(label)"
-													  [(ngModel)]="input[label][iter]" class="f_inp"
-													 #name="ngModel" email="true" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
+													 [name]="label" (value)="input[label][iter]" [matAutocomplete]="auto" (click)="getDropDownListValue(label)"
+													 [(ngModel)]="input[label][iter]" class="f_inp" #name="ngModel" email="true" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
 
 													<mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
-														<mat-option style="text-align:center;"  *ngFor="let item of searchResult | myfilter:FilterAutoValue"
+														<mat-option style="text-align:center;" *ngFor="let item of searchResult | myfilter:FilterAutoValue"
 														 [value]="item">
 															{{ item }}
 														</mat-option>
@@ -168,8 +166,8 @@
 											<ng-container *ngSwitchDefault>
 												<mat-form-field class="form_input">
 													<input matInput type="text" [required]="configService.isFieldMendatory(label)" #name="ngModel" [disabled]="isDisabled[iter] || configService.isFieldDisabled(label)"
-													 [maxLength]="configService.getFieldMaxLength(label)" class="form-input"
-													 [matAutocomplete]="auto" class="f_inp" [(ngModel)]="input[label][iter]">
+													 [maxLength]="configService.getFieldMaxLength(label)" class="form-input" [matAutocomplete]="auto" class="f_inp"
+													 [(ngModel)]="input[label][iter]">
 													<mat-autocomplete #auto="matAutocomplete">
 														<mat-option style="text-align:center;" *ngFor="let option of options[label]" [value]="option">
 															{{option}}

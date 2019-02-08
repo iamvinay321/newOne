@@ -787,7 +787,6 @@ export class ExecuteComponent implements OnInit {
           } else if (this.report.V_EXE_CD[0] == 'REPEATABLE_MANUAL_TASK') {
             //Repeatable
             this.router.navigateByUrl('RepeatForm');
-
             //this.router.navigateByUrl('RepeatForm');
           }
 
