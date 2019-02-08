@@ -139,3 +139,28 @@ mat-radio-group {
     margin-bottom: 18px;
     position: relative;
 }
+
+
+
+/*----- css according to the CSS CD field----------------*/
+mat-icon.field-help{
+    font-size: 16px !important;
+}
+.field-config_Bold_Red input{
+    color: red !important;
+    font-weight: bold !important;
+}
+
+.field-config_Left_Aligned input{
+    text-align: left !important;
+}
+
+.field-config_Right_Aligned input{
+    text-align: right !important;
+}
+
+.field-config_Highlighted input{
+    color: red !important;
+}
+
+/*----------End css according to the CSS CD Field-------------*/

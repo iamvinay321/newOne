@@ -144,7 +144,6 @@ const appRoutes: Routes = [
   { path: 'Machinespecs', component: MachinespecsComponent },
   { path: 'Platform', component: PlatformComponent },
 
-
   { path: 'Developer', component: DeveloperComponent }, // developer app-dialog-schedule
   { path: 'Parameters', component: ParametersComponent },
 

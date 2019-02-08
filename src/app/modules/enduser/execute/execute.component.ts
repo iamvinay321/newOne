@@ -11,12 +11,12 @@ import { GetMessageService } from '../../../service/get-message.service';
 // import { DynamicFormComponent } from '../../dynamic-form/containers/dynamic-form/dynamic-form.component';
 import { FormBuilder } from '@angular/forms';
 import { HostListener } from '@angular/core';
-import { Injectable } from '@angular/core';
+import { Injectable, ViewChild, ViewChildren } from '@angular/core';
 import { EnduserComponent } from '../enduser.component';
 
 import { Form_data } from './Form_data';
 import { StorageSessionService } from '../../../service/storage-session.service';
-import { ConfigServiceService } from '../../../service/config-service.service';
+import { ConfigServiceService, IFormFieldConfig } from '../../../service/config-service.service';
 import { AppComponent } from '../../../app.component';
 import { RollserviceService } from '../../../service/rollservice.service';
 import { Observable } from 'rxjs/Observable';
@@ -110,6 +110,8 @@ export class ExecuteComponent implements OnInit {
 
   displayedColumns = ['Service', 'Platform', 'Machine', 'Lim_Job', 'Instances', 'Limited', 'Capacity', 'Rating', 'Used_Cap', 'Lim_Mach_Use', 'Dummy', 'Status', 'State', 'Cxn_Type'];
   dataSource = new MatTableDataSource();
+  fieldConfig: { [key: string]: IFormFieldConfig } = {};
+  @ViewChild('processForm') processForm: any;
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
     this.screenHeight = window.innerHeight;
@@ -452,6 +454,7 @@ export class ExecuteComponent implements OnInit {
         this.Data = got_res.Data;
         this.b = got_res.B;
         this.k = got_res.K;
+        this.fieldConfig = this.data.prepareAndGetFieldConfigurations(FormData);
       });
     /*
     ParametrValue = FormData['PARAM_VAL'];
@@ -678,36 +681,37 @@ export class ExecuteComponent implements OnInit {
   }
   Execute_res_data: any;
   Execute_Now() {
-    const body = {
-      'V_APP_CD': this.SL_APP_CD,
-      'V_PRCS_CD': this.SL_PRC_CD,
-      'V_SRVC_CD': 'START',
-      'V_SRC_CD': this.V_SRC_CD,
-      'V_USR_NM': this.V_USR_NM
+    if (this.processForm.valid) {
+      const body = {
+        'V_APP_CD': this.SL_APP_CD,
+        'V_PRCS_CD': this.SL_PRC_CD,
+        'V_SRVC_CD': 'START',
+        'V_SRC_CD': this.V_SRC_CD,
+        'V_USR_NM': this.V_USR_NM
 
-    };
+      };
 
-    Object.assign(body, this.ts);
-    console.log(body);
+      Object.assign(body, this.ts);
+      console.log(body);
 
-    this.https.post('https://' + this.domain_name + '/rest/Process/Start', body).subscribe(
-      res => {
+      this.https.post('https://' + this.domain_name + '/rest/Process/Start', body).subscribe(
+        res => {
 
-        console.log("response of start call");
-        console.log(res);
-        //
-        this.executedata = { SL_APP_CD: this.SL_APP_CD, SL_PRC_CD: this.SL_PRC_CD };
-        console.log('this.executedata', this.executedata);
-        this.StorageSessionService.setCookies('executedata', this.executedata);
-        this.Execute_res_data = res.json();
-        this.StorageSessionService.setCookies('executeresdata', this.Execute_res_data);
-        // console.log(this.Execute_res_data);
-        this.PFrame.display_page = false;
-        // console.log(this.Execute_res_data);
-        this.GenerateReportTable();
-      }
-    );
-
+          console.log("response of start call");
+          console.log(res);
+          //
+          this.executedata = { SL_APP_CD: this.SL_APP_CD, SL_PRC_CD: this.SL_PRC_CD };
+          console.log('this.executedata', this.executedata);
+          this.StorageSessionService.setCookies('executedata', this.executedata);
+          this.Execute_res_data = res.json();
+          this.StorageSessionService.setCookies('executeresdata', this.Execute_res_data);
+          // console.log(this.Execute_res_data);
+          this.PFrame.display_page = false;
+          // console.log(this.Execute_res_data);
+          this.GenerateReportTable();
+        }
+      );
+    }
 
   }
   /*
