@@ -770,8 +770,9 @@ export class ExecuteComponent implements OnInit {
         console.log(dt);*/
         if (timeout && this.ctrl_variables.call_repeat_on_TIMEOUT) {
           this.repeatCallTable(true);
+        } else if (this.report.RESULT !== 'TABLE' && !CommonUtils.isValidValue(this.report.V_EXE_CD)) {
+          this.repeatCallTable(true);
         } else {
-          this.repeatCallTable(false);
           if (this.report.RESULT == 'TABLE') {
 
             this.router.navigateByUrl('ReportTable', { skipLocationChange: true });
@@ -810,7 +811,7 @@ export class ExecuteComponent implements OnInit {
       }
       );
     if (!this.app.fromNonRepForm) {
-      if (this.app.loadingCharts && this.ctrl_variables.show_ALL) {
+      if (this.app.loadingCharts && CommonUtils.isValidValue(this.ctrl_variables) && this.ctrl_variables.show_ALL) {
         this.chart_JSON_call();
       }
     }

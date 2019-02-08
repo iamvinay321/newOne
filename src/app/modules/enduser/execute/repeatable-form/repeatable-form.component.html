@@ -165,7 +165,7 @@
 											</ng-container>
 											<ng-container *ngSwitchDefault>
 												<mat-form-field class="form_input">
-													<input matInput type="text" [required]="configService.isFieldMendatory(label)" #name="ngModel" [disabled]="isDisabled[iter] || configService.isFieldDisabled(label)"
+													<input matInput type="text"  [name]="label" [required]="configService.isFieldMendatory(label)" #name="ngModel" [disabled]="isDisabled[iter] || configService.isFieldDisabled(label)"
 													 [maxLength]="configService.getFieldMaxLength(label)" class="form-input" [matAutocomplete]="auto" class="f_inp"
 													 [(ngModel)]="input[label][iter]">
 													<mat-autocomplete #auto="matAutocomplete">
