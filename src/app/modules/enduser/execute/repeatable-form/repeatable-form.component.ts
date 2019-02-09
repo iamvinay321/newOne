@@ -221,11 +221,11 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
   addRow() {
 
     var areAllDisabled = true;
-    for (let i = 0; i < this.totalRow; i++) {
-      if (!this.isDisabled[i]) {
-        areAllDisabled = false;
-      }
-    }
+    // for (let i = 0; i < this.totalRow; i++) {
+    //   if (!this.isDisabled[i]) {
+    //     areAllDisabled = false;
+    //   }
+    // }
     if (areAllDisabled) {
       this.rows.push(this.totalRow);
       ++this.totalRow;
