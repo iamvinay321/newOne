@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Http, ResponseContentType } from '@angular/http';
 import { StorageSessionService } from './storage-session.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Globals } from './globals';
 import { Headers, RequestMethod, RequestOptions } from '@angular/http';
 

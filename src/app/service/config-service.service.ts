@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { Http, Response, Headers } from '@angular/http';
 import { StorageSessionService } from './storage-session.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Globals } from './globals';
 import { CommonUtils } from '../common/utils';
 
@@ -17,240 +17,9 @@ export class ConfigServiceService {
 
   private apiUrlGet = "https://" + this.domain_name + "/rest/E_DB/SP?";
   private apiUrlPost = "https://" + this.domain_name + "/";
-  private fieldConfig: { [key: string]: IFormFieldConfig } = {};
   //-------------TAB GROU
   public getJSON(): Observable<any> {
     return this.http.get("assets/label/label.json")
-  }
-
-  public prepareAndGetFieldConfigurations(form_data, hasArrayOfArr = false) {
-    const paramNameArray = this.prepareArrayFromFormDataKey(form_data, "PARAM_NM", hasArrayOfArr);
-    const fieldConfigDetails: { [key: string]: IFormFieldConfig } = {};
-    if (paramNameArray.length > 0) {
-      let index = -1;
-      for (let param of paramNameArray) {
-        index++;
-        if (!CommonUtils.isValidValue(fieldConfigDetails[param])) {
-          const CSS_CD_Array = this.prepareArrayFromFormDataKey(form_data, "CSS_CD", hasArrayOfArr);
-          const HIDDEN_array = this.prepareArrayFromFormDataKey(form_data, "HIDDEN", hasArrayOfArr);
-          const MANDATORY_FLD_array = this.prepareArrayFromFormDataKey(form_data, "MANDATORY_FLD", hasArrayOfArr);
-          const MAX_LENGTH_array = this.prepareArrayFromFormDataKey(form_data, "MAX_LENGTH", hasArrayOfArr);
-          const READ_ONLY_array = this.prepareArrayFromFormDataKey(form_data, "READ_ONLY", hasArrayOfArr, );
-          const PARAM_DSC_array = this.prepareArrayFromFormDataKey(form_data, "PARAM_DSC", hasArrayOfArr);
-          const param_css_cd_value = CSS_CD_Array[index];
-          const isParamHidden = HIDDEN_array[index] === "N" ? false : true;
-          const isParamMendatory = MANDATORY_FLD_array[index] === "N" ? false : true;
-          const param_max_length = MAX_LENGTH_array[index];
-          const paramTooltip = PARAM_DSC_array[index];
-          let isParamReadOnly = READ_ONLY_array[index] === "N" ? false : true;
-          if (!isParamReadOnly && param_css_cd_value === "'disabled'") {
-            isParamReadOnly = true;
-          }
-          let fieldClass = "";
-          if (CommonUtils.isValidValue(param_css_cd_value)) {
-            fieldClass = "field-config_" + param_css_cd_value.replace(" ", "_");
-          }
-          const fieldConfigObj = {
-            fieldClass,
-            isParamReadOnly,
-            isParamHidden,
-            isParamMendatory,
-            maxLength: param_max_length,
-            paramTooltip,
-          }
-          if (hasArrayOfArr) {
-            param = param.replace(new RegExp('_', 'g'), ' ').trim();
-          }
-          fieldConfigDetails[param] = fieldConfigObj;
-        }
-
-      }
-    } else {
-      console.error("Param name is not provided in form data");
-      console.error(form_data);
-    }
-    return this.fieldConfig = fieldConfigDetails;
-  }
-
-  public isFieldInvalid(modelReference: any) {
-    return modelReference && modelReference.invalid && (modelReference.touched || modelReference.dirty);
-  }
-
-  public getFieldInValidMsg(modelReference: any, fieldName: string) {
-    let msg = fieldName + " is not valid";
-    if (CommonUtils.isValidValue(modelReference.errors)) {
-      if (modelReference.errors.invalid) {
-        msg = "";
-      } else if (modelReference.errors.pattern) {
-        msg = fieldName + " is not valid";
-      } else if (modelReference.errors.maxLength) {
-        msg = fieldName + " should not be more then " + this.getFieldMaxLength(fieldName);
-      }
-    }
-    return msg;
-  }
-
-
-  public getFieldClass(paramName: string) {
-    if (CommonUtils.isValidValue(this.fieldConfig[paramName])) {
-      return this.fieldConfig[paramName].fieldClass;
-    }
-    return "";
-  }
-
-  public isFieldHidden(paramName: string) {
-    if (CommonUtils.isValidValue(this.fieldConfig[paramName]) && this.fieldConfig[paramName].isParamHidden) {
-      return true;
-    }
-    return false;
-  }
-
-  public isFieldDisabled(paramName: string) {
-    if (CommonUtils.isValidValue(this.fieldConfig[paramName]) && this.fieldConfig[paramName].isParamReadOnly) {
-      return true;
-    }
-    return false;
-  }
-
-  public isFieldMendatory(paramName: string) {
-    if (CommonUtils.isValidValue(this.fieldConfig[paramName]) && this.fieldConfig[paramName].isParamMendatory) {
-      return true;
-    }
-    return false;
-  }
-
-  public getFieldMaxLength(paramName: string) {
-    if (CommonUtils.isValidValue(this.fieldConfig[paramName]) && this.fieldConfig[paramName].maxLength) {
-      return this.fieldConfig[paramName].maxLength;
-    }
-    return null;
-  }
-
-  public getFieldTooltip(paramName: string) {
-    if (CommonUtils.isValidValue(this.fieldConfig[paramName]) && this.fieldConfig[paramName].paramTooltip && (this.fieldConfig[paramName].paramTooltip !== "TBD" && this.fieldConfig[paramName].paramTooltip !== "'TBD'")) {
-      return this.fieldConfig[paramName].paramTooltip;
-    }
-    return null;
-  }
-
-  public getMaxLengthForField(type: string) {
-    let maxLength = null;
-    switch (type) {
-      case "Phone Dash":
-        maxLength = 12;
-        break;
-      case "Phone Bracket":
-        maxLength = 14;
-        break;
-      case "Zipecode":
-        maxLength = 10
-        break;
-    }
-    return maxLength;
-  }
-
-  public getValidationPattern(type: string) {
-    let maxLength = null;
-    switch (type) {
-      case "Phone Dash":
-        maxLength = 12;
-        break;
-      case "Phone Bracket":
-        maxLength = 14;
-        break;
-      case "Zipecode":
-        maxLength = "^[0-9]{5}(?:-[0-9]{4})?$";
-        break;
-      default:
-        maxLength = null;
-        break;
-    }
-    return maxLength;
-  }
-
-  public transformFieldValueOnChange(event: any, type: string): any {
-    let setVal = event.target.value;
-    let valueToSet = setVal;
-    switch (type) {
-      case "Phone Dash":
-        valueToSet = this.changeValueInPhoneDashFormat(setVal);
-        break;
-      case "Phone Bracket":
-        valueToSet = this.changeValueInPhoneBracketFormat(setVal);
-        break;
-      case "Zipecode":
-        valueToSet = this.changeValueInZipcodeFormat(setVal);
-        break;
-      case "Currency":
-        valueToSet = this.changeValueForCurrencyFormat(setVal);
-        break;
-    }
-    if (CommonUtils.isValidValue(valueToSet)) {
-      event.target.value = valueToSet;
-    }
-  }
-
-  public getFieldTypeForChange(type) {
-    if (type === "Phone Dash" || type === "Phone Bracket" || type === "Zipecode" || type === "Currency") {
-      return type;
-    } else {
-      return "no-match";
-    }
-  }
-
-  private changeValueInPhoneDashFormat(value) {
-    if (value.length < 11 && value.length > 0) {
-      let noDash = value.split('-').join('');
-      if (noDash.length > 0) {
-        noDash = noDash.match(new RegExp('.{1,3}', 'g')).join('-');
-      }
-      return noDash;
-    }
-    return value;
-  }
-
-  private changeValueInPhoneBracketFormat(value) {
-    const input = value.replace(/\D/g, '').substring(0, 10); // First ten digits of input only
-    const zip = input.substring(0, 3);
-    const middle = input.substring(3, 6);
-    const last = input.substring(6, 10);
-
-    if (input.length > 6) { value = `(${zip}) ${middle} - ${last}`; }
-    else if (input.length > 3) { value = `(${zip}) ${middle}`; }
-    else if (input.length > 0) { value = `(${zip}`; }
-    return value;
-  }
-
-  private changeValueInZipcodeFormat(value) {
-    if (value.length < 10 && value.length > 0) {
-      let noDash = value.split('-').join('');
-      if (noDash.length > 0) {
-        noDash = noDash.match(new RegExp('.{1,5}', 'g')).join('-');
-      }
-      return noDash;
-    }
-  }
-
-  private changeValueForCurrencyFormat(value) {
-    var c = isNaN(c = Math.abs(c)) ? 2 : c,
-      d = d == undefined ? "." : d,
-      t = t == undefined ? "," : t,
-      s = value < 0 ? "-" : "",
-      i = String(parseInt(value = Math.abs(Number(value) || 0).toFixed(c))) as any;
-    var j = (j = i.length) > 3 ? j % 3 : 0;
-
-    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(value - i).toFixed(c).slice(2) : "");
-  }
-
-  private prepareArrayFromFormDataKey(form_data, key, hasArrayOfArr) {
-    let arrayToReturn = [];
-    if (CommonUtils.isValidValue(form_data[key]) && CommonUtils.isValidValue(form_data[key][0])) {
-      const stringSequence = hasArrayOfArr ? form_data[key][0].replace(/'/g, '') : form_data[key];
-      arrayToReturn = hasArrayOfArr ? stringSequence.split(",") : stringSequence;
-      arrayToReturn = arrayToReturn.map(s => s.trim());
-
-    }
-    return arrayToReturn;
   }
 
   checkUserPwd(email: any) {
@@ -568,7 +337,7 @@ export class ConfigServiceService {
       const fieldObj: any = {};
       fieldObj.name = ParameterName[i];
       fieldObj.placeholder = ParameterName[i];
-      if (CommonUtils.isValidValue(ParameterType[i]) && ParameterType[i] !== "") {
+      if (CommonUtils.isValidValue(ParameterType[i]) && ParameterType[i]!=="") {
         fieldObj.type = ParameterType[i] || "input";
       } else {
         fieldObj.type = "input";
@@ -649,13 +418,4 @@ export interface data {
   UPDATE: string[];
 
   // ==================================
-}
-
-export interface IFormFieldConfig {
-  fieldClass: string;
-  isParamReadOnly: boolean;
-  isParamHidden: boolean;
-  isParamMendatory: boolean;
-  maxLength: number;
-  paramTooltip: string;
 }

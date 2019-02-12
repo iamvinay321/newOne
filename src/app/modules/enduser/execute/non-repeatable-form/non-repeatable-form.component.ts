@@ -10,12 +10,11 @@ import { Globals } from '../../../../service/globals';
 import { HttpClient } from '@angular/common/http'
 import { Router } from '@angular/router';
 import * as dateFormat from 'dateformat';
-import { HostListener, ChangeDetectorRef, ViewChild } from "@angular/core";
+import { HostListener, ChangeDetectorRef } from "@angular/core";
 import { MatTableDataSource } from '@angular/material';
 import { getISODayOfWeek } from 'ngx-bootstrap/chronos/units/day-of-week';
 import { encode } from 'punycode';
 import { CommonUtils } from '../../../../common/utils';
-import { ConfigServiceService } from '../../../../service/config-service.service';
 @Component({
   selector: 'app-non-repeatable-form',
   templateUrl: './non-repeatable-form.component.html',
@@ -39,7 +38,6 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
   screenHeight: number;
   screenWidth: number;
   desktopView: boolean = true;
-  @ViewChild('nrpForm') nrpForm: any;
   constructor(
     public StorageSessionService: StorageSessionService,
     public app: AppComponent,
@@ -47,9 +45,8 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     public router: Router,
     public globals: Globals,
     public cdr: ChangeDetectorRef,
-    public configService: ConfigServiceService,
   ) {
-    super(StorageSessionService, http, router, globals, app, cdr, configService);
+    super(StorageSessionService, http, router, globals, app, cdr);
   }
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
@@ -96,7 +93,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     }
   }
 
-  prepareFieldValues() {
+  prepareFieldValues(){
     let values = [];
     for (let i = 0; i < this.RVP_Keys.length; i++) {
       const Field_Value = "'" + this.input[this.RVP_labels[i]] + "'";
@@ -106,12 +103,10 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
   }
 
   onSubmit() {
-    if (this.nrpForm.valid) {
-      if (this.V_TABLE_NAME !== '') {
-        this.submit_formsRecord();
-      } else {
-        this.build_PVP();
-      }
+    if (this.V_TABLE_NAME !== '') {
+      this.submit_formsRecord();
+    } else {
+      this.build_PVP();
     }
   }
 

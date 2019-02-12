@@ -6,7 +6,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { data } from './schd_data';
 import { MatTableDataSource, MatSort } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { AppComponent } from '../../../app.component';
 import { HostListener } from '@angular/core';
 import { EndUserService } from '../../../service/EndUser-service';

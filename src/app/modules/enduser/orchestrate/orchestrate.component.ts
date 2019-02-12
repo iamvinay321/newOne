@@ -4,7 +4,7 @@ import { Http,Response,Headers } from '@angular/http';
 import { HttpClient,HttpEvent,HttpEventType } from '@angular/common/http';
 import {MatCardModule} from '@angular/material/card';
 import { DataSource } from '@angular/cdk/table';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { CdkTableModule } from '@angular/cdk/table';
 import { forEach } from '@angular/router/src/utils/collection';
 import {

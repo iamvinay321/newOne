@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, forwardRef, ChangeDetectorRef, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, forwardRef, ChangeDetectorRef } from '@angular/core';
 //import { GetFormData } from '../getDataForm';
 import { StorageSessionService } from '../../../../service/storage-session.service';
 
@@ -11,7 +11,6 @@ import { FormComponent } from '../form/form.component';
 import { AppComponent } from '../../../../app.component';
 import * as dateFormat from 'dateformat';
 import { CommonUtils } from '../../../../common/utils';
-import { ConfigServiceService } from '../../../../service/config-service.service';
 
 @Component({
   selector: 'app-repeatable-form',
@@ -35,7 +34,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
   deleted: boolean[] = [false];
   currentDate: any;
   PVP_Updated: any = {};
-  @ViewChild('rpForm') rpForm: any;
+
   constructor(
     public StorageSessionService: StorageSessionService,
     public http: HttpClient,
@@ -43,9 +42,8 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     public globals: Globals,
     public app: AppComponent,
     public cdr: ChangeDetectorRef,
-    public configService: ConfigServiceService,
   ) {
-    super(StorageSessionService, http, router, globals, app, cdr, configService);
+    super(StorageSessionService, http, router, globals, app, cdr);
   }
 
 
@@ -221,11 +219,11 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
   addRow() {
 
     var areAllDisabled = true;
-    // for (let i = 0; i < this.totalRow; i++) {
-    //   if (!this.isDisabled[i]) {
-    //     areAllDisabled = false;
-    //   }
-    // }
+    for (let i = 0; i < this.totalRow; i++) {
+      if (!this.isDisabled[i]) {
+        areAllDisabled = false;
+      }
+    }
     if (areAllDisabled) {
       this.rows.push(this.totalRow);
       ++this.totalRow;
@@ -276,31 +274,30 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
   }
 
   onSubmit() {
-    if (this.rpForm.valid) {
-      console.log('submitting');
-      var form: any = [];
-      var temp: any;
-      for (let i = 0; i < this.RVP_labels.length; i++) {
-        for (let j = 1; j < this.totalRow; j++) {
-          temp = this.input[this.RVP_labels[i]][j]
-          if (temp == null) {
-            temp = "";
-          }
-          if (j === 1)
-            form[this.RVP_labels[i].split(" ").join("_")] = [temp];
-          else
-            form[this.RVP_labels[i].split(" ").join("_")].push(temp);
+    console.log('submitting');
+    var form: any = [];
+    var temp: any;
+    for (let i = 0; i < this.RVP_labels.length; i++) {
+      for (let j = 1; j < this.totalRow; j++) {
+        temp = this.input[this.RVP_labels[i]][j]
+        if (temp == null) {
+          temp = "";
         }
+        if (j === 1)
+          form[this.RVP_labels[i].split(" ").join("_")] = [temp];
+        else
+          form[this.RVP_labels[i].split(" ").join("_")].push(temp);
       }
-      console.log(form);
-      var areAllDisabled = true;
-      for (let i = 0; i < this.totalRow; i++) {
-        if (!this.isDisabled[i]) {
-          areAllDisabled = false;
-        }
-      }
-      if (areAllDisabled)
-        this.build_PVP(form);
     }
+    console.log(form);
+    var areAllDisabled = true;
+    for (let i = 0; i < this.totalRow; i++) {
+      if (!this.isDisabled[i]) {
+        areAllDisabled = false;
+      }
+    }
+    if (areAllDisabled)
+      this.build_PVP(form);
   }
+
 }

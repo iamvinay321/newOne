@@ -6,6 +6,6 @@
     "show_ALL": false,
     "show_SM_PIE": false,
     "call_repeat_on_TIMEOUT":true,
-    "repeat_count":100,
+    "repeat_count":10,
     "message_access_denied":"Sorry, you do not have access to this form"
 }

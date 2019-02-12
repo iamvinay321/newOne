@@ -2,7 +2,7 @@ import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { UseradminService } from '../../../service/useradmin.service';
 import { ToastrService } from 'ngx-toastr';
 import { Http } from '@angular/http';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { HostListener } from "@angular/core";
 

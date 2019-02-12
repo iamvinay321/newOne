@@ -46,8 +46,6 @@ export class FormComponent implements OnInit {
     public globals: Globals,
     public app: AppComponent,
     public cdr: ChangeDetectorRef,
-    public configService: ConfigServiceService,
-
   ) { }
 
   domain_name = this.globals.domain_name;
@@ -95,7 +93,7 @@ export class FormComponent implements OnInit {
     });
 
     this.Form_Data = this.StorageSessionService.getCookies('report_table');
-    this.configService.prepareAndGetFieldConfigurations(this.Form_Data, true);
+
     console.info('The form data stored in local storage: ');
     console.log(this.Form_Data);
 
@@ -159,6 +157,26 @@ export class FormComponent implements OnInit {
   updateInitialFieldNameAndValues() {
     console.log(this.RVP_DataObj);
     var key_array = Object.keys(this.RVP_DataObj);
+
+    // //----------Field Names & Field Values as {"str1"|"str2"}-----------//
+    // this.Field_Names = '';
+    // this.Field_Values = "";
+    // for (let i = 0; i < key_array.length; i++) {
+    //   if (i != 0) {
+    //     this.Field_Names += '|';
+    //     this.Field_Values += '|';
+    //   }
+    //   this.Field_Names += "`" + key_array[i] + "`";
+    //   this.Field_Values += "'" + this.RVP_DataObj[key_array[i]] + "'";
+    // }
+    // // this.RVP_Data.push('V_abcd');
+    // // this.Field_Names += '|\"V_abcd\"';
+    // // this.Field_Values += '|\"\"';
+
+    // console.log("Field_Names");
+    // console.log(this.Field_Names);
+    // console.log("Field_Values");
+    // console.log(this.Field_Values);
     console.log(this.StorageSessionService.getCookies('App_Prcs'));
   }
 

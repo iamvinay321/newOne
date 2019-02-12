@@ -3,7 +3,7 @@ import { MatDialog, MatSnackBar, MatTableDataSource, MatSelectChange } from '@an
 import { Http, Response, Headers } from '@angular/http';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Router } from '@angular/router'
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { StorageSessionService } from '../../../service/storage-session.service';
 import { ConfigServiceService } from '../../../service/config-service.service';
 import { AppComponent } from '../../../app.component';
