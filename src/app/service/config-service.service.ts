@@ -123,9 +123,9 @@ export class ConfigServiceService {
 
   public getFieldMaxLength(paramName: string) {
     if (CommonUtils.isValidValue(this.fieldConfig[paramName]) && this.fieldConfig[paramName].maxLength) {
-      return this.fieldConfig[paramName].maxLength;
+      return this.fieldConfig[paramName].maxLength > 0 ? this.fieldConfig[paramName].maxLength : -1;
     }
-    return null;
+    return -1;
   }
 
   public getFieldTooltip(paramName: string) {
@@ -570,7 +570,7 @@ export class ConfigServiceService {
       const fieldObj: any = {};
       fieldObj.name = ParameterName[i];
       fieldObj.placeholder = ParameterName[i];
-      if (CommonUtils.isValidValue(ParameterType[i]) && ParameterType[i] !== "") {
+      if (CommonUtils.isValidValue(ParameterType) && CommonUtils.isValidValue(ParameterType[i]) && ParameterType[i] !== "") {
         fieldObj.type = ParameterType[i] || "input";
       } else {
         fieldObj.type = "input";
