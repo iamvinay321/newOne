@@ -119,7 +119,7 @@
             <ng-container *ngSwitchCase="'date'">
               <mat-form-field class="form_input">
                 <input #name="ngModel" [required]="data.isFieldMendatory()" [disabled]="data.isFieldDisabled()" [name]="pr.name"
-                  [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value"
+                  [value]="pr.value" (change)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value"
                   matInput [matDatepicker]="picker" class="f_inp">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                 <mat-datepicker #picker></mat-datepicker>
@@ -131,7 +131,7 @@
             <ng-container *ngSwitchCase="'time'">
               <mat-form-field class="form_input">
                 <input #name="ngModel" [required]="data.isFieldMendatory()" [disabled]="data.isFieldDisabled()"
-                  matInput [type]="pr.type" [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)"
+                  matInput [type]="pr.type" [name]="pr.name" [value]="pr.value" (change)="Update_value($event.target.value,pr.placeholder)"
                   [(ngModel)]="pr.value" class="f_inp">
               </mat-form-field>
               <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
@@ -141,7 +141,7 @@
             <ng-container *ngSwitchCase="'datetime'">
               <mat-form-field class="form_input" style="background-color: #f4f6f7">
                 <input #name="ngModel" [required]="data.isFieldMendatory()" [disabled]="data.isFieldDisabled()"
-                  matInput [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)"
+                  matInput [name]="pr.name" [value]="pr.value" (change)="Update_value($event.target.value,pr.placeholder)"
                   [(ngModel)]="pr.value" [owlDateTimeTrigger]="fdate" [owlDateTime]="fdate">
                 <owl-date-time [attr.id]="pr.name"></owl-date-time>
               </mat-form-field>
@@ -152,7 +152,7 @@
             <ng-container *ngSwitchCase="'password'">
               <mat-form-field class="form_input">
                 <input matInput #name="ngModel" [required]="data.isFieldMendatory(pr.name)" [disabled]="data.isFieldDisabled(pr.name)"
-                  [type]="pr.type" [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)"
+                  [type]="pr.type" [name]="pr.name" [value]="pr.value" (change)="Update_value($event.target.value,pr.placeholder)"
                   [(ngModel)]="pr.value" #name="ngModel" class="f_inp">
               </mat-form-field>
               <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
@@ -160,7 +160,7 @@
               </div>
             </ng-container>
             <ng-container *ngSwitchCase="'range'">
-              <mat-slider #name="ngModel" [(ngModel)]="pr.value" value="1" step="1" min="1" max="100" (keyup)="Update_value($event.target.value,pr.placeholder)"
+              <mat-slider #name="ngModel" [(ngModel)]="pr.value" value="1" step="1" min="1" max="100" (change)="Update_value($event.target.value,pr.placeholder)"
                 style="background-color: #f4f6f7"></mat-slider>
             </ng-container>
             <ng-container *ngSwitchCase="color">
@@ -173,7 +173,7 @@
               <mat-form-field class="form_input">
                 <textarea matInput #name="ngModel" [required]="data.isFieldMendatory(pr.name)" [disabled]="data.isFieldDisabled(pr.name)"
                   [name]="pr.name" [maxLength]="data.getFieldMaxLength(pr.name)" (value)="pr.value"
-                  (click)="getDropDownListValue(pr.name)" (keyup)="Update_value($event.target.value,pr.placeholder)"
+                  (click)="getDropDownListValue(pr.name)" (change)="Update_value($event.target.value,pr.placeholder)"
                   [(ngModel)]="pr.value" class="f_inp">
                   </textarea>
               </mat-form-field>
@@ -184,7 +184,7 @@
             <ng-container *ngSwitchCase="data.getFieldTypeForChange(pr.type)">
               <mat-form-field class="form_input">
                 <input matInput [required]="data.isFieldMendatory(pr.name)" maxlength="data.getMaxLengthForField(pr.type)"
-                  [name]="pr.name" (value)="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)"
+                  [name]="pr.name" (value)="pr.value" (change)="Update_value($event.target.value,pr.placeholder)"
                   (change)="data.transformFieldValueOnChange($event,pr.type)" [(ngModel)]="pr.value" 
                   class="f_inp" #name="ngModel">
                 <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
@@ -202,7 +202,7 @@
               <mat-form-field class="form_input">
                 <input type="text" pattern="^[0-9]{5}?$" [required]="data.isFieldMendatory(pr.name)" maxlength="5"
                   matInput [disabled]="data.isFieldDisabled(pr.name)" [name]="pr.name" (value)="pr.value"
-                  [matAutocomplete]="auto" (click)="getDropDownListValue(pr.name)" (keyup)="Update_value($event.target.value,pr.placeholder)"
+                  [matAutocomplete]="auto" (click)="getDropDownListValue(pr.name)" (change)="Update_value($event.target.value,pr.placeholder)"
                   [(ngModel)]="pr.value" class="f_inp" #name="ngModel">
 
                 <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
@@ -220,7 +220,7 @@
               <mat-form-field class="form_input">
                 <input type="email" [required]="data.isFieldMendatory(pr.name)" matInput [disabled]="data.isFieldDisabled(pr.name)"
                   [name]="pr.name" (value)="pr.value" [matAutocomplete]="auto" (click)="getDropDownListValue(pr.name)"
-                  (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" class="f_inp" #name="ngModel"
+                  (change)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" class="f_inp" #name="ngModel"
                   email="true" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
 
                 <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
@@ -238,7 +238,7 @@
               <mat-form-field class="form_input">
                 <input matInput [name]="pr.name" [required]="data.isFieldMendatory(pr.name)" #name="ngModel" [disabled]="data.isFieldDisabled(pr.name)"
                   [maxLength]="data.getFieldMaxLength(pr.name)" (value)="pr.value" [matAutocomplete]="auto" (click)="getDropDownListValue(pr.name)"
-                  (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" class="f_inp">
+                  (change)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" class="f_inp">
                 <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
                   <mat-option style="text-align:center;" (click)="Update_value(pr.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue"
                     [value]="item">
