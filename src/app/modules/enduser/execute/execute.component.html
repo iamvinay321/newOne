@@ -26,8 +26,8 @@
 
         <!-- </div> -->
         <!-- <div *ngIf="Application_label">
-    <label>{{APP_CD['APP_CD']}}</label>
-   </div> -->
+      <label>{{APP_CD['APP_CD']}}</label>
+     </div> -->
       </div>
 
       <!-- 	hide when the array of value <2 -->
@@ -52,28 +52,28 @@
           </mat-select>
         </mat-form-field>
         <!-- <div *ngIf="Process_label">
-                <label>{{PRC_CD['PRCS_CD']}}</label>
-          </div> -->
+                  <label>{{PRC_CD['PRCS_CD']}}</label>
+            </div> -->
 
       </div>
       <!-- <div fxFlex="5"></div>
-
-      <div fxFlex="30" *ngIf="Service_box">
-
-
-        <label style="text-align:center;width:100%;">
-          <strong>Undeployed {{Label['service']}}</strong>
-        </label>
-        <mat-list class="scroll">
-          <mat-list-item class="list_item" *ngFor="let ser of deployService;">
-            <div>{{ser}}</div>
-          </mat-list-item>
-        </mat-list>
-
-      </div> -->
+  
+        <div fxFlex="30" *ngIf="Service_box">
+  
+  
+          <label style="text-align:center;width:100%;">
+            <strong>Undeployed {{Label['service']}}</strong>
+          </label>
+          <mat-list class="scroll">
+            <mat-list-item class="list_item" *ngFor="let ser of deployService;">
+              <div>{{ser}}</div>
+            </mat-list-item>
+          </mat-list>
+  
+        </div> -->
       <!-- <div *ngIf="Process_label">
-        <label>{{PRC_CD['PRCS_CD']}}</label>
-      </div> -->
+          <label>{{PRC_CD['PRCS_CD']}}</label>
+        </div> -->
 
       <!-- </div> -->
 
@@ -90,107 +90,183 @@
 <div class="dynamicFormContent">
   <h3 style="text-align: center;" *ngIf="Data!='' &&  Data!=undefined">{{Label['Parameters']}}</h3>
   <div class="dynamicContent">
-    <div class="padding-input flexLeft" *ngFor="let pr of Data">
-      <ng-container *ngIf="pr.type==='date'">
-        <label class="f_label">{{pr.placeholder | removeWt}}</label>
-        <mat-form-field class="form_input">
-          <input [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)"
-            [(ngModel)]="pr.value" matInput [matDatepicker]="picker" class="f_inp">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-      </ng-container>
-      <ng-container *ngIf="pr.type==='Radio Button'">
-        <label class="f_label">{{pr.placeholder | removeWt}}</label>
-        <mat-form-field class="form_input form_list" style="background-color: #f4f6f7">
-          <input matInput style="display: none">
-          <mat-radio-group [(ngModel)]="pr.value" (ngModelChange)="Update_value(pr.value,pr.placeholder)" [name]="pr.name">
-            <mat-radio-button style="background-color: #f4f6f7" [value]="listOption" *ngFor="let listOption of getListOptions(pr.name)">{{listOption}}</mat-radio-button>
-          </mat-radio-group>
-        </mat-form-field>
-      </ng-container>
-      <ng-container *ngIf="pr.type==='Checkbox'">
-        <label class="f_label">{{pr.placeholder | removeWt}}</label>
-        <mat-form-field class="form_input form_list" style="background-color: #f4f6f7">
-          <input matInput style="display: none">
-          <mat-selection-list [(ngModel)]="pr.value" (ngModelChange)="Update_value(pr.value,pr.placeholder)" style="background-color: #f4f6f7">
-            <mat-list-option checkboxPosition="before" [value]="listOption" *ngFor="let listOption of getListOptions(pr.name)">
-              {{listOption}}
-            </mat-list-option>
-          </mat-selection-list>
-        </mat-form-field>
-      </ng-container>
-      <ng-container *ngIf="pr.type==='time'">
-        <label class="f_label">{{pr.placeholder | removeWt}}</label>
-        <mat-form-field class="form_input">
-          <input matInput [type]="pr.type" [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)"
-            [(ngModel)]="pr.value" class="f_inp">
-        </mat-form-field>
-      </ng-container>
-      <ng-container *ngIf="pr.type==='datetime'">
-        <label class="f_label">{{pr.placeholder | removeWt}}</label>
-        <mat-form-field class="form_input" style="background-color: #f4f6f7">
-          <input matInput [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)"
-            [(ngModel)]="pr.value" [owlDateTimeTrigger]="fdate" [owlDateTime]="fdate">
-          <owl-date-time [attr.id]="pr.name"></owl-date-time>
-        </mat-form-field>
-      </ng-container>
-      <ng-container *ngIf="pr.type==='password'">
-        <label class="f_label">{{pr.placeholder | removeWt}}</label>
-        <mat-form-field class="form_input">
-          <input matInput [type]="pr.type" [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)"
-            [(ngModel)]="pr.value" class="f_inp">
-        </mat-form-field>
-      </ng-container>
-      <ng-container *ngIf="pr.type==='range'">
-        <label class="f_label">{{pr.placeholder | removeWt}}</label>
-        <mat-slider [(ngModel)]="pr.value" value="1" step="1" min="1" max="100" (keyup)="Update_value($event.target.value,pr.placeholder)"
-          style="background-color: #f4f6f7"></mat-slider>
-      </ng-container>
-      <ng-container *ngIf="pr.type==='color'">
-        <label class="f_label">{{pr.placeholder | removeWt}}</label>
-        <input [(colorPicker)]="_backgroundColor" [style.background]="_backgroundColor" [(ngModel)]="pr.value" class="f_inp">
-      </ng-container>
-      <ng-container *ngIf="pr.type==='input' || pr.type==='Normal String'">
-        <label class="f_label">{{pr.placeholder | removeWt}}</label>
-        <mat-form-field class="form_input">
-          <input matInput [name]="pr.name" (value)="pr.value" [matAutocomplete]="auto" (click)="getDropDownListValue(pr.name)"
-            (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" class="f_inp">
+    <form name="form" #processForm="ngForm" novalidate>
+      <div class="padding-input flexLeft" *ngFor="let pr of Data" [ngClass]="data.getFieldClass(pr.name)">
+        <ng-container *ngIf="!data.isFieldHidden(pr.name)">
+          <label class="f_label">{{pr.placeholder | removeWt}}<span *ngIf="data.isFieldMendatory(pr.name)">*</span></label>
+          <mat-icon *ngIf="data.getFieldTooltip(pr.name)!=null" [matTooltip]="data.getFieldTooltip(pr.name)" class="field-help">help</mat-icon>
+          <ng-container [ngSwitch]="pr.type">
+            <ng-container *ngSwitchCase="'Radio Button'">
+              <mat-form-field class="form_input form_list" style="background-color: #f4f6f7">
+                <input matInput style="display: none">
+                <mat-radio-group #name="ngModel" [required]="data.isFieldMendatory()" [disabled]="data.isFieldDisabled()"
+                  [(ngModel)]="pr.value" (ngModelChange)="Update_value(pr.value,pr.placeholder)" [name]="pr.name">
+                  <mat-radio-button style="background-color: #f4f6f7" [value]="listOption" *ngFor="let listOption of getListOptions(pr.name)">{{listOption}}</mat-radio-button>
+                </mat-radio-group>
+              </mat-form-field>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Checkbox'">
+              <mat-form-field class="form_input form_list" style="background-color: #f4f6f7">
+                <input matInput style="display: none">
+                <mat-selection-list #name="ngModel" [disabled]="data.isFieldDisabled()" [(ngModel)]="pr.value"
+                  (ngModelChange)="Update_value(pr.value,pr.placeholder)" style="background-color: #f4f6f7">
+                  <mat-list-option checkboxPosition="before" [value]="listOption" *ngFor="let listOption of getListOptions(pr.name)">
+                    {{listOption}}
+                  </mat-list-option>
+                </mat-selection-list>
+              </mat-form-field>
+            </ng-container>
+            <ng-container *ngSwitchCase="'date'">
+              <mat-form-field class="form_input">
+                <input #name="ngModel" [required]="data.isFieldMendatory()" [disabled]="data.isFieldDisabled()" [name]="pr.name"
+                  [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value"
+                  matInput [matDatepicker]="picker" class="f_inp">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+              <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
+                {{data.getFieldInValidMsg(name, pr.name)}}
+              </div>
+            </ng-container>
+            <ng-container *ngSwitchCase="'time'">
+              <mat-form-field class="form_input">
+                <input #name="ngModel" [required]="data.isFieldMendatory()" [disabled]="data.isFieldDisabled()"
+                  matInput [type]="pr.type" [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)"
+                  [(ngModel)]="pr.value" class="f_inp">
+              </mat-form-field>
+              <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
+                {{data.getFieldInValidMsg(name, pr.name)}}
+              </div>
+            </ng-container>
+            <ng-container *ngSwitchCase="'datetime'">
+              <mat-form-field class="form_input" style="background-color: #f4f6f7">
+                <input #name="ngModel" [required]="data.isFieldMendatory()" [disabled]="data.isFieldDisabled()"
+                  matInput [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)"
+                  [(ngModel)]="pr.value" [owlDateTimeTrigger]="fdate" [owlDateTime]="fdate">
+                <owl-date-time [attr.id]="pr.name"></owl-date-time>
+              </mat-form-field>
+              <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
+                {{data.getFieldInValidMsg(name, pr.name)}}
+              </div>
+            </ng-container>
+            <ng-container *ngSwitchCase="'password'">
+              <mat-form-field class="form_input">
+                <input matInput #name="ngModel" [required]="data.isFieldMendatory(pr.name)" [disabled]="data.isFieldDisabled(pr.name)"
+                  [type]="pr.type" [name]="pr.name" [value]="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)"
+                  [(ngModel)]="pr.value" #name="ngModel" class="f_inp">
+              </mat-form-field>
+              <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
+                {{data.getFieldInValidMsg(name, pr.name)}}
+              </div>
+            </ng-container>
+            <ng-container *ngSwitchCase="'range'">
+              <mat-slider #name="ngModel" [(ngModel)]="pr.value" value="1" step="1" min="1" max="100" (keyup)="Update_value($event.target.value,pr.placeholder)"
+                style="background-color: #f4f6f7"></mat-slider>
+            </ng-container>
+            <ng-container *ngSwitchCase="color">
+              <mat-form-field class="form_input">
+                <input #name="ngModel" [(colorPicker)]="_backgroundColor" [style.background]="_backgroundColor"
+                  [(ngModel)]="pr.value" class="f_inp">
+              </mat-form-field>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Text Area'">
+              <mat-form-field class="form_input">
+                <textarea matInput #name="ngModel" [required]="data.isFieldMendatory(pr.name)" [disabled]="data.isFieldDisabled(pr.name)"
+                  [name]="pr.name" [maxLength]="data.getFieldMaxLength(pr.name)" (value)="pr.value"
+                  (click)="getDropDownListValue(pr.name)" (keyup)="Update_value($event.target.value,pr.placeholder)"
+                  [(ngModel)]="pr.value" class="f_inp">
+                  </textarea>
+              </mat-form-field>
+              <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
+                {{data.getFieldInValidMsg(name, pr.name)}}
+              </div>
+            </ng-container>
+            <ng-container *ngSwitchCase="data.getFieldTypeForChange(pr.type)">
+              <mat-form-field class="form_input">
+                <input matInput [required]="data.isFieldMendatory(pr.name)" maxlength="data.getMaxLengthForField(pr.type)"
+                  [name]="pr.name" (value)="pr.value" (keyup)="Update_value($event.target.value,pr.placeholder)"
+                  (change)="data.transformFieldValueOnChange($event,pr.type)" [(ngModel)]="pr.value" 
+                  class="f_inp" #name="ngModel">
+                <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
+                  <mat-option style="text-align:center;" (click)="Update_value(pr.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue"
+                    [value]="item">
+                    {{ item }}
+                  </mat-option>
+                </mat-autocomplete>               
+              </mat-form-field>
+              <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
+                {{data.getFieldInValidMsg(name, pr.name)}}
+              </div>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Zip'">
+              <mat-form-field class="form_input">
+                <input type="text" pattern="^[0-9]{5}?$" [required]="data.isFieldMendatory(pr.name)" maxlength="5"
+                  matInput [disabled]="data.isFieldDisabled(pr.name)" [name]="pr.name" (value)="pr.value"
+                  [matAutocomplete]="auto" (click)="getDropDownListValue(pr.name)" (keyup)="Update_value($event.target.value,pr.placeholder)"
+                  [(ngModel)]="pr.value" class="f_inp" #name="ngModel">
 
-          <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
-            <mat-option style="text-align:center;" (click)="Update_value(pr.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue"
-              [value]="item">
-              {{ item }}
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
-        <!-- <mat-form-field class="form_input">
-      <input matInput  [name]="pr.name" (value)="pr.value" #values [matAutocomplete]="auto"  (click)="makeFilterValueEmpty();getDropDownListValue(pr.name)"
-      (keyup)="keyUpEventActive($event.target.value,pr.placeholder)"
-      (mouseout)="mouseOutEventActive($event.target.value,pr.placeholder)"
-      [(ngModel)]="pr.value" class="f_inp glo_input">
-        <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
-          <mat-option style="text-align:center;"  (click)="updateParameterValue(item,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue" [value]="item">
-            {{ item }}
-          </mat-option>
-        </mat-autocomplete>
-     </mat-form-field> -->
-      </ng-container>
+                <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
+                  <mat-option style="text-align:center;" (click)="Update_value(pr.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue"
+                    [value]="item">
+                    {{ item }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
+                {{data.getFieldInValidMsg(name, pr.name)}}
+              </div>
+            </ng-container>
+            <ng-container *ngSwitchCase="'Email'">
+              <mat-form-field class="form_input">
+                <input type="email" [required]="data.isFieldMendatory(pr.name)" matInput [disabled]="data.isFieldDisabled(pr.name)"
+                  [name]="pr.name" (value)="pr.value" [matAutocomplete]="auto" (click)="getDropDownListValue(pr.name)"
+                  (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" class="f_inp" #name="ngModel"
+                  email="true" pattern="[a-zA-Z0-9.-_]{1,}@[a-zA-Z.-]{2,}[.]{1}[a-zA-Z]{2,}">
 
-    </div>
+                <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
+                  <mat-option style="text-align:center;" (click)="Update_value(pr.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue"
+                    [value]="item">
+                    {{ item }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              <div [style.visibility]=" data.isFieldInvalid(name) ? 'visible': 'hidden'">
+                {{data.getFieldInValidMsg(name, pr.name)}}
+              </div>
+            </ng-container>
+            <ng-container *ngSwitchDefault>
+              <mat-form-field class="form_input">
+                <input matInput [name]="pr.name" [required]="data.isFieldMendatory(pr.name)" #name="ngModel" [disabled]="data.isFieldDisabled(pr.name)"
+                  [maxLength]="data.getFieldMaxLength(pr.name)" (value)="pr.value" [matAutocomplete]="auto" (click)="getDropDownListValue(pr.name)"
+                  (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" class="f_inp">
+                <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
+                  <mat-option style="text-align:center;" (click)="Update_value(pr.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue"
+                    [value]="item">
+                    {{ item }}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+              <div [style.visibility]=" data.isFieldInvalid(name) ? 'visible': 'hidden'">
+                {{data.getFieldInValidMsg(name, pr.name)}}
+              </div>
+            </ng-container>
+          </ng-container>
+        </ng-container>
+      </div>
+    </form>
   </div>
 
 </div>
 <!-- <div flex fxLayout="row" fxLayout.lt-sm="column" *ngIf="b==true">
-
-               <div fxFlex="10" ></div>
-                <div fxFlex="40" >
-
-
-
-            </div>
-
-                </div> -->
+  
+                 <div fxFlex="10" ></div>
+                  <div fxFlex="40" >
+  
+  
+  
+              </div>
+  
+                  </div> -->
 
 <!-- close auto -->
 <br />

@@ -2,23 +2,28 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Http, ResponseContentType } from '@angular/http';
 import { StorageSessionService } from './storage-session.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Globals } from './globals';
 import { Headers, RequestMethod, RequestOptions } from '@angular/http';
 import { saveAs } from 'file-saver';
 @Injectable()
 export class UseradminService {
  
- private domain_name = this.globals.domain_name;
- private  V_SRC_CD: string = this.session.getSession("agency");
- private V_USR_NM: string = this.session.getSession("email");
- private columnsToDisplay = this.session.getCookies("coltodisp");
+ private domain_name : string;
+ private  V_SRC_CD: string ;
+ private V_USR_NM: string ;
+ private columnsToDisplay : string;
 
   constructor(
     private http: Http,
     private https: HttpClient,
     private globals: Globals,
     private session: StorageSessionService) {
+
+      this.domain_name = this.globals.domain_name;
+      this.V_SRC_CD = this.session.getSession("agency");
+       this.V_USR_NM = this.session.getSession("email");
+       this.columnsToDisplay = this.session.getCookies("coltodisp");
 		console.info("The user company name :"+this.V_SRC_CD);
 		console.info("The user name is :"+this.V_USR_NM);
   }

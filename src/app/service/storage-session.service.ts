@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { CookiesStorageService, LocalStorageService, SessionStorageService, SharedStorageService } from 'ngx-store';
-import { CookieStorage, LocalStorage, SessionStorage } from 'ngx-store';
+import { CookiesStorageService, LocalStorageService, SessionStorageService, SharedStorageService }
+ from 'ngx-store';
+import { LocalStorage, SessionStorage, CookieStorage } from 'ngx-store';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router'
 @Injectable()
 export class StorageSessionService {
