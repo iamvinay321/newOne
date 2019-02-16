@@ -25,7 +25,7 @@
     "@angular/platform-browser": "^7.2.4",
     "@angular/platform-browser-dynamic": "^7.2.4",
     "@angular/router": "^7.2.4",
-    "@ng-bootstrap/ng-bootstrap": "^1.0.4",
+    "@ng-bootstrap/ng-bootstrap": "^4.0.3",
     "@ng-dynamic-forms/core": "^5.4.6",
     "@ng-dynamic-forms/ui-bootstrap": "^5.4.6",
     "@ng2-dynamic-forms/core": "^1.4.31",
@@ -90,7 +90,7 @@
     "rxjs-tslint": "^0.1.6",
     "ts-node": "~4.1.0",
     "tslint": "^5.12.1",
-    "typescript": "^3.1.6",
+    "typescript": "^3.2.4",
     "webpack": "^4.29.3"
   }
 }
