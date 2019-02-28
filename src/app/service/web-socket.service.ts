@@ -15,12 +15,12 @@ export class WebSocketService {
     this.socket.on('disconnect',()=>{
       let inst=this;
       var timer=setInterval(function(){
-        console.log("Attempting reconnection");
+        ("Attempting reconnection");
         if(inst.socket.connected==false){
           inst.socket.connect();
           inst.socket.removeAllListeners('disconnect');
           clearInterval(timer);
-          console.log("Reconneced !");
+          ("Reconneced !");
         }
       },500);
     });
@@ -33,7 +33,7 @@ export class WebSocketService {
     this.socket=io("https://node-server-interface.herokuapp.com/")
     let observable= new Observable(observer =>{
       this.socket.on(this.listenOn, (data) => {
-        console.log("Received a message from web-socket server..");
+        ("Received a message from web-socket server..");
         observer.next(data);
       });
       return () => {

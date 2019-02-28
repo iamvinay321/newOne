@@ -34,7 +34,7 @@ V_USR_NM=this.StorageSessionService.getSession("email");
   ngOnInit() {
    this.http.get("https://"+this.domain_name+"/rest/E_DB/SP?V_SRC_CD="+this.agency+"&V_USR_NM="+this.V_USR_NM+"&REST_Service=UserRoles&Verb=GET").subscribe(
      res=>{   this.Roll_cd=res['ROLE_CD'];
-        console.log(this.Roll_cd);
+        (this.Roll_cd);
 let l =this.Roll_cd.length;
 for(let i=0;i<l;i++){
               // switch(this.Roll_cd[i]){

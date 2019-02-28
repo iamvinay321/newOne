@@ -93,9 +93,9 @@ progress:boolean=false;
   Label:any[]=[];
   ngOnInit() {
     this.data.getJSON().subscribe(data => {
-      console.log(data.json());
+      (data.json());
       this.Label=data.json();
-      console.log(this.Label);
+      (this.Label);
   })
     this.getOrganization();
   }

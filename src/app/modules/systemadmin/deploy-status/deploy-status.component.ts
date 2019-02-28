@@ -84,7 +84,7 @@ export class DeployStatusComponent implements OnInit {
 
   getApplicationCode(){
     this.data.applicationCode().subscribe(res=>{
-      console.log(res.json());
+      (res.json());
       this.APP_DATA=res.json();
       this.APP_CD=this.APP_DATA['APP_CD'];
 
@@ -95,7 +95,7 @@ export class DeployStatusComponent implements OnInit {
     this.selectedapp=app;
     this.SL_APP_CD=app;
     this.data.processCode(this.SL_APP_CD).subscribe(res=>{
-      console.log(res.json());
+      (res.json());
       this.PRCS_DATA=res.json();
        this.PRCS_CD=this.PRCS_DATA['PRCS_CD'];
       //  this.getServiceCode();
@@ -112,10 +112,10 @@ export class DeployStatusComponent implements OnInit {
     this.selectedprcs=prcs;
     this.SL_PRCS_CD=prcs;
     this.data.serviceCode(this.SL_APP_CD,this.SL_PRCS_CD).subscribe(res => {
-      console.log(res.json());
+      (res.json());
       this.SRVC_DATA = res.json();
       this.SRVC_CD = this.SRVC_DATA['SRVC_CD'];
-      console.log(this.SRVC_CD);
+      (this.SRVC_CD);
       
       this.getIdCode();
     });
@@ -127,7 +127,7 @@ getIdCode(){
     {
       this.SL_SRVC_CD = this.SRVC_CD[j];
       this.data.getID(this.SL_APP_CD, this.SL_PRCS_CD, this.SL_SRVC_CD).subscribe(res => {
-        console.log(res.json());
+        (res.json());
 
         
         
@@ -144,11 +144,11 @@ getIdCode(){
         this.SRVC_ID = this.ID_DATA['V_SRVC_ID'];
         this.UNIQUE_ID = this.ID_DATA['V_UNIQUE_ID'];
 
-        // console.log(this.SRVC_ID);
-        // console.log(this.SL_APP_ID);
-        // console.log(this.SL_PRCS_ID);
-        // console.log(this.SL_SRVC_ID);
-        // console.log(this.SL_SRC_ID);
+        // (this.SRVC_ID);
+        // (this.SL_APP_ID);
+        // (this.SL_PRCS_ID);
+        // (this.SL_SRVC_ID);
+        // (this.SL_SRC_ID);
 
          this.getDeployment();
         // this.dataSource.data = this.deployTableDT;
@@ -160,12 +160,12 @@ getIdCode(){
 
 
   getDeployment(){
-    // console.log(this.SL_APP_CD);
-    // console.log(this.SL_PRCS_CD);
+    // (this.SL_APP_CD);
+    // (this.SL_PRCS_CD);
 
   
     // this.data.getDeployStatus(this.SL_SRC_ID,this.SL_APP_ID, this.SL_PRCS_ID, this.SRVC_ID).subscribe(res => {
-    //   console.log(res.json());
+    //   (res.json());
 
     //   // this.dataSource.data = this.deployTableDT;
 
@@ -175,16 +175,16 @@ getIdCode(){
     //for (let i = 0; i < this.SRVC_ID.length; i++) {
       //this.SL_SRVC_ID = this.SRVC_ID[i];
 
-      // console.log(this.SL_SRVC_ID);
+      // (this.SL_SRVC_ID);
       this.data.getDeployStatus(this.UNIQUE_ID, this.SRC_ID, this.APP_ID, this.PRCS_ID, this.SRVC_ID).subscribe(res => {
-        console.log(res.json());
+        (res.json());
         this.deployData=res.json();
         // this.deployTableDT[j]=this.deployData;
-        // console.log(this.deployData['CXN_ID']);
+        // (this.deployData['CXN_ID']);
         // this.checkifempty = this.deployData['CXN_ID'];
-        // console.log(this.checkifempty);
+        // (this.checkifempty);
         if (this.deployData['CXN_ID'].length === 1){
-          console.log("inside if");
+          ("inside if");
           this.deployTableDT[this.b] = {
             Service: this.deployData['SRVC_CD'],
             Platform: this.deployData['SERVER_CD'],
@@ -218,13 +218,13 @@ getIdCode(){
     //}
            
 
-    console.log("DEPLOY TABLE HERE!!!");
-    console.log(this.deployTableDT);
-    // console.log(this.deployTableDT['CXN_ID']);
+    ("DEPLOY TABLE HERE!!!");
+    (this.deployTableDT);
+    // (this.deployTableDT['CXN_ID']);
 
     // for (let index = 0; index < this.deployTableDT.length; index++) {
-    //   console.log(this.deployTableDT[index]);
-    //   console.log("Hellloooo");
+    //   (this.deployTableDT[index]);
+    //   ("Hellloooo");
       
     // }
     

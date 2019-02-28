@@ -31,7 +31,7 @@ export class HeaderComponent implements OnInit {
   }
   ngOnInit() {
     this.options=this.StorageSessionService.getLocalS("profileopt");
-    console.log(this.options);
+    (this.options);
 this.options.length==0 ? this.showprofilebtn=false:this.showprofilebtn=true;
 
   }

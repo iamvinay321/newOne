@@ -31,8 +31,8 @@ export class InputArtComponent {
               private globals: Globals,) {
     //this.filesUrl = new FileUrls(this.storage);
     this.reportData = new ReportData(this.storage);
-    console.log('---------------');
-    console.log(this.reportData.getProcess());
+    ('---------------');
+    (this.reportData.getProcess());
     this.agencyName = this.reportData.getAgency();
     this.application = this.reportData.getProcess();
     this.process = this.reportData.getApplication();
@@ -50,9 +50,9 @@ export class InputArtComponent {
       this.reportData.getApplication() + '&V_PRCS_CD=' + this.reportData.getProcess() +
       '&V_SRC_CD=' + this.reportData.getAgency() + '&REST_Service=Artifacts&Verb=GET').subscribe(
       res => {
-        console.log(res);
+        (res);
         this.allFiles = res['ARTFCT_NM'];
-        console.log(this.allFiles);
+        (this.allFiles);
       });
   }
 
@@ -71,11 +71,11 @@ Fire this function when user click on upload buttons
     files['File_Name'] = selectedFile.name;
     formData.append('Source_File', selectedFile);
     formData.append('FileInfo', JSON.stringify(files));
-    console.log('Upload file info');
-    console.log(formData);
+    ('Upload file info');
+    (formData);
     const obj = this.http.post('https://' + this.domain_name + '/FileAPIs/api/file/v1/upload', formData).subscribe(
       res => {
-        console.log(res);
+        (res);
         this.oldfiles();
       }
     );
@@ -112,12 +112,12 @@ Fire this function when user click on upload buttons
         this.reportData.getApplication() + '/' + this.reportData.getService();
     }
     // console.info('The given build file scope URLS:');
-    //console.log(this.filesUrl.getFileUrl());
+    //(this.filesUrl.getFileUrl());
   }
 
   addbtn_click() {
-    console.log('THE SCOPE is');
-    console.log(this.scope.V_SCOPE_LMTNG_CD);
+    ('THE SCOPE is');
+    (this.scope.V_SCOPE_LMTNG_CD);
     // let body = {
     //   "V_ARTFCT_NM": this.fileName,
     //   "V_ARTFCT_TYP": this.fileType,
@@ -135,10 +135,10 @@ Fire this function when user click on upload buttons
     //   "REST_Service": "Artifacts",
     //   "Verb": "POST"
     // };
-    // console.log(body);
+    // (body);
     // this.http.post("https://" + this.domain_name + "/rest/E_DB/SP", body).subscribe(
     //   res => {
-    //     console.log(res);
+    //     (res);
     //   });
   }
 
@@ -146,10 +146,10 @@ Fire this function when user click on upload buttons
     document.getElementById('Document_File').click();
   }
   cancelbtn_click() {
-    console.log('cancelbtn_click');
+    ('cancelbtn_click');
   }
   artfct_submitbtn_click() {
-    console.log('artfct_submitbtn_click');
+    ('artfct_submitbtn_click');
   }
 }
 

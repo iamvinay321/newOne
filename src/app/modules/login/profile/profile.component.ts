@@ -29,9 +29,9 @@ export class ProfileComponent implements OnInit {
 chooworkingProfile(){
   this.http.get<data>("https://"+this.domain_name+"/rest/E_DB/SP?V_SRC_CD="+this.agency+"&V_USR_NM="+this.V_USR_NM+"&REST_Service=UserRoles&Verb=GET").subscribe(
       data=>{
-        console.log(data);
+        (data);
        for(let i=0;i<data.ROLE_CD.length;i++){
-        console.log(data.ROLE_CD[i]);
+        (data.ROLE_CD[i]);
         if(data.ROLE_CD[i]=="Developer Role"){
               this.options.push("Developer");
         }else if(data.ROLE_CD[i]=="End User Role"){
@@ -49,7 +49,7 @@ chooworkingProfile(){
 
       }
       //navigate when the lenght is 1
-      console.log("length"+this.options.length);
+      ("length"+this.options.length);
       // this.StorageSessionService.setLocatS("profileopt",this.options);
       if(this.options.length==1){
         // this.StorageSessionService.setLocatS("profileopt",this.options);

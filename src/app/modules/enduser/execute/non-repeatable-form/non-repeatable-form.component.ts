@@ -132,12 +132,12 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     }
     this.http.post(this.apiUrlGet, body_FORMrec).subscribe(
       res => {
-        console.log("Response:\n" + res);
+        ("Response:\n" + res);
         this.build_PVP();
-        console.log(body_FORMrec);
+        (body_FORMrec);
       });
     err => {
-      console.log("Error in form record post request:\n" + err);
+      ("Error in form record post request:\n" + err);
     }
   }
 
@@ -168,17 +168,17 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
       "V_UNIQUE_ID": this.V_UNIQUE_ID,
       "TimeZone": this.currentDate
     }
-    console.log(body_buildPVP);
-    console.log("Body: " + body_buildPVP + "\nURL:" + "https://" + this.domain_name + "/rest/Submit/FormSubmit");
+    
+    
     this.http.post("https://" + this.domain_name + "/rest/Submit/FormSubmit", body_buildPVP).subscribe(
       res => {
-        console.log(res);
+        (res);
         this.invoke_router(res);
       });
   }
 
   onCancel() {
-    console.log("Cancelled");
+    ("Cancelled");
     this.router.navigateByUrl("End_User");
   }
 

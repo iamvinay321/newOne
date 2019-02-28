@@ -60,21 +60,21 @@ export class MachineComponent implements OnInit {
 
   Label:any[]=[];
   MachineCode() {
-    console.log("Machine List!");
+    ("Machine List!");
     this.data.getMachineCode().subscribe(res => {
-      console.log("Machine List!");
+      ("Machine List!");
       this.PLF_DATA = res.json();
-      console.log(this.PLF_DATA);
+      (this.PLF_DATA);
 
     });
   }
   machineDetails() {
-    console.log("Hello");
-    console.log("Machine DETAILS");
+    ("Hello");
+    ("Machine DETAILS");
     this.data.getMachineDetails(this.PLATFORM_CD).subscribe(res => {
-      // console.log("Machine List!");
+      // ("Machine List!");
       this.PLF_DETAILS = res.json();
-      console.log(this.PLF_DETAILS);
+      (this.PLF_DETAILS);
       this.PLATFORM_DSC = this.PLF_DETAILS['PLATFORM_DSC'];
       this.PLATFORM_CAP = this.PLF_DETAILS['PLATFORM_CAP'];
       this.RATING = this.PLF_DETAILS['RATING'];

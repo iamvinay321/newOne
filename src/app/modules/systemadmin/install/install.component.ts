@@ -89,7 +89,7 @@ export class InstallComponent implements OnInit {
       this.http.get<data>(this.apiUrlGet+"V_PLATFORM_CD=&V_SERVER_CD="+this.platform_sl+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Platform_Deployments&Verb=GET").subscribe(
         res=>{
            this.installmachines=res.PLATFORM_CD;
-           console.log("installed on :->"+this.installmachines);
+           ("installed on :->"+this.installmachines);
         });
      }
 
@@ -124,7 +124,7 @@ export class InstallComponent implements OnInit {
        this.http.post(this.apiUrlPost, body).subscribe(
        res=>{
         this.toastr.success("Installing "+this.platform_sl+" on "+this.machine_sl+" !");
-        console.log(res);
+        (res);
        });
      }
 
@@ -133,7 +133,7 @@ export class InstallComponent implements OnInit {
       this.http.get(this.apiUrlGet+"V_SERVER_CD="+this.platform_sl+"&V_SRC_CD="+this.V_SRC_CD+"&V_PLATFORM_CD="+this.machine_sl+"&REST_Service=Platform_Deployment&Verb=DELETE").subscribe(
         res=>{
          this.toastr.warning("Uninstalling "+this.platform_sl+" from "+this.machine_sl+" !");
-         console.log(res);
+         (res);
         });
      
      }

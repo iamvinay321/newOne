@@ -50,7 +50,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
 
 
   updateForm(form): void {
-    console.log('update form call');
+    ('update form call');
 
     var Field_Names_Ar = [];
     var Field_Values_Ar = [];
@@ -92,12 +92,12 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     }
     body_req["REST_Service"] = "Forms_Record";
 
-    //console.log(body_FORMrec);
-    console.log(body_req);
+    //(body_FORMrec);
+    (body_req);
     //this.http.put(this.apiUrlGet, body_FORMrec).subscribe(
     httpMethod(this.apiUrlGet, body_req).subscribe(
       res => {
-        console.log("Response:\n" + res);
+        ("Response:\n" + res);
       }),
       err => {
         console.error("failure response recieved in post");
@@ -106,24 +106,24 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
   }
 
   deleteForm(form): void {
-    console.log('delete form call');
-    console.log(form["iteration"]);
+    ('delete form call');
+    (form["iteration"]);
 
     var del_URL = "https://" + this.domain_name + "/rest/E_DB/SP?V_Table_Name=" + this.V_TABLE_NAME + "&V_Schema_Name=" + this.V_SCHEMA_NAME + "&V_ID=" + this.V_ID[form["iteration"] - 1] + "&V_SRVC_CD=" + this.V_SRVC_CD + "&V_USR_NM=" + this.V_USR_NM + "&V_SRC_CD=" + this.V_SRC_CD + "&V_PRCS_ID=" + this.V_PRCS_ID + "&REST_Service=Forms_Record&Verb=DELETE";
-    console.log(del_URL);
+    (del_URL);
     del_URL = encodeURI(del_URL);
-    console.log(del_URL);
+    (del_URL);
 
     this.http.delete(del_URL).subscribe(
       res => {
-        console.log("Response:\n" + res);
+        ("Response:\n" + res);
       });
   }
 
   build_PVP(form) {
     this.currentDate = dateFormat(new Date(), "ddd mmm dd yyyy hh:MM:ss TT o");
     //-------Update PVP--------//
-    console.log(form);
+    (form);
     var PVP_str = "{";
     var key;
     for (let i = 0; i < this.RVP_labels.length; i++) {
@@ -139,7 +139,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
         PVP_str += ",";
     }
     PVP_str += "}";
-    console.log(PVP_str);
+    (PVP_str);
 
     let body_buildPVP = {
       "V_USR_NM": this.V_USR_NM,
@@ -155,11 +155,11 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
       "V_UNIQUE_ID": this.V_UNIQUE_ID,
       "TimeZone": this.currentDate
     }
-    console.log(body_buildPVP);
+    
 
     this.http.post("https://" + this.domain_name + "/rest/Submit/FormSubmit", body_buildPVP).subscribe(
       res => {
-        console.log(res);
+        (res);
         this.invoke_router(res);
       });
   }
@@ -208,8 +208,8 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
     for (let i = 1; i < this.totalRow; i++) {
       this.rows.push(i);
     }
-    console.log("Iterations :");
-    console.log(this.rows);
+    ("Iterations :");
+    (this.rows);
     for (let i = 1; i < this.totalRow; i++) {
       for (let j = 0; j < this.RVP_labels.length; j++) {
         this.input[this.RVP_labels[j]][i] = this.RVP_DataObj[this.RVP_labels[j].split(" ").join("_")][i - 1];
@@ -249,7 +249,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
         }
       }
       form["iteration"] = i;
-      console.log(form);
+      (form);
       if (this.V_TABLE_NAME === null || this.V_TABLE_NAME.length > 0)
         this.updateForm(form);
     }
@@ -265,19 +265,19 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
       }
     }
     form["iteration"] = i;
-    console.log(form);
+    (form);
     if (this.V_TABLE_NAME === null || this.V_TABLE_NAME.length > 0)
       this.deleteForm(form);
   }
 
   onCancel() {
-    console.log("Cancelled");
+    ("Cancelled");
     this.router.navigateByUrl("End_User");
   }
 
   onSubmit() {
     if (this.rpForm.valid) {
-      console.log('submitting');
+      ('submitting');
       var form: any = [];
       var temp: any;
       for (let i = 0; i < this.RVP_labels.length; i++) {
@@ -292,7 +292,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
             form[this.RVP_labels[i].split(" ").join("_")].push(temp);
         }
       }
-      console.log(form);
+      (form);
       var areAllDisabled = true;
       for (let i = 0; i < this.totalRow; i++) {
         if (!this.isDisabled[i]) {

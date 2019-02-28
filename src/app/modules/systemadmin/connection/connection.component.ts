@@ -73,7 +73,7 @@ export class ConnectionComponent implements OnInit {
     this.http.get<data>(this.apiUrlGet + "V_CD_TYP=CXN&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Masters&Verb=GET").subscribe(
       res => {
         this.conn_type = res.CXN_TYP;
-        //console.log(this.conn_type);
+        //(this.conn_type);
       });
   }
 
@@ -108,8 +108,7 @@ export class ConnectionComponent implements OnInit {
             name: this.par_nm[i],
             value: this.par_val[i],
           }
-          console.log(this.par_nm[i]);
-          console.log(this.par_val[i]);
+         
         }
       });
   }
@@ -136,7 +135,7 @@ export class ConnectionComponent implements OnInit {
     };
     this.http.put(this.apiUrlPost, body).subscribe(
       res => {
-        console.log(res);
+        (res);
       });
   }
 
@@ -153,7 +152,7 @@ export class ConnectionComponent implements OnInit {
     };
     this.http.put(this.apiUrlPost, body).subscribe(
       res => {
-        console.log(res);
+        (res);
       });
   }
 
@@ -179,8 +178,8 @@ export class ConnectionComponent implements OnInit {
       };
       this.http.patch(this.apiUrlPost, body).subscribe(
         res => {
-          console.log(res);
-          console.log(body);
+          (res);
+          (body);
         });
     }
     this.Data1.length=0;
@@ -188,9 +187,9 @@ export class ConnectionComponent implements OnInit {
   ngOnInit() {
     this.getconnectiontype();
     this.data.getJSON().subscribe(data => {  
-           console.log(data.json());     
+           (data.json());     
              this.Label=data.json();      
-              console.log(this.Label);   })
+              (this.Label);   })
   }
 }
 

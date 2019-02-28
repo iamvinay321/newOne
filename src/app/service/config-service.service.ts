@@ -315,8 +315,8 @@ export class ConfigServiceService {
   }
 
   onPause(TriggerKey, JobKey) {
-    console.log('onPause!!!');
-    // console.log(TriggerKey);
+    ('onPause!!!');
+    // (TriggerKey);
 
     var headers = new Headers();
     headers.append('application', 'json');
@@ -331,7 +331,7 @@ export class ConfigServiceService {
   }
 
   onResume(TriggerKey, JobKey) {
-    console.log('RESUME!!!');
+    ('RESUME!!!');
 
     var headers = new Headers();
     headers.append('application', 'json');
@@ -345,7 +345,7 @@ export class ConfigServiceService {
   }
 
   onKill(TriggerKey, JobKey) {
-    console.log('KILL!!!');
+    ('KILL!!!');
     var headers = new Headers();
     headers.append('application', 'json');
     let body = {
@@ -416,7 +416,7 @@ export class ConfigServiceService {
 
   //Undefine Button executables
   doDelete(EXE_TYPE, EXE_CD) {
-    console.log("UNDEFINE");
+    ("UNDEFINE");
     return this.http.delete(this.apiUrlGet + "V_EXE_TYP=" + EXE_TYPE + "&V_EXE_CD=" + EXE_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Exe&Verb=DELETE");
     // { "V_EXE_TYP": ["VARCHAR"], "V_EXE_CD": ["VARCHAR"], "V_SRC_CD": ["VARCHAR"], "REST_Service": ["Exe"], "Verb": ["DELETE"] }
 
@@ -515,12 +515,12 @@ export class ConfigServiceService {
 
 
   getDeployStatus(UNIQUE_ID, SL_SRC_ID, SL_APP_ID, SL_PRCS_ID, SL_SRVC_ID) {
-    console.log(this.apiUrlGet + "V_UNIQUE_ID=" + UNIQUE_ID + "&V_SRC_ID=" + SL_SRC_ID + "&V_APP_ID=" + SL_APP_ID + "&V_PRCS_ID=" + SL_PRCS_ID + "&V_SRVC_ID=" + SL_SRVC_ID + "&FULL_DTL_FLG=Y&AVL_DTL_FLG=N&REST_Service=DeploymentStatus&Verb=GET");
+    (this.apiUrlGet + "V_UNIQUE_ID=" + UNIQUE_ID + "&V_SRC_ID=" + SL_SRC_ID + "&V_APP_ID=" + SL_APP_ID + "&V_PRCS_ID=" + SL_PRCS_ID + "&V_SRVC_ID=" + SL_SRVC_ID + "&FULL_DTL_FLG=Y&AVL_DTL_FLG=N&REST_Service=DeploymentStatus&Verb=GET");
     return this.http.get(this.apiUrlGet + "V_UNIQUE_ID=" + UNIQUE_ID + "&V_SRC_ID=" + SL_SRC_ID + "&V_APP_ID=" + SL_APP_ID + "&V_PRCS_ID=" + SL_PRCS_ID + "&V_SRVC_ID=" + SL_SRVC_ID + "&FULL_DTL_FLG=Y&AVL_DTL_FLG=N&REST_Service=DeploymentStatus&Verb=GET")
   }
   getAppCode(vSRCcd) {
     this.V_SRC_CD = vSRCcd;
-    console.log(this.apiUrlGet + "V_CD_TYP=APP&V_SRC_CD=" + this.V_SRC_CD + "&SCREEN=PROFILE&REST_Service=Masters&Verb=GET");
+    (this.apiUrlGet + "V_CD_TYP=APP&V_SRC_CD=" + this.V_SRC_CD + "&SCREEN=PROFILE&REST_Service=Masters&Verb=GET");
     return this.http.get(this.apiUrlGet + "V_CD_TYP=APP&V_SRC_CD=" + this.V_SRC_CD + "&SCREEN=PROFILE&REST_Service=Masters&Verb=GET");
   }
   getProcessCD(V_APP_CD: any) {

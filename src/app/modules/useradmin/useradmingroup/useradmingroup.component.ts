@@ -59,11 +59,11 @@ export class UseradmingroupComponent implements OnInit {
   */
   fileChangeEvent(event: any, file: any) {
     let fileList: FileList = event.target.files;
-    console.log("====================");
-    console.log(fileList.item(0));
+    ("====================");
+    (fileList.item(0));
     this.data.fileUpload(fileList.item(0), "GroupDL.xlsx", "group").subscribe(
       res => {
-        console.log(res);
+        (res);
         setTimeout(()=>{   
           this.AvailableGroup();
      }, 3000);
@@ -88,7 +88,7 @@ export class UseradmingroupComponent implements OnInit {
     this.progress = true;
     this.data.AvaiableGroup().subscribe(
       res => {
-        console.log(res);
+        (res);
         this.USR_GRP_CD = res['USR_GRP_CD'];
         if (this.USR_GRP_CD) {
 
@@ -107,10 +107,10 @@ export class UseradmingroupComponent implements OnInit {
     }
     this.data.getAvailableGroup(USR_GRP_CD).subscribe(
       res => {
-        console.log(res);
+        (res);
         this.start_date = new Date(res['EFF_STRT_DT_TM']);
         this.end_date = new Date(res['EFF_END_DT_TM']);
-        console.log(this.start_date + this.end_date);
+        (this.start_date + this.end_date);
         this.USR_GRP_CDR = res['USR_GRP_CD'];
         this.USR_GRP_DSCR = res['USR_GRP_DSC'];
         this.progress = false;
@@ -131,7 +131,7 @@ export class UseradmingroupComponent implements OnInit {
     } else {
       this.data.Delete(this.USR_GRP_CD_SELC).subscribe(
         res => {
-          console.log("Deleted " + res);
+          ("Deleted " + res);
           if (res.status == 200) {
             this.progress = false;
             this.toastr.info("Delete", "Group " + this.USR_GRP_CD_SELC + " is deleted..!");
@@ -184,7 +184,7 @@ export class UseradmingroupComponent implements OnInit {
 
       this.data.AddGroup(this.end_date, this.start_date, this.USR_GRP_DSCR, this.USR_GRP_CDR).subscribe(
         res => {
-          console.log("Add Group" + res);
+          ("Add Group" + res);
           if (res.status == 200) {
             this.toastr.info("Add", "Group " + this.USR_GRP_CDR + " is added..!");
           }
@@ -208,7 +208,7 @@ export class UseradmingroupComponent implements OnInit {
     this.USR_GRP_DSCR = "";
   }
   putInDescription(event: any) {
-    console.log(event);
+    (event);
     this.addBtn = false;
     this.USR_GRP_DSCR = this.USR_GRP_CDR;
 
@@ -228,9 +228,9 @@ export class UseradmingroupComponent implements OnInit {
   ngOnInit() {
     this.AvailableGroup();
     this.data.getJSON().subscribe(data => {
-      console.log(data.json());
+      (data.json());
       this.Label = data.json();
-      console.log(this.Label);
+      (this.Label);
     });
   }
 

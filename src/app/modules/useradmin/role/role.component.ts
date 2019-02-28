@@ -73,8 +73,7 @@ selectedrole:Number;
     console.log("File uploading.......");
     this.data.fileUpload(fileList.item(0),"RoleDL.xlsx","role").subscribe(
       res=>{
-        console.log("File uploaded success, the response of file upload :")
-        console.log(res);
+        
         // called this method after file uploaded success
         setTimeout(()=>{   
           this.getRoll();

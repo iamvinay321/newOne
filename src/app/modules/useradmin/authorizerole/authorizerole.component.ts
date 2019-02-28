@@ -80,9 +80,9 @@ export class AuthorizeroleComponent implements OnInit {
 
   ngOnInit() {
     this.data.getJSON().subscribe(data => {
-      console.log(data.json());
+      (data.json());
         this.Label = data.json();
-         console.log(this.Label);   });
+         (this.Label);   });
 	  this.getrole();
     this.getauthtype();
 
@@ -138,7 +138,7 @@ export class AuthorizeroleComponent implements OnInit {
     this.arraycheckbox = [];
     let acc = authorize.auth_access;
     for (let i = 0; i < 5; i++) {
-      console.log(acc[this.chararray[i]]);
+      (acc[this.chararray[i]]);
       if (acc[this.chararray[i]] === 'Y') {
         this.arraycheckbox.push({data: true});
       }

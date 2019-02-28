@@ -40,7 +40,7 @@ export class DialogChartsComponent implements OnInit {
     this.gantt=false;
     this.bar=false;
     this.pie=false;
-    console.log(this.data);
+    (this.data);
   }
   ColorGantt=[];
   Colorpie=[];
@@ -54,7 +54,7 @@ export class DialogChartsComponent implements OnInit {
   }
   chart_JSON_call(type){
     this.http.get(this.apiUrlGet + "V_SRC_ID=" + this.data.Execute_res_data['V_SRC_ID'] + "&V_APP_ID=" + this.data.Execute_res_data['V_APP_ID'] + "&V_PRCS_ID=" + this.data.Execute_res_data['V_PRCS_ID'] + "&V_PRCS_TXN_ID="+this.data.Execute_res_data['V_PRCS_TXN_ID']+"&REST_Service=ProcessStatus&Verb=GET").subscribe(res => {
-      console.log(res);
+      (res);
       var start_time=[],end_time=[],Process=[];
 
       for(let i=0;i<res['INS_DT_TM'].length;i++){
@@ -81,8 +81,8 @@ export class DialogChartsComponent implements OnInit {
       var B = Math.floor(Math.random() * 200);
       if(this.ColorGantt.length<i+1)
         this.ColorGantt[i]="rgba(" + R + ',' + G + ',' + B + ")";
-      //console.log((this.time_to_sec(start_time[i]) - this.time_to_sec(start_time[0])));
-      //console.log((this.time_to_sec(end_time[i]) - this.time_to_sec(start_time[0])));
+      //((this.time_to_sec(start_time[i]) - this.time_to_sec(start_time[0])));
+      //((this.time_to_sec(end_time[i]) - this.time_to_sec(start_time[0])));
       mydataset[Process.length - i - 1]= {
         backgroundColor: this.ColorGantt[i],
         borderColor: this.ColorGantt[i],
@@ -156,7 +156,7 @@ export class DialogChartsComponent implements OnInit {
                     endstr=endstr-60*Math.floor(endstr/60);
                     begstr+=Math.floor(midstr/60);
                     midstr=midstr-60*Math.floor(midstr/60);
-                    //console.log(index);
+                    //(index);
                     
                     if (midstr < 10)
                       mid_str = '0' + midstr;
@@ -164,7 +164,7 @@ export class DialogChartsComponent implements OnInit {
                       end_str = '0' + endstr;
                     if (begstr < 10)
                     beg_str = '0' + begstr;
-                    //console.log(count);
+                    //(count);
                     return beg_str+':' + mid_str +':'+end_str;
                   }
                   //return value/val1;
@@ -225,8 +225,8 @@ export class DialogChartsComponent implements OnInit {
                 return data['labels'][tooltipItem[0]['index']];
               },
               label: function (tooltipItem, data) {
-                //console.log(tooltipItem);
-                //console.log(data['datasets'][0]['data'][tooltipItem['index']]);
+                //(tooltipItem);
+                //(data['datasets'][0]['data'][tooltipItem['index']]);
                 var ret = mydata[tooltipItem['index']];
                 ret = Math.floor(ret * 100) / 100;
                 return ret+' sec';
@@ -272,7 +272,7 @@ export class DialogChartsComponent implements OnInit {
         Process[i]=Process[i]+'...';
       var temp = this.time_to_sec(end_time[i]) - this.time_to_sec(start_time[i]);
       duration[i] = temp;
-      //console.log(duration);
+      //(duration);
       var R = Math.floor(Math.random() * 200);
       var G = Math.floor(Math.random() * 200);
       var B = Math.floor(Math.random() * 200);
@@ -317,8 +317,8 @@ export class DialogChartsComponent implements OnInit {
                 return data['labels'][tooltipItem[0]['index']];
               },
               label: function (tooltipItem, data) {
-                //console.log(tooltipItem);
-                //console.log(data['datasets'][0]['data'][tooltipItem['index']]);
+                //(tooltipItem);
+                //(data['datasets'][0]['data'][tooltipItem['index']]);
                 var ret = duration[tooltipItem['index']];
                 ret = Math.floor(ret * 100) / 100;
                 return ret+ ' sec';
@@ -347,12 +347,12 @@ export class DialogChartsComponent implements OnInit {
                     var midstr=0;
                     
                     var endstr=value;
-                    //console.log(index*value);
+                    //(index*value);
                     midstr+=Math.floor(endstr/60);
                     endstr=endstr-60*Math.floor(endstr/60);
                     begstr+=Math.floor(midstr/60);
                     midstr=midstr-60*Math.floor(midstr/60);
-                    //console.log(index);
+                    //(index);
                     let beg_str=begstr.toString(),mid_str=midstr.toString(),end_str=endstr.toString();
                     if (midstr < 10)
                       mid_str = '0' + midstr;
@@ -360,7 +360,7 @@ export class DialogChartsComponent implements OnInit {
                       end_str = '0' + endstr;
                     if (begstr < 10)
                       beg_str = '0' + begstr;
-                    //console.log(min);
+                    //(min);
                     return beg_str+':' + mid_str +':'+end_str;
                   }
                   //return value;

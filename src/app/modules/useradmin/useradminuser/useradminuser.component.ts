@@ -82,11 +82,11 @@ export class UseradminuserComponent implements OnInit {
   */
   fileChangeEvent(event: any, file: any) {
     const fileList: FileList = event.target.files;
-    console.log('====================');
-    console.log(fileList.item(0));
+    ('====================');
+    (fileList.item(0));
     this.userAdminService.fileUpload(fileList.item(0), 'UserDL.xlsx', 'user').subscribe(
       res => {
-        console.log(res);
+        (res);
         setTimeout(() => {
           this.getUser();
      }, 3000);
@@ -103,10 +103,10 @@ export class UseradminuserComponent implements OnInit {
     check the input checkbox
   */
   sendEmailToUser(checkBoxStatus: any): void {
-    console.log(checkBoxStatus.checked);
+    (checkBoxStatus.checked);
     if (!checkBoxStatus.checked) {
-      console.log('condition checked');
-      console.log(this.USR_NM_R);
+      ('condition checked');
+      (this.USR_NM_R);
       this.emailOption = true;
 
     }
@@ -127,7 +127,7 @@ export class UseradminuserComponent implements OnInit {
     this.progress = true;
     this.userAdminService.getUser().subscribe(
       res => {
-        console.log(res.json());
+        (res.json());
         this.USR_NM = res.json()['USR_NM'];
 
         this.progress = false;
@@ -226,9 +226,9 @@ export class UseradminuserComponent implements OnInit {
     // set defaul values
     this.USRC_STATUS_R = 'ACTIVE';
     this.userAdminService.getJSON().subscribe(data => {
-      console.log(data.json());
+      (data.json());
       this.Label = data.json();
-      console.log(this.Label);
+      (this.Label);
     });
 
   }
