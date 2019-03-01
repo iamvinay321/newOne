@@ -24,8 +24,7 @@ export class UseradminService {
       this.V_SRC_CD = this.session.getSession("agency");
        this.V_USR_NM = this.session.getSession("email");
        this.columnsToDisplay = this.session.getCookies("coltodisp");
-		console.info("The user company name :"+this.V_SRC_CD);
-		console.info("The user name is :"+this.V_USR_NM);
+		
   }
 
 

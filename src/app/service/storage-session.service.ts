@@ -24,7 +24,7 @@ export class StorageSessionService {
  private   sharedStorageService: SharedStorageService,
   ) {
    
-    cookiesStorageService.utility.forEach((value, key) => console.log());
+    //cookiesStorageService.utility.forEach((value, key) => console.log());
 
     this.viewCounts++;
     this.userName = 'some name stored in localstorage';

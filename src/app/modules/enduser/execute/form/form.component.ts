@@ -96,7 +96,7 @@ export class FormComponent implements OnInit {
 
     this.Form_Data = this.StorageSessionService.getCookies('report_table');
     this.configService.prepareAndGetFieldConfigurations(this.Form_Data, true);
-    console.info('The form data stored in local storage: ');
+    
     (this.Form_Data);
 
     this.PVP = JSON.parse(this.Form_Data['PVP'][0]);
@@ -237,7 +237,7 @@ export class FormComponent implements OnInit {
     this.V_KEY_NAME = key_name_ar.join("|");
     this.V_KEY_VALUE = key_val_ar.join("|");
 
-    console.info('This is completed data of V_TABLE_NAME parameter :');
+   
     ('V_SRVC_CD=>' + this.V_SRVC_CD + 'V_TABLE_NAME=>' + this.V_TABLE_NAME + 'V_KEY_NAME=>' + this.V_KEY_NAME + 'V_KEY_VALUE=>' + this.V_KEY_VALUE + 'V_SCHEMA_NAME=>' + this.V_SCHEMA_NAME);
   }
 

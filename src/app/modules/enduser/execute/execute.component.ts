@@ -759,9 +759,9 @@ export class ExecuteComponent implements OnInit {
         this.check_data = res.json();
         this.app.loadingCharts = false;
         this.report = res.json();
-        console.info('This is report generated data :');
+      
         (this.report);
-        console.info('The URL to redirecting form is :');
+       
         (this.report.RESULT);
         (res.json());
         var timeout = res.json().RESULT.toString().substring(0, 7) == "TIMEOUT";

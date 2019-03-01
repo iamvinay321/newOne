@@ -125,7 +125,7 @@ export class ConfigServiceService {
     if (CommonUtils.isValidValue(this.fieldConfig[paramName]) && this.fieldConfig[paramName].maxLength) {
       return this.fieldConfig[paramName].maxLength > 0 ? this.fieldConfig[paramName].maxLength : -1;
     }
-    return -1;
+    return 0;
   }
 
   public getFieldTooltip(paramName: string) {
