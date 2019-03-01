@@ -107,7 +107,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
     this.endUsrData.getApplication().subscribe(
       res => {
         this.App_CD_data = res.json();
-        console.log(res);
+        (res);
         if (this.app.START === false && this.ApplicationCD.length > 0 && this.app.selected_APPLICATION !== 'ALL') {
           if (this.mobileView) {
             this.getProcessCD({ value: this.ApplicationCD });
@@ -160,11 +160,11 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
       let rm_f: boolean;
       let ps_r: boolean;
 
-      console.log(dataResult);
+      (dataResult);
 
       this.F1 = dataResult.SRVC_CD;
-      console.log(this.F1);
-      console.log(this.F1.length);
+      (this.F1);
+      (this.F1.length);
       for (let i = 0; i < this.F1.length; i++) {
         this.innerTableDT[i] = {
           name: dataResult.SRVC_CD[i],
@@ -204,7 +204,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
   // isAllSelected() {
   //   const numSelected = this.selection.selected.length;
   //   this.data1 = this.selection.selected;
-  //   console.log(this.data1);
+  //   (this.data1);
   //   const numRows = this.dataSource.data.length;
   //   return numSelected === numRows;
 
@@ -214,11 +214,11 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
   // -------------get process id / JOB_NAME
   Check_process_id(key: any) {
     this.Process_key.push(key);
-    console.log(this.Process_key);
+    (this.Process_key);
     this.Process_key.forEach(function (v, i) {
-      console.log('v' + v);
-      console.log('i' + i);
-      console.log(key);
+      ('v' + v);
+      ('i' + i);
+      (key);
       if (v === key) {
         //     var index = this.Process_key.indexOf(v);
 
@@ -229,12 +229,12 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
         // this.Process_key.slice(i);
       }
     });
-    console.log(this.Process_key);
+    (this.Process_key);
 
-    // console.log("Array lenght"+this.Process_key.length+" elm"+this.Process_key);
+    // ("Array lenght"+this.Process_key.length+" elm"+this.Process_key);
   }
   onRowClick(row) {
-    console.log('Row clicked: ', row);
+    
   }
 
 
@@ -245,10 +245,10 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
       'JobKey': [P_ID],
       'Operation': [P_OP]
     };
-    console.log(body);
+    (body);
     this.https.post('https://' + this.domain_name + '/rest/Hold/ScheduleAction', body).subscribe(
       res => {
-        console.log(res.json());
+        (res.json());
 
       }
     );
@@ -260,7 +260,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
   onPause() {
 
     this.innerTableDT = [];
-    console.log('PAUSE!!!');
+    ('PAUSE!!!');
     // Pause
     for (let i = 0; i < this.Process_key.length; i++) {
       this.Process_operation(this.Process_key[i], 'Pause');
@@ -274,7 +274,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
 
   onResume() {
     this.innerTableDT = [];
-    console.log('RESUME!!!');
+    ('RESUME!!!');
     // Resume
     for (let i = 0; i < this.Process_key.length; i++) {
       this.Process_operation(this.Process_key[i], 'Resume');
@@ -289,10 +289,10 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
   onKill() {
     this.innerTableDT = [];
     // Kill
-    console.log('KILL!!!');
+    ('KILL!!!');
     for (let i = 0; i < this.Process_key.length; i++) {
       this.Process_operation(this.Process_key[i], 'Kill');
-      console.log('Process id' + this.Process_key[i]);
+      ('Process id' + this.Process_key[i]);
     }
     setTimeout(() => {
       this.find_process(this.ApplicationCD, this.ProcessCD, 'All');
@@ -315,7 +315,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
     });
 
     this.getAppCode();
-    this.data.getJSON().subscribe(data1 => { console.log(data1.json()); this.Label = data1.json(); console.log(this.Label); });
+    this.data.getJSON().subscribe(data1 => { (data1.json()); this.Label = data1.json(); (this.Label); });
 
   }
   fooo1(u) {
@@ -343,7 +343,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
     };
 
 
-    console.log(this.form_dl_data);
+    (this.form_dl_data);
     this.storageSessionService.setSession('Exe_data', this.form_dl_data[0]);
 
     this.selectedplat2 = u;
@@ -414,7 +414,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
     };
 
 
-    console.log(this.form_dl_data);
+    (this.form_dl_data);
     this.storageSessionService.setSession('Exe_data', this.form_dl_data[0]);
     this.router.navigateByUrl('repeat');
 
@@ -436,9 +436,9 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
         // this.ProcessCD + "&V_SRC_CD=" +
         // this.V_SRC_CD + "&REST_Service=ProcessParameters&Verb=GET").subscribe(
     //   res => {
-    //     console.log(this.apiUrlGet + "V_APP_CD=" + this.ApplicationCD + "&V_PRCS_CD=" +
+    //     (this.apiUrlGet + "V_APP_CD=" + this.ApplicationCD + "&V_PRCS_CD=" +
         // this.ProcessCD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=ProcessParameters&Verb=GET");
-    //     console.log(res.json());
+    //     (res.json());
     //     this.FormData = res.json();
     //     this.ParametrValue = this.FormData['PARAM_VAL'];
     //     this.ParameterName = this.FormData['PARAM_NM'];
@@ -533,7 +533,7 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
             this.tp[this.Data[i].name] = this.Data[i].value;
           }
         }
-        console.log(this.tp);
+        (this.tp);
 
 
       }
@@ -565,9 +565,9 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
     this.endUsrData.getParameterAllOption(this.ApplicationCD, this.ProcessCD, e, 'Pull%20FPDS%20Contract')
     .subscribe(
         res => {
-          console.log('Parameter option response is :');
-          console.log(res.json());
-          console.log(res.json()[e]);
+          ('Parameter option response is :');
+          (res.json());
+          (res.json()[e]);
           this.searchResult = res.json()[e];
           this.app.loading = false;
         }
@@ -591,11 +591,11 @@ export class SchdActnComponent implements OnInit, AfterViewInit {
   }
 
   add(aa) {
-    console.log(aa.name + aa.value);
+    (aa.name + aa.value);
     if (aa.name in this.tp) { this.tp[aa.name] = aa.value; } else {
       this.tp[aa.name] = aa.value;
     }
-    console.log(this.tp);
+    (this.tp);
     this.storageSessionService.setCookies('tp', this.tp);
   }
 }

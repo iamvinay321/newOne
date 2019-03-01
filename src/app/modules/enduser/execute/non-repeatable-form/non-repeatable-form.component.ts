@@ -10,11 +10,12 @@ import { Globals } from '../../../../service/globals';
 import { HttpClient } from '@angular/common/http'
 import { Router } from '@angular/router';
 import * as dateFormat from 'dateformat';
-import { HostListener, ChangeDetectorRef } from "@angular/core";
+import { HostListener, ChangeDetectorRef, ViewChild } from "@angular/core";
 import { MatTableDataSource } from '@angular/material';
 import { getISODayOfWeek } from 'ngx-bootstrap/chronos/units/day-of-week';
 import { encode } from 'punycode';
 import { CommonUtils } from '../../../../common/utils';
+import { ConfigServiceService } from '../../../../service/config-service.service';
 @Component({
   selector: 'app-non-repeatable-form',
   templateUrl: './non-repeatable-form.component.html',
@@ -38,6 +39,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
   screenHeight: number;
   screenWidth: number;
   desktopView: boolean = true;
+  @ViewChild('nrpForm') nrpForm: any;
   constructor(
     public StorageSessionService: StorageSessionService,
     public app: AppComponent,
@@ -45,8 +47,9 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     public router: Router,
     public globals: Globals,
     public cdr: ChangeDetectorRef,
+    public configService: ConfigServiceService,
   ) {
-    super(StorageSessionService, http, router, globals, app, cdr);
+    super(StorageSessionService, http, router, globals, app, cdr, configService);
   }
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
@@ -93,7 +96,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     }
   }
 
-  prepareFieldValues(){
+  prepareFieldValues() {
     let values = [];
     for (let i = 0; i < this.RVP_Keys.length; i++) {
       const Field_Value = "'" + this.input[this.RVP_labels[i]] + "'";
@@ -103,10 +106,12 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
   }
 
   onSubmit() {
-    if (this.V_TABLE_NAME !== '') {
-      this.submit_formsRecord();
-    } else {
-      this.build_PVP();
+    if (this.nrpForm.valid) {
+      if (this.V_TABLE_NAME !== '') {
+        this.submit_formsRecord();
+      } else {
+        this.build_PVP();
+      }
     }
   }
 
@@ -127,12 +132,12 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
     }
     this.http.post(this.apiUrlGet, body_FORMrec).subscribe(
       res => {
-        console.log("Response:\n" + res);
+        ("Response:\n" + res);
         this.build_PVP();
-        console.log(body_FORMrec);
+        (body_FORMrec);
       });
     err => {
-      console.log("Error in form record post request:\n" + err);
+      ("Error in form record post request:\n" + err);
     }
   }
 
@@ -163,17 +168,17 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
       "V_UNIQUE_ID": this.V_UNIQUE_ID,
       "TimeZone": this.currentDate
     }
-    console.log(body_buildPVP);
-    console.log("Body: " + body_buildPVP + "\nURL:" + "https://" + this.domain_name + "/rest/Submit/FormSubmit");
+    
+    
     this.http.post("https://" + this.domain_name + "/rest/Submit/FormSubmit", body_buildPVP).subscribe(
       res => {
-        console.log(res);
+        (res);
         this.invoke_router(res);
       });
   }
 
   onCancel() {
-    console.log("Cancelled");
+    ("Cancelled");
     this.router.navigateByUrl("End_User");
   }
 

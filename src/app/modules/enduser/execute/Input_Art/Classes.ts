@@ -7,7 +7,7 @@ export class ReportData{
     constructor(private storage:StorageSessionService){
         this.storage.getCookies('report_table')
         console.info("Storage limit data======================>");
-        console.log(this.storage.getCookies('report_table'));
+        (this.storage.getCookies('report_table'));
         this.agency=this.storage.getSession("agency");
     }
     /*

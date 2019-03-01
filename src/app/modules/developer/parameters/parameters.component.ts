@@ -32,12 +32,12 @@ export class ParametersComponent implements OnInit {
     
     
   //   dialog.afterClosed().subscribe(res => {
-  //       // console.log(res.json());
+  //       // (res.json());
   //       if (res) {
 
-  //         console.log('DONE');
+  //         ('DONE');
   //       } else {
-  //         console.log("CANCEL");
+  //         ("CANCEL");
   //         // User clicked 'Cancel' or clicked outside the dialog
   //       }
   //     });
@@ -102,10 +102,10 @@ opart: boolean = false;
     this.data.getExecutableType().subscribe(res=>{this.EXE_TYPE=res.json()});}
 //  _____________________________________
 getExecutableCode(){
-  console.log(this.EXE_TYPE_R);
+  (this.EXE_TYPE_R);
             this.data.getExecutableCode(this.EXE_TYPE_R).subscribe(
               res=>{this.EXE_CD=res.json();
-                console.log(res.json());
+                (res.json());
               });
             }
 
@@ -114,7 +114,7 @@ getAllExecutable(){
   this.DorA = "Authorize";    //change define to authorize
   this.data.getExecutableAll(this.EXE_TYPE_R,this.EXE_CD_R).subscribe(
     res=>{this.EXE_ALL=res.json()
-      console.log(this.EXE_ALL);
+      (this.EXE_ALL);
       this.F_EXE_CD=this.EXE_ALL['EXE_CD'];
       this.F_EXE_SIGN=this.EXE_ALL['EXE_SIGN'];
       this.F_EXE_OUT_PARAM=this.EXE_ALL['EXE_OUT_PARAMS'];
@@ -146,19 +146,19 @@ getAllExecutable(){
 
 //_________________________________________________________________
 getPlatformTypeCode(){
-  console.log("Platform");
+  ("Platform");
   this.data.getPlatformType().subscribe(res=>{this.PLF_TYPE=res.json();
-    console.log(this.PLF_TYPE);
+    (this.PLF_TYPE);
     this.PLF_CD=this.PLF_TYPE['SERVER_CD'];
   });
-  // console.log(this.PLF_TYPE);
+  // (this.PLF_TYPE);
 }
   
   platformDescription(){
     this.data.getPlatformDescription(this.PLF_CD).subscribe(
       res=>{
         this.PLF=res.json();
-        console.log(this.PLF);
+        (this.PLF);
         this.PLF_DSC=this.PLF['SERVER_DSC'];
 
         
@@ -168,9 +168,9 @@ getPlatformTypeCode(){
  roleCode(){
    this.data.getRoleCode().subscribe(res=>{
      this.ROLE_TYPE=res.json();
-     console.log(this.ROLE_TYPE);
+     (this.ROLE_TYPE);
      this.ROLE_CD=this.ROLE_TYPE['ROLE_CD'];
-     console.log(this.ROLE_CD);
+     (this.ROLE_CD);
    }
 
    );
@@ -179,7 +179,7 @@ getPlatformTypeCode(){
   roleDescription() {
     this.data.getRoleDescription(this.ROLE_CD).subscribe(
       res => {
-        console.log(res.json());
+        (res.json());
         this.ROLE = res.json();
         this.ROLE_DSC = this.ROLE['ROLE_DSC'];
         this.accessRights();
@@ -189,8 +189,8 @@ getPlatformTypeCode(){
   accessRights(){
     this.data.getAccessRights(this.ROLE_CD, this.EXE_CD_R,this.EXE_TYPE_R).subscribe(
       res=>{
-        console.log("Access Rights here");
-        console.log(res.json());
+        ("Access Rights here");
+        (res.json());
         this.ACCESS_RIGHT=res.json();
         if(this.ACCESS_RIGHT['CREATE']=="Y")
         {
@@ -221,7 +221,7 @@ getPlatformTypeCode(){
     this.roleshow = false;
     this.execshow = true;
     // this.data.sendParams().subscribe(res=>{
-    //   console.log(res.json());
+    //   (res.json());
     // });
   }
 
@@ -234,7 +234,7 @@ makeDefine(){
 
  delExec(){
    this.data.doDelete(this.EXE_TYPE_R, this.EXE_CD_R).subscribe(res=>{
-     console.log(res.json());
+     (res.json());
    });
  }
 
@@ -247,7 +247,7 @@ makeDefine(){
   this.getPlatformTypeCode();
   this.roleCode();
   this.DorA="Define";
-  // console.log(this.ROLE_DATA);
+  // (this.ROLE_DATA);
   // this.accessRights();
   // this.roleDescription();
   this.StorageSessionService.session_check();

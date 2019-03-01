@@ -11,12 +11,12 @@ import { GetMessageService } from '../../../service/get-message.service';
 // import { DynamicFormComponent } from '../../dynamic-form/containers/dynamic-form/dynamic-form.component';
 import { FormBuilder } from '@angular/forms';
 import { HostListener } from '@angular/core';
-import { Injectable } from '@angular/core';
+import { Injectable, ViewChild, ViewChildren } from '@angular/core';
 import { EnduserComponent } from '../enduser.component';
 
 import { Form_data } from './Form_data';
 import { StorageSessionService } from '../../../service/storage-session.service';
-import { ConfigServiceService } from '../../../service/config-service.service';
+import { ConfigServiceService, IFormFieldConfig } from '../../../service/config-service.service';
 import { AppComponent } from '../../../app.component';
 import { RollserviceService } from '../../../service/rollservice.service';
 import { Observable } from 'rxjs';
@@ -110,6 +110,8 @@ export class ExecuteComponent implements OnInit {
 
   displayedColumns = ['Service', 'Platform', 'Machine', 'Lim_Job', 'Instances', 'Limited', 'Capacity', 'Rating', 'Used_Cap', 'Lim_Mach_Use', 'Dummy', 'Status', 'State', 'Cxn_Type'];
   dataSource = new MatTableDataSource();
+  fieldConfig: { [key: string]: IFormFieldConfig } = {};
+  @ViewChild('processForm') processForm: any;
   @HostListener('window:resize', ['$event'])
   onResize(event?) {
     this.screenHeight = window.innerHeight;
@@ -182,8 +184,8 @@ export class ExecuteComponent implements OnInit {
   position_datepicker(event) {
     /*    var div = document.querySelector('div');
         var divOffset = this.offset(div);
-        console.log(divOffset.left, divOffset.top);*/
-    console.log('Hello');
+        (divOffset.left, divOffset.top);*/
+    ('Hello');
   }
   //_____________________________1_____________________
   getAppCode() {
@@ -191,7 +193,7 @@ export class ExecuteComponent implements OnInit {
       this.APP_CD = res.json();
       //this.app.APP_CD_GLOBAL=this.APP_CD;
       //------------get lenght
-      console.log(this.APP_CD);
+      (this.APP_CD);
 
       if (this.APP_CD['APP_CD'].length == 1) {
         //hide the application select box
@@ -200,9 +202,9 @@ export class ExecuteComponent implements OnInit {
         // this.Application_label=true;
 
       }
-      //console.log("START= "+this.app.START+"; selectedapp="+this.selectedapp);
+      //("START= "+this.app.START+"; selectedapp="+this.selectedapp);
       if (this.selectedapp != null && this.app.START == false && this.app.selected_APPLICATION != 'ALL') {
-        //console.log("calling getProcess");
+        //("calling getProcess");
         this.SL_APP_CD = this.selectedapp;
         if (this.desktopView) {
           this.getProcessCD(this.selectedapp);
@@ -217,7 +219,7 @@ export class ExecuteComponent implements OnInit {
   getProcessCD(V_APP_CD) {
     if (this.mobileView) {
       V_APP_CD = V_APP_CD.value;
-      console.log(V_APP_CD);
+      (V_APP_CD);
     }
     if (V_APP_CD == null) {
 
@@ -231,8 +233,8 @@ export class ExecuteComponent implements OnInit {
       this.https.get(this.apiUrlGet + 'V_APP_CD=' + V_APP_CD + '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&REST_Service=UserProcesses&Verb=GET').subscribe(res => {
         this.PRC_CD = res.json();
         //this.app.PRC_CD_GLOBAL=this.PRC_CD;
-        //console.log(this.PRC_CD);
-        //console.log(V_APP_CD);
+        //(this.PRC_CD);
+        //(V_APP_CD);
         if (this.PRC_CD['PRCS_CD'].length == 1) {
           this.SL_PRC_CD = this.PRC_CD['PRCS_CD'][0];
           // this.Process_box=false;
@@ -277,11 +279,11 @@ export class ExecuteComponent implements OnInit {
       this.selectedprcs = V_PRCS_CD;
 
       this.data.serviceCode(this.SL_APP_CD, this.SL_PRCS_CD).subscribe(res => {
-        //console.log(res.json());
+        //(res.json());
         this.SRVC_DATA = res.json();
         this.SRVC_CD = this.SRVC_DATA['SRVC_CD'];
 
-        //console.log(this.SRVC_CD);
+        //(this.SRVC_CD);
         this.getIdCode();
       });
     }
@@ -293,7 +295,7 @@ export class ExecuteComponent implements OnInit {
   getIdCode() {
     this.ID_DATA = [];
     this.SRVC_DATA = [];
-    // console.log("getidcode function");
+    // ("getidcode function");
     this.deployService = [];
     this.p = 0;
     this.c = 0;
@@ -301,19 +303,19 @@ export class ExecuteComponent implements OnInit {
     if (this.ctrl_variables.checkDeployement) {
       for (let j = 0; j < this.SRVC_CD.length; j++) {
         this.SL_SRVC_CD = this.SRVC_CD[j];
-        // console.log(this.SL_SRVC_CD);
+        // (this.SL_SRVC_CD);
         this.data.getID(this.SL_APP_CD, this.SL_PRCS_CD, this.SL_SRVC_CD).subscribe(res => {
-          // //console.log(res.json());
+          // //(res.json());
           this.SRVC_DATA = res.json();
           this.SRVC_CD.push(this.SRVC_DATA['SRVC_CD']);
-          // //console.log(this.SRVC_CD);
+          // //(this.SRVC_CD);
 
           this.executedata = { SL_APP_CD: this.SL_APP_CD, SL_PRC_CD: this.SL_PRC_CD };
-          console.log('this.executedata', this.executedata);
+          
           this.StorageSessionService.setCookies('executedata', this.executedata);
           this.ID_DATA = res.json();
           this.StorageSessionService.setCookies('iddata', this.ID_DATA);
-          console.log(this.ID_DATA);
+          (this.ID_DATA);
           this.APP_ID = this.ID_DATA['V_APP_ID'];
 
           this.PRCS_ID = this.ID_DATA['V_PRCS_ID'];
@@ -336,22 +338,22 @@ export class ExecuteComponent implements OnInit {
   getDeployment() {
     this.deployService = [];
     this.deployData = [];
-    //console.log("getDeployment function");
-    //console.log(this.SL_SRVC_ID);
+    //("getDeployment function");
+    //(this.SL_SRVC_ID);
     this.data.getDeployStatus(this.UNIQUE_ID, this.SRC_ID, this.APP_ID, this.PRCS_ID, this.SRVC_ID).subscribe(res => {
-      console.log("Services");
-      console.log(res.json());
+      ("Services");
+      (res.json());
       this.deployData = res.json();
 
       if (this.deployData['CXN_ID'].length === 0) {
-        //console.log("inside if");
+        //("inside if");
         this.deployService[this.p] = this.SRVC_CD[this.q];
-        //console.log(this.deployService[this.p]);
+        //(this.deployService[this.p]);
 
         //         for(let h=0;h<this.deployService.length;h++){
         //         this.http.get<data>(this.apiUrlGet+"V_PRDCR_SRC_CD="+this.V_SRC_CD+"&V_PRDCR_APP_CD="+this.SL_APP_CD+"&V_PRDCR_PRCS_CD="+this.SL_PRC_CD+"&V_PRDCR_SRVC_CD="+this.deployService[h]+"&V_DIRECTION=A&REST_Service=Orchestration&Verb=GET").subscribe(
         //           res=>{
-        // //console.log(res);
+        // //(res);
         // this.countonerror=res.CONT_ON_ERR_FLG;
         // });
         // }
@@ -443,8 +445,8 @@ export class ExecuteComponent implements OnInit {
 
     this.https.get(this.apiUrlGet + 'V_APP_CD=' + this.SL_APP_CD + '&V_PRCS_CD=' + this.SL_PRC_CD + '&V_SRC_CD=' + this.V_SRC_CD + '&ResetOptimised=' + this.ResetOptimised + '&Lazyload=false' + '&REST_Service=ProcessParameters&Verb=GET').subscribe(
       res => {
-        console.log(res.json());
-        console.log(this.apiUrlGet + 'V_APP_CD=' + this.SL_APP_CD + '&V_PRCS_CD=' + this.SL_PRC_CD + '&V_SRC_CD=' + this.V_SRC_CD + '&ResetOptimised=' + this.ResetOptimised + '&Lazyload=false' + '&REST_Service=ProcessParameters&Verb=GET');
+        (res.json());
+        (this.apiUrlGet + 'V_APP_CD=' + this.SL_APP_CD + '&V_PRCS_CD=' + this.SL_PRC_CD + '&V_SRC_CD=' + this.V_SRC_CD + '&ResetOptimised=' + this.ResetOptimised + '&Lazyload=false' + '&REST_Service=ProcessParameters&Verb=GET');
         FormData = res.json();
         const ref = { disp_dyn_param: false };
         const got_res = this.data.exec_schd_restCall(FormData, ref);
@@ -452,6 +454,7 @@ export class ExecuteComponent implements OnInit {
         this.Data = got_res.Data;
         this.b = got_res.B;
         this.k = got_res.K;
+        this.fieldConfig = this.data.prepareAndGetFieldConfigurations(FormData);
       });
     /*
     ParametrValue = FormData['PARAM_VAL'];
@@ -462,7 +465,7 @@ export class ExecuteComponent implements OnInit {
       //-----------Balraj Code---------
       currentVal = ParametrValue[i].split(',');
       currentKey = ParameterName[i];
-      console.log(currentKey);
+      (currentKey);
       result[currentKey] = currentVal;
       if (ParameterName[i].includes('Date') && !(ParameterName[i].includes('DateTime'))) {
         this.Data[i] = {
@@ -619,8 +622,8 @@ export class ExecuteComponent implements OnInit {
 
 
 
-    //console.log("Parameter names :"+this.Data);
-    //console.log("Parameter names :"+this.Data['value']);
+    //("Parameter names :"+this.Data);
+    //("Parameter names :"+this.Data['value']);
 
   }
   FilterAutoValue: any;
@@ -628,7 +631,7 @@ export class ExecuteComponent implements OnInit {
     this.FilterAutoValue = v;
     this.http.get(this.apiUrlGet + 'V_APP_CD=' + this.SL_APP_CD + '&V_PRCS_CD=' + this.SL_PRC_CD + '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&V_PARAM_NM=' + n + '&V_PARAM_VAL=' + v + '&REST_Service=ProcessParameters&Verb=PATCH').subscribe(
       res => {
-        console.log(res);
+        (res);
       }
     );
   }
@@ -646,7 +649,7 @@ export class ExecuteComponent implements OnInit {
 
     //---------Balraj Code--------
     this.searchResult = [];
-    console.log(this.result[e]);
+    (this.result[e]);
 
     this.searchResult = Object.values(this.result[e]);
     //---------Balraj Code--------
@@ -655,7 +658,7 @@ export class ExecuteComponent implements OnInit {
     // this.http.get(this.apiUrlGet + "V_SRC_CD=" + this.V_SRC_CD + "&V_APP_CD=" + this.SL_APP_CD + "&V_PRCS_CD=" + this.SL_PRC_CD + "&V_PARAM_NM=" + e + "&V_SRVC_CD="+this.SL_SRVC_CD+"&REST_Service=ProcessParametersOptions&Verb=GET")
     //   .subscribe(
     //     res => {
-    //       console.log(res[e]);
+    //       (res[e]);
     //       this.searchResult = res[e];
     //       this.app.loading = false;
 
@@ -673,41 +676,42 @@ export class ExecuteComponent implements OnInit {
         this.ts[this.Data[i].name] = this.Data[i].value;
       }
     }
-    //console.log(this.ts);
+    //(this.ts);
     this.StorageSessionService.setCookies('ts', this.ts);
   }
   Execute_res_data: any;
   Execute_Now() {
-    const body = {
-      'V_APP_CD': this.SL_APP_CD,
-      'V_PRCS_CD': this.SL_PRC_CD,
-      'V_SRVC_CD': 'START',
-      'V_SRC_CD': this.V_SRC_CD,
-      'V_USR_NM': this.V_USR_NM
+    if (this.processForm.valid) {
+      const body = {
+        'V_APP_CD': this.SL_APP_CD,
+        'V_PRCS_CD': this.SL_PRC_CD,
+        'V_SRVC_CD': 'START',
+        'V_SRC_CD': this.V_SRC_CD,
+        'V_USR_NM': this.V_USR_NM
 
-    };
+      };
 
-    Object.assign(body, this.ts);
-    console.log(body);
+      Object.assign(body, this.ts);
+      (body);
 
-    this.https.post('https://' + this.domain_name + '/rest/Process/Start', body).subscribe(
-      res => {
+      this.https.post('https://' + this.domain_name + '/rest/Process/Start', body).subscribe(
+        res => {
 
-        console.log("response of start call");
-        console.log(res);
-        //
-        this.executedata = { SL_APP_CD: this.SL_APP_CD, SL_PRC_CD: this.SL_PRC_CD };
-        console.log('this.executedata', this.executedata);
-        this.StorageSessionService.setCookies('executedata', this.executedata);
-        this.Execute_res_data = res.json();
-        this.StorageSessionService.setCookies('executeresdata', this.Execute_res_data);
-        // console.log(this.Execute_res_data);
-        this.PFrame.display_page = false;
-        // console.log(this.Execute_res_data);
-        this.GenerateReportTable();
-      }
-    );
-
+          ("response of start call");
+          (res);
+          //
+          this.executedata = { SL_APP_CD: this.SL_APP_CD, SL_PRC_CD: this.SL_PRC_CD };
+          
+          this.StorageSessionService.setCookies('executedata', this.executedata);
+          this.Execute_res_data = res.json();
+          this.StorageSessionService.setCookies('executeresdata', this.Execute_res_data);
+          // (this.Execute_res_data);
+          this.PFrame.display_page = false;
+          // (this.Execute_res_data);
+          this.GenerateReportTable();
+        }
+      );
+    }
 
   }
   /*
@@ -723,7 +727,7 @@ export class ExecuteComponent implements OnInit {
   //@override ReportGenerate interface
   public report: ReportData = new ReportData;
   GenerateReportTable() {
-    //console.log("in GenerateReportTable");
+    //("in GenerateReportTable");
     if (!this.app.loadingCharts)
       this.app.loadingCharts = true;
     if (this.app.fromNonRepForm) {
@@ -746,55 +750,55 @@ export class ExecuteComponent implements OnInit {
       REST_Service: 'Report',
       Verb: 'POST'
     };
-    console.log(body);
+    (body);
     this.https.post(this.aptUrlPost_report, body)
       .subscribe(
       res => {
-        console.log(res.json());
+        (res.json());
         this.StorageSessionService.setCookies('report_table', res.json());
         this.check_data = res.json();
         this.app.loadingCharts = false;
         this.report = res.json();
-        console.info('This is report generated data :');
-        console.log(this.report);
-        console.info('The URL to redirecting form is :');
-        console.log(this.report.RESULT);
-        console.log(res.json());
+      
+        (this.report);
+       
+        (this.report.RESULT);
+        (res.json());
         var timeout = res.json().RESULT.toString().substring(0, 7) == "TIMEOUT";
-        console.log(timeout);
+        (timeout);
         /*const dt = JSON.stringify(res);
-        console.log(dt);*/
+        (dt);*/
         if (timeout && this.ctrl_variables.call_repeat_on_TIMEOUT) {
           this.repeatCallTable(true);
-        } else {
-          this.repeatCallTable(false);
-        }
-        this.StorageSessionService.setCookies('App_Prcs', { 'V_APP_CD': this.APP_CD, 'V_PRCS_CD': this.PRCS_CD });
-        if (this.report.RESULT == 'INPUT_ARTFCT_TASK') {
+        } else if (this.report.RESULT == 'TABLE') {
+
+          this.router.navigateByUrl('ReportTable', { skipLocationChange: true });
+        } else if (this.report.RESULT[0] == 'INPUT_ARTFCT_TASK') {
 
           this.router.navigateByUrl('InputArtForm', { skipLocationChange: true });
 
-        } else if (this.report.V_EXE_CD[0] == 'NONREPEATABLE_MANUAL_TASK') {
-          // non-Repeatable NonRepeatForm
-          this.router.navigateByUrl('NonRepeatForm');
-          //this.router.navigateByUrl('Forms', { skipLocationChange: true });
+        } else if (CommonUtils.isValidValue(this.report.V_EXE_CD)) {
 
-        } else if (this.report.V_EXE_CD[0] == 'REPEATABLE_MANUAL_TASK') {
-          //Repeatable
-          this.router.navigateByUrl('RepeatForm');
+          if (this.report.RESULT[0] == 'NONREPEATABLE_MANUAL_TASK') {
+            // non-Repeatable NonRepeatForm
+            this.router.navigateByUrl('NonRepeatForm');
+            //this.router.navigateByUrl('Forms', { skipLocationChange: true });
 
-          //this.router.navigateByUrl('RepeatForm');
-        } if (this.report.RESULT == 'TABLE') {
+          } else if (this.report.RESULT[0] == 'REPEATABLE_MANUAL_TASK') {
+            //Repeatable
+            this.router.navigateByUrl('RepeatForm');
+            //this.router.navigateByUrl('RepeatForm');
+          }
 
-          this.router.navigateByUrl('ReportTable', { skipLocationChange: true });
+        } else {
+          this.repeatCallTable(true);
         }
-
-
+        this.StorageSessionService.setCookies('App_Prcs', { 'V_APP_CD': this.APP_CD, 'V_PRCS_CD': this.PRCS_CD });
 
         // if ('V_EXE_CD' in this.check_data) {
         //   this.router.navigateByUrl('forms');
         //   //             var exe_cd:any[] = this.check_data["V_EXE_CD"];
-        //   //             //console.log(exe_cd);
+        //   //             //(exe_cd);
         //   //             if(exe_cd.includes("NONREPEATABLE_MANUAL_TASK")){
         //   //                 alert("FORM DATA");
         //   //           }
@@ -808,14 +812,14 @@ export class ExecuteComponent implements OnInit {
       }
       );
     if (!this.app.fromNonRepForm) {
-      if (this.app.loadingCharts && this.ctrl_variables.show_ALL) {
+      if (this.app.loadingCharts && CommonUtils.isValidValue(this.ctrl_variables) && this.ctrl_variables.show_ALL) {
         this.chart_JSON_call();
       }
     }
 
     // while(true)
 
-    //var timer= setInterval(function myfunc(){console.log("_______________________||||||||||||||||||||____________________");},1000);
+    //var timer= setInterval(function myfunc(){("_______________________||||||||||||||||||||____________________");},1000);
 
 
   }
@@ -839,8 +843,8 @@ export class ExecuteComponent implements OnInit {
       if (this.ColorGantt.length < i + 1) {
         this.ColorGantt[i] = 'rgba(' + R + ',' + G + ',' + B + ')';
       }
-      //console.log((this.time_to_sec(start_time[i]) - this.time_to_sec(start_time[0])));
-      //console.log((this.time_to_sec(end_time[i]) - this.time_to_sec(start_time[0])));
+      //((this.time_to_sec(start_time[i]) - this.time_to_sec(start_time[0])));
+      //((this.time_to_sec(end_time[i]) - this.time_to_sec(start_time[0])));
       mydataset[Process.length - i - 1] = {
         backgroundColor: this.ColorGantt[i],
         borderColor: this.ColorGantt[i],
@@ -914,7 +918,7 @@ export class ExecuteComponent implements OnInit {
                     endstr = endstr - 60 * Math.floor(endstr / 60);
                     begstr += Math.floor(midstr / 60);
                     midstr = midstr - 60 * Math.floor(midstr / 60);
-                    //console.log(index);
+                    //(index);
 
                     if (midstr < 10) {
                       mid_str = '0' + midstr;
@@ -925,7 +929,7 @@ export class ExecuteComponent implements OnInit {
                     if (begstr < 10) {
                       beg_str = '0' + begstr;
                     }
-                    //console.log(count);
+                    //(count);
                     return beg_str + ':' + mid_str + ':' + end_str;
                   }
                   //return value/val1;
@@ -986,8 +990,8 @@ export class ExecuteComponent implements OnInit {
                 return data['labels'][tooltipItem[0]['index']];
               },
               label: function (tooltipItem, data) {
-                //console.log(tooltipItem);
-                //console.log(data['datasets'][0]['data'][tooltipItem['index']]);
+                //(tooltipItem);
+                //(data['datasets'][0]['data'][tooltipItem['index']]);
                 let ret = mydata[tooltipItem['index']];
                 ret = Math.floor(ret * 100) / 100;
                 return ret + ' sec';
@@ -1034,7 +1038,7 @@ export class ExecuteComponent implements OnInit {
       }
       const temp = this.time_to_sec(end_time[i]) - this.time_to_sec(start_time[i]);
       duration[i] = temp;
-      //console.log(duration);
+      //(duration);
       const R = Math.floor(Math.random() * 200);
       const G = Math.floor(Math.random() * 200);
       const B = Math.floor(Math.random() * 200);
@@ -1079,8 +1083,8 @@ export class ExecuteComponent implements OnInit {
                 return data['labels'][tooltipItem[0]['index']];
               },
               label: function (tooltipItem, data) {
-                //console.log(tooltipItem);
-                //console.log(data['datasets'][0]['data'][tooltipItem['index']]);
+                //(tooltipItem);
+                //(data['datasets'][0]['data'][tooltipItem['index']]);
                 let ret = duration[tooltipItem['index']];
                 ret = Math.floor(ret * 100) / 100;
                 return ret + ' sec';
@@ -1109,12 +1113,12 @@ export class ExecuteComponent implements OnInit {
                     let midstr = 0;
 
                     let endstr = value;
-                    //console.log(index*value);
+                    //(index*value);
                     midstr += Math.floor(endstr / 60);
                     endstr = endstr - 60 * Math.floor(endstr / 60);
                     begstr += Math.floor(midstr / 60);
                     midstr = midstr - 60 * Math.floor(midstr / 60);
-                    //console.log(index);
+                    //(index);
                     let beg_str = begstr.toString(), mid_str = midstr.toString(), end_str = endstr.toString();
                     if (midstr < 10) {
                       mid_str = '0' + midstr;
@@ -1125,7 +1129,7 @@ export class ExecuteComponent implements OnInit {
                     if (begstr < 10) {
                       beg_str = '0' + begstr;
                     }
-                    //console.log(min);
+                    //(min);
                     return beg_str + ':' + mid_str + ':' + end_str;
                   }
                   //return value;
@@ -1151,7 +1155,7 @@ export class ExecuteComponent implements OnInit {
   }
   chart_JSON_call() {
     this.http.get(this.apiUrlGet + 'V_SRC_ID=' + this.Execute_res_data['V_SRC_ID'] + '&V_APP_ID=' + this.Execute_res_data['V_APP_ID'] + '&V_PRCS_ID=' + this.Execute_res_data['V_PRCS_ID'] + '&V_PRCS_TXN_ID=' + this.Execute_res_data['V_PRCS_TXN_ID'] + '&REST_Service=ProcessStatus&Verb=GET').subscribe(res => {
-      console.log(res);
+      (res);
       const start_time = [], end_time = [], Process = [];
 
       for (let i = 0; i < res['INS_DT_TM'].length; i++) {
@@ -1186,7 +1190,7 @@ export class ExecuteComponent implements OnInit {
     };
 
     this.StorageSessionService.setSession('Exe_data', this.form_dl_data[0]);
-    //console.log(this.form_dl_data[0]);
+    //(this.form_dl_data[0]);
     // this.router.navigateByUrl("repeat");
   }
   ///data11='{PIID=[W56JSR14C0050, W9124916F0057, HSHQDC17F0002…280001, 200370001], Country=[USA, USA, USA, USA],balaji=[IND, IND, IND, IND]}';
@@ -1203,13 +1207,13 @@ export class ExecuteComponent implements OnInit {
     const exec = this;
     this.http.get('../../../../assets/control-variable.json').subscribe(res => {
       this.ctrl_variables = res;
-      console.log(this.ctrl_variables);
+      (this.ctrl_variables);
     });
 
     setTimeout(function () {
       exec.wSocket.listenOn = '102';
       exec.msg.getMessage.subscribe(res => {
-        console.log(res);
+        (res);
 
       });
     }, 5000);
@@ -1223,9 +1227,9 @@ export class ExecuteComponent implements OnInit {
       this.selectedprcs = this.app.selected_PROCESS;
     }
     this.data.getJSON().subscribe(data => {
-      //console.log(data.json());
+      //(data.json());
       this.Label = data.json();
-      //console.log(this.Label);
+      //(this.Label);
     });
     this.getAppCode();
     //-----------------------------for checking the role cd
@@ -1260,7 +1264,7 @@ export class ExecuteComponent implements OnInit {
           // this.Schedule_btn = false;
         }
 
-        // //console.log("asdasdasdsad"+ex_btn1[0]+ex_btn2[0]+ex_tab[0]+ex_pro[0]);
+        // //("asdasdasdsad"+ex_btn1[0]+ex_btn2[0]+ex_tab[0]+ex_pro[0]);
 
       }
     );

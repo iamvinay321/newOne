@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { CookiesStorageService, LocalStorageService, SessionStorageService, SharedStorageService } from 'ngx-store';
-import { CookieStorage, LocalStorage, SessionStorage } from 'ngx-store';
+import { CookiesStorageService, LocalStorageService, SessionStorageService, SharedStorageService }
+ from 'ngx-store';
+import { LocalStorage, SessionStorage, CookieStorage } from 'ngx-store';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router'
 @Injectable()
 export class StorageSessionService {
@@ -22,14 +23,14 @@ export class StorageSessionService {
   private  cookiesStorageService: CookiesStorageService,
  private   sharedStorageService: SharedStorageService,
   ) {
-    console.log('all cookies:');
-    cookiesStorageService.utility.forEach((value, key) => console.log(key + '=', value));
+   
+    //cookiesStorageService.utility.forEach((value, key) => console.log());
 
     this.viewCounts++;
     this.userName = 'some name stored in localstorage';
     this.previousUserNames.push(this.userName);
     for (let userName of this.previousUserNames) {
-      console.log(userName);
+     
     }
     this.previousUserNames.map(userName => userName.split('').reverse().join(''));
   

@@ -44,7 +44,7 @@ export class DialogScheduleComponent implements OnInit {
 
 		var res_cron = "";
 		res_cron = res_cron + sec + " " + min + " " + hrs + " " + date_of_month + " " + month + " " + "?" + " " + year;
-		console.log(day);
+		(day);
 
 		//------------------------------------------------------
 		var timezone = new Date();
@@ -86,12 +86,12 @@ export class DialogScheduleComponent implements OnInit {
 			"TimeZone": Intermediatetimezone
 		}
 		this.tp=this.store.getCookies("ts");
-		//console.log(this.tp);
+		//(this.tp);
 		Object.assign(body,this.tp);
-		console.log(body);
+		(body);
 		this.http.post(this.Url, body).subscribe(
 			res => {
-				console.log(res);
+				(res);
 			}
 		);
 

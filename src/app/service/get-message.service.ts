@@ -1,7 +1,8 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { WebSocketService } from './web-socket.service';
-import { Observable } from 'rxjs';
-import { Subject } from 'rxjs';
+import { Observable ,  Subject } from 'rxjs';
 
 @Injectable()
 export class GetMessageService {
@@ -9,10 +10,10 @@ export class GetMessageService {
   getMessage: Subject<any>;
   constructor(private wsService: WebSocketService) {
     this.getMessage= <Subject<any>>wsService
-    .connect()
-    .map((response: any): any =>{
+    .connect().pipe(
+    map((response: any): any =>{
       return response;
-    })
+    }))
    }
 
    sendMessage(resp){

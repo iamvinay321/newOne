@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpEventType, HttpHeaders } from '@angular/common/http';
 import { Http, Response, Headers } from '@angular/http';
@@ -17,14 +19,245 @@ export class ConfigServiceService {
 
   private apiUrlGet = "https://" + this.domain_name + "/rest/E_DB/SP?";
   private apiUrlPost = "https://" + this.domain_name + "/";
+  private fieldConfig: { [key: string]: IFormFieldConfig } = {};
   //-------------TAB GROU
   public getJSON(): Observable<any> {
     return this.http.get("assets/label/label.json")
   }
 
+  public prepareAndGetFieldConfigurations(form_data, hasArrayOfArr = false) {
+    const paramNameArray = this.prepareArrayFromFormDataKey(form_data, "PARAM_NM", hasArrayOfArr);
+    const fieldConfigDetails: { [key: string]: IFormFieldConfig } = {};
+    if (paramNameArray.length > 0) {
+      let index = -1;
+      for (let param of paramNameArray) {
+        index++;
+        if (!CommonUtils.isValidValue(fieldConfigDetails[param])) {
+          const CSS_CD_Array = this.prepareArrayFromFormDataKey(form_data, "CSS_CD", hasArrayOfArr);
+          const HIDDEN_array = this.prepareArrayFromFormDataKey(form_data, "HIDDEN", hasArrayOfArr);
+          const MANDATORY_FLD_array = this.prepareArrayFromFormDataKey(form_data, "MANDATORY_FLD", hasArrayOfArr);
+          const MAX_LENGTH_array = this.prepareArrayFromFormDataKey(form_data, "MAX_LENGTH", hasArrayOfArr);
+          const READ_ONLY_array = this.prepareArrayFromFormDataKey(form_data, "READ_ONLY", hasArrayOfArr, );
+          const PARAM_DSC_array = this.prepareArrayFromFormDataKey(form_data, "PARAM_DSC", hasArrayOfArr);
+          const param_css_cd_value = CSS_CD_Array[index];
+          const isParamHidden = HIDDEN_array[index] === "N" ? false : true;
+          const isParamMendatory = MANDATORY_FLD_array[index] === "N" ? false : true;
+          const param_max_length = MAX_LENGTH_array[index];
+          const paramTooltip = PARAM_DSC_array[index];
+          let isParamReadOnly = READ_ONLY_array[index] === "N" ? false : true;
+          if (!isParamReadOnly && param_css_cd_value === "'disabled'") {
+            isParamReadOnly = true;
+          }
+          let fieldClass = "";
+          if (CommonUtils.isValidValue(param_css_cd_value)) {
+            fieldClass = "field-config_" + param_css_cd_value.replace(" ", "_");
+          }
+          const fieldConfigObj = {
+            fieldClass,
+            isParamReadOnly,
+            isParamHidden,
+            isParamMendatory,
+            maxLength: param_max_length,
+            paramTooltip,
+          }
+          if (hasArrayOfArr) {
+            param = param.replace(new RegExp('_', 'g'), ' ').trim();
+          }
+          fieldConfigDetails[param] = fieldConfigObj;
+        }
+
+      }
+    } else {
+      console.error("Param name is not provided in form data");
+      console.error(form_data);
+    }
+    return this.fieldConfig = fieldConfigDetails;
+  }
+
+  public isFieldInvalid(modelReference: any) {
+    return modelReference && modelReference.invalid && (modelReference.touched || modelReference.dirty);
+  }
+
+  public getFieldInValidMsg(modelReference: any, fieldName: string) {
+    let msg = fieldName + " is not valid";
+    if (CommonUtils.isValidValue(modelReference.errors)) {
+      if (modelReference.errors.invalid) {
+        msg = "";
+      } else if (modelReference.errors.pattern) {
+        msg = fieldName + " is not valid";
+      } else if (modelReference.errors.maxLength) {
+        msg = fieldName + " should not be more then " + this.getFieldMaxLength(fieldName);
+      }
+    }
+    return msg;
+  }
+
+
+  public getFieldClass(paramName: string) {
+    if (CommonUtils.isValidValue(this.fieldConfig[paramName])) {
+      return this.fieldConfig[paramName].fieldClass;
+    }
+    return "";
+  }
+
+  public isFieldHidden(paramName: string) {
+    if (CommonUtils.isValidValue(this.fieldConfig[paramName]) && this.fieldConfig[paramName].isParamHidden) {
+      return true;
+    }
+    return false;
+  }
+
+  public isFieldDisabled(paramName: string) {
+    if (CommonUtils.isValidValue(this.fieldConfig[paramName]) && this.fieldConfig[paramName].isParamReadOnly) {
+      return true;
+    }
+    return false;
+  }
+
+  public isFieldMendatory(paramName: string) {
+    if (CommonUtils.isValidValue(this.fieldConfig[paramName]) && this.fieldConfig[paramName].isParamMendatory) {
+      return true;
+    }
+    return false;
+  }
+
+  public getFieldMaxLength(paramName: string) {
+    if (CommonUtils.isValidValue(this.fieldConfig[paramName]) && this.fieldConfig[paramName].maxLength) {
+      return this.fieldConfig[paramName].maxLength > 0 ? this.fieldConfig[paramName].maxLength : -1;
+    }
+    return 0;
+  }
+
+  public getFieldTooltip(paramName: string) {
+    if (CommonUtils.isValidValue(this.fieldConfig[paramName]) && this.fieldConfig[paramName].paramTooltip && (this.fieldConfig[paramName].paramTooltip !== "TBD" && this.fieldConfig[paramName].paramTooltip !== "'TBD'")) {
+      return this.fieldConfig[paramName].paramTooltip;
+    }
+    return null;
+  }
+
+  public getMaxLengthForField(type: string) {
+    let maxLength = null;
+    switch (type) {
+      case "Phone Dash":
+        maxLength = 12;
+        break;
+      case "Phone Bracket":
+        maxLength = 14;
+        break;
+      case "Zipecode":
+        maxLength = 10
+        break;
+    }
+    return maxLength;
+  }
+
+  public getValidationPattern(type: string) {
+    let maxLength = null;
+    switch (type) {
+      case "Phone Dash":
+        maxLength = 12;
+        break;
+      case "Phone Bracket":
+        maxLength = 14;
+        break;
+      case "Zipecode":
+        maxLength = "^[0-9]{5}(?:-[0-9]{4})?$";
+        break;
+      default:
+        maxLength = null;
+        break;
+    }
+    return maxLength;
+  }
+
+  public transformFieldValueOnChange(event: any, type: string): any {
+    let setVal = event.target.value;
+    let valueToSet = setVal;
+    switch (type) {
+      case "Phone Dash":
+        valueToSet = this.changeValueInPhoneDashFormat(setVal);
+        break;
+      case "Phone Bracket":
+        valueToSet = this.changeValueInPhoneBracketFormat(setVal);
+        break;
+      case "Zipecode":
+        valueToSet = this.changeValueInZipcodeFormat(setVal);
+        break;
+      case "Currency":
+        valueToSet = this.changeValueForCurrencyFormat(setVal);
+        break;
+    }
+    if (CommonUtils.isValidValue(valueToSet)) {
+      event.target.value = valueToSet;
+    }
+  }
+
+  public getFieldTypeForChange(type) {
+    if (type === "Phone Dash" || type === "Phone Bracket" || type === "Zipecode" || type === "Currency") {
+      return type;
+    } else {
+      return "no-match";
+    }
+  }
+
+  private changeValueInPhoneDashFormat(value) {
+    if (value.length < 11 && value.length > 0) {
+      let noDash = value.split('-').join('');
+      if (noDash.length > 0) {
+        noDash = noDash.match(new RegExp('.{1,3}', 'g')).join('-');
+      }
+      return noDash;
+    }
+    return value;
+  }
+
+  private changeValueInPhoneBracketFormat(value) {
+    const input = value.replace(/\D/g, '').substring(0, 10); // First ten digits of input only
+    const zip = input.substring(0, 3);
+    const middle = input.substring(3, 6);
+    const last = input.substring(6, 10);
+
+    if (input.length > 6) { value = `(${zip}) ${middle} - ${last}`; }
+    else if (input.length > 3) { value = `(${zip}) ${middle}`; }
+    else if (input.length > 0) { value = `(${zip}`; }
+    return value;
+  }
+
+  private changeValueInZipcodeFormat(value) {
+    if (value.length < 10 && value.length > 0) {
+      let noDash = value.split('-').join('');
+      if (noDash.length > 0) {
+        noDash = noDash.match(new RegExp('.{1,5}', 'g')).join('-');
+      }
+      return noDash;
+    }
+  }
+
+  private changeValueForCurrencyFormat(value) {
+    var c = isNaN(c = Math.abs(c)) ? 2 : c,
+      d = d == undefined ? "." : d,
+      t = t == undefined ? "," : t,
+      s = value < 0 ? "-" : "",
+      i = String(parseInt(value = Math.abs(Number(value) || 0).toFixed(c))) as any;
+    var j = (j = i.length) > 3 ? j % 3 : 0;
+
+    return s + (j ? i.substr(0, j) + t : "") + i.substr(j).replace(/(\d{3})(?=\d)/g, "$1" + t) + (c ? d + Math.abs(value - i).toFixed(c).slice(2) : "");
+  }
+
+  private prepareArrayFromFormDataKey(form_data, key, hasArrayOfArr) {
+    let arrayToReturn = [];
+    if (CommonUtils.isValidValue(form_data[key]) && CommonUtils.isValidValue(form_data[key][0])) {
+      const stringSequence = hasArrayOfArr ? form_data[key][0].replace(/'/g, '') : form_data[key];
+      arrayToReturn = hasArrayOfArr ? stringSequence.split(",") : stringSequence;
+      arrayToReturn = arrayToReturn.map(s => s.trim());
+
+    }
+    return arrayToReturn;
+  }
+
   checkUserPwd(email: any) {
-    return this.http.get(this.apiUrlGet + "V_USR_NM=" + email + "&V_ACTN_NM=LOGIN&REST_Service=UserValidity&Verb=GET")
-      .map((data: Response) => data.json());
+    return this.http.get(this.apiUrlGet + "V_USR_NM=" + email + "&V_ACTN_NM=LOGIN&REST_Service=UserValidity&Verb=GET").pipe(
+      map((data: Response) => data.json()));
   }
   // async getPrice(currency: string): Promise<number> {
   //   const response = await this.http.get('http://api.coindesk.com/v1/bpi/currentprice.json').toPromise();
@@ -38,8 +271,8 @@ export class ConfigServiceService {
       "RESULT": "@RESULT"
     };
     var aa = JSON.stringify(body);
-    return this.http.post(this.apiUrlPost + "CheckUsr", aa)
-      .map((data: Response) => data.json());
+    return this.http.post(this.apiUrlPost + "CheckUsr", aa).pipe(
+      map((data: Response) => data.json()));
   }
 
   checkOrganization(organization: any) {
@@ -48,8 +281,8 @@ export class ConfigServiceService {
       "RESULT": "@RESULT"
     };
     var aa = JSON.stringify(body);
-    return this.http.post(this.apiUrlPost + "CheckSrc", aa)
-      .map((data: Response) => data.json());
+    return this.http.post(this.apiUrlPost + "CheckSrc", aa).pipe(
+      map((data: Response) => data.json()));
   }
 
   sendConfirmMail(data: any) {
@@ -60,8 +293,8 @@ export class ConfigServiceService {
       "message": "Please confirm your login..."
     };
     var aa = JSON.stringify(body);
-    return this.http.post(this.apiUrlPost + "SendEmail", aa)
-      .map((data: Response) => data.json());
+    return this.http.post(this.apiUrlPost + "SendEmail", aa).pipe(
+      map((data: Response) => data.json()));
   }
 
   Execute_Now() {
@@ -82,8 +315,8 @@ export class ConfigServiceService {
   }
 
   onPause(TriggerKey, JobKey) {
-    console.log('onPause!!!');
-    // console.log(TriggerKey);
+    ('onPause!!!');
+    // (TriggerKey);
 
     var headers = new Headers();
     headers.append('application', 'json');
@@ -98,7 +331,7 @@ export class ConfigServiceService {
   }
 
   onResume(TriggerKey, JobKey) {
-    console.log('RESUME!!!');
+    ('RESUME!!!');
 
     var headers = new Headers();
     headers.append('application', 'json');
@@ -112,7 +345,7 @@ export class ConfigServiceService {
   }
 
   onKill(TriggerKey, JobKey) {
-    console.log('KILL!!!');
+    ('KILL!!!');
     var headers = new Headers();
     headers.append('application', 'json');
     let body = {
@@ -125,8 +358,8 @@ export class ConfigServiceService {
   }
 
   getUserId(data: any) {
-    return this.http.get(this.apiUrlGet + "V_CD_TYP=SRC&V_SRC_CD=" + data + "&SCREEN=PROFILE&REST_Service=Masters&Verb=GET")
-      .map((data: Response) => data.json());
+    return this.http.get(this.apiUrlGet + "V_CD_TYP=SRC&V_SRC_CD=" + data + "&SCREEN=PROFILE&REST_Service=Masters&Verb=GET").pipe(
+      map((data: Response) => data.json()));
   }
 
   getExecutableType() {
@@ -183,7 +416,7 @@ export class ConfigServiceService {
 
   //Undefine Button executables
   doDelete(EXE_TYPE, EXE_CD) {
-    console.log("UNDEFINE");
+    ("UNDEFINE");
     return this.http.delete(this.apiUrlGet + "V_EXE_TYP=" + EXE_TYPE + "&V_EXE_CD=" + EXE_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Exe&Verb=DELETE");
     // { "V_EXE_TYP": ["VARCHAR"], "V_EXE_CD": ["VARCHAR"], "V_SRC_CD": ["VARCHAR"], "REST_Service": ["Exe"], "Verb": ["DELETE"] }
 
@@ -217,8 +450,8 @@ export class ConfigServiceService {
       "RESULT": "@RESULT"
     };
     var aa = JSON.stringify(body);
-    return this.http.post(this.apiUrlPost + "/SubmitSrcCode", aa)
-      .map((data: Response) => data.json());
+    return this.http.post(this.apiUrlPost + "/SubmitSrcCode", aa).pipe(
+      map((data: Response) => data.json()));
   }
 
   getProcessSelectBoxValues(appName: any) {
@@ -230,32 +463,32 @@ export class ConfigServiceService {
       "V_USR_NM": email
     };
     var aa = JSON.stringify(body);
-    return this.http.post(this.apiUrlPost + "/SubmitAppCode", aa)
-      .map((data: Response) => data.json());
+    return this.http.post(this.apiUrlPost + "/SubmitAppCode", aa).pipe(
+      map((data: Response) => data.json()));
   }
 
   newScheduleJobCtl(data: any) {
     var aa = JSON.stringify(data);
-    return this.http.post(this.apiUrlPost + "/NewScheduleJobCtl", aa)
-      .map((data: Response) => data.json());
+    return this.http.post(this.apiUrlPost + "/NewScheduleJobCtl", aa).pipe(
+      map((data: Response) => data.json()));
   }
 
   manualSubmitCtl(data: any) {
     var aa = JSON.stringify(data);
-    return this.http.post(this.apiUrlPost + "/ManualSubmitCtl", aa)
-      .map((data: Response) => data.json());
+    return this.http.post(this.apiUrlPost + "/ManualSubmitCtl", aa).pipe(
+      map((data: Response) => data.json()));
   }
 
 
 
   getAppId(data: any) {
-    return this.http.get(this.apiUrlGet + "V_CD_TYP=APP&V_SRC_CD=" + data + "&SCREEN=PROFILE&REST_Service=Masters&Verb=GET")
-      .map((data: Response) => data.json());
+    return this.http.get(this.apiUrlGet + "V_CD_TYP=APP&V_SRC_CD=" + data + "&SCREEN=PROFILE&REST_Service=Masters&Verb=GET").pipe(
+      map((data: Response) => data.json()));
   }
 
   SLCT_MANUAL_INPUT_DBDATA() {
-    return this.http.get(this.apiUrlGet + "V_SRC_ID=198&V_APP_ID=136&V_PRCS_ID=287&V_PRCS_TXN_ID=3042&V_UNIQUE_ID=1569&%20&REST_Service=Form&Verb=GET")
-      .map((data: Response) => data.json());
+    return this.http.get(this.apiUrlGet + "V_SRC_ID=198&V_APP_ID=136&V_PRCS_ID=287&V_PRCS_TXN_ID=3042&V_UNIQUE_ID=1569&%20&REST_Service=Form&Verb=GET").pipe(
+      map((data: Response) => data.json()));
 
   }
   //--------------------------------------------
@@ -282,12 +515,12 @@ export class ConfigServiceService {
 
 
   getDeployStatus(UNIQUE_ID, SL_SRC_ID, SL_APP_ID, SL_PRCS_ID, SL_SRVC_ID) {
-    console.log(this.apiUrlGet + "V_UNIQUE_ID=" + UNIQUE_ID + "&V_SRC_ID=" + SL_SRC_ID + "&V_APP_ID=" + SL_APP_ID + "&V_PRCS_ID=" + SL_PRCS_ID + "&V_SRVC_ID=" + SL_SRVC_ID + "&FULL_DTL_FLG=Y&AVL_DTL_FLG=N&REST_Service=DeploymentStatus&Verb=GET");
+    (this.apiUrlGet + "V_UNIQUE_ID=" + UNIQUE_ID + "&V_SRC_ID=" + SL_SRC_ID + "&V_APP_ID=" + SL_APP_ID + "&V_PRCS_ID=" + SL_PRCS_ID + "&V_SRVC_ID=" + SL_SRVC_ID + "&FULL_DTL_FLG=Y&AVL_DTL_FLG=N&REST_Service=DeploymentStatus&Verb=GET");
     return this.http.get(this.apiUrlGet + "V_UNIQUE_ID=" + UNIQUE_ID + "&V_SRC_ID=" + SL_SRC_ID + "&V_APP_ID=" + SL_APP_ID + "&V_PRCS_ID=" + SL_PRCS_ID + "&V_SRVC_ID=" + SL_SRVC_ID + "&FULL_DTL_FLG=Y&AVL_DTL_FLG=N&REST_Service=DeploymentStatus&Verb=GET")
   }
   getAppCode(vSRCcd) {
     this.V_SRC_CD = vSRCcd;
-    console.log(this.apiUrlGet + "V_CD_TYP=APP&V_SRC_CD=" + this.V_SRC_CD + "&SCREEN=PROFILE&REST_Service=Masters&Verb=GET");
+    (this.apiUrlGet + "V_CD_TYP=APP&V_SRC_CD=" + this.V_SRC_CD + "&SCREEN=PROFILE&REST_Service=Masters&Verb=GET");
     return this.http.get(this.apiUrlGet + "V_CD_TYP=APP&V_SRC_CD=" + this.V_SRC_CD + "&SCREEN=PROFILE&REST_Service=Masters&Verb=GET");
   }
   getProcessCD(V_APP_CD: any) {
@@ -337,7 +570,7 @@ export class ConfigServiceService {
       const fieldObj: any = {};
       fieldObj.name = ParameterName[i];
       fieldObj.placeholder = ParameterName[i];
-      if (CommonUtils.isValidValue(ParameterType[i]) && ParameterType[i]!=="") {
+      if (CommonUtils.isValidValue(ParameterType) && CommonUtils.isValidValue(ParameterType[i]) && ParameterType[i] !== "") {
         fieldObj.type = ParameterType[i] || "input";
       } else {
         fieldObj.type = "input";
@@ -418,4 +651,13 @@ export interface data {
   UPDATE: string[];
 
   // ==================================
+}
+
+export interface IFormFieldConfig {
+  fieldClass: string;
+  isParamReadOnly: boolean;
+  isParamHidden: boolean;
+  isParamMendatory: boolean;
+  maxLength: number;
+  paramTooltip: string;
 }

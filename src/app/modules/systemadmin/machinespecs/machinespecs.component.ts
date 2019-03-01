@@ -87,34 +87,34 @@ export class MachinespecsComponent implements OnInit {
 
   Label: any[] = [];
   MachineCode() {
-    console.log("Machine List!");
+    ("Machine List!");
     this.data.getMachineCode().subscribe(res => {
-      console.log("Machine List!");
+      ("Machine List!");
       this.PLF_DATA = res.json();
-      console.log(this.PLF_DATA);
+      (this.PLF_DATA);
 
     });
   }
   additionalMachineDetails(sel_mach) {
-    console.log("Hello");
-    console.log("Machine DETAILS");
+    ("Hello");
+    ("Machine DETAILS");
     this.data.getAddMachineDetails(sel_mach).subscribe(res => {
-      console.log(res.json());
+      (res.json());
       this.ADDITIONAL_PLF_DATA=res.json();
-      console.log(this.P.length);
-      console.log(this.ADDITIONAL_PLF_DATA[this.P[24]]);
+      (this.P.length);
+      (this.ADDITIONAL_PLF_DATA[this.P[24]]);
 
 
       for(var i=0; i<this.P.length; i++)
       {
         this.ADDITIONAL_PLF_DATA_ARR[i] = { name: this.ADDITIONAL_PLF_DATA[this.P[i]], title:this.Label[this.P[i]]};
       }
-      console.log(this.ADDITIONAL_PLF_DATA_ARR);
-      // console.log(this.ADDITIONAL_PLF_DATA_ARR);
-      // console.log("Machine List!");
+      (this.ADDITIONAL_PLF_DATA_ARR);
+      // (this.ADDITIONAL_PLF_DATA_ARR);
+      // ("Machine List!");
       // this.PLATFORM_CD = sel_mach;
       // this.PLF_DETAILS = res.json();
-      // console.log(this.PLF_DETAILS);
+      // (this.PLF_DETAILS);
       // this.PLATFORM_DSC = this.PLF_DETAILS['PLATFORM_DSC'];
       // this.PLATFORM_CAP = this.PLF_DETAILS['PLATFORM_CAP'];
       // this.RATING = this.PLF_DETAILS['RATING'];

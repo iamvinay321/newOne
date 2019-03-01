@@ -93,7 +93,7 @@ export class MytaskComponent implements OnInit {
 
     this.http.get<data>(this.apiUrlGet + "V_SRC_CD=" + this.V_SRC_CD + "&V_USR_NM=" + this.V_USR_NM + "&SCREEN=USR_ACTN&REST_Service=HeldService&Verb=GET").subscribe(
       res => {
-        console.log(res.SRVC_CD);
+        (res.SRVC_CD);
         this.srvcd = res.SRVC_CD.sort(function (a, b) { return a.localeCompare(b); });
       }
     );
@@ -141,12 +141,12 @@ export class MytaskComponent implements OnInit {
     this.disabled = true;
     this.http.get<data>(this.apiUrlGet + "V_TXN_ID=" + txnid_sl + "&V_USR_NM=" + this.V_USR_NM + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=OpenTaskDetail&Verb=GET").subscribe(
       res => {
-        console.log(res.PVP);
+        (res.PVP);
         this.servicedetails = res.PVP;
         this.holdreason = res.HOLD_RSN;
         this.notes = res.RELEASE_RSN;
-        console.log(this.holdreason);
-        console.log(this.notes);
+        (this.holdreason);
+        (this.notes);
         this.V_BASE_ID = res.BASE_ID;
         this.servs = this.servicedetails[0];
         this.array = this.servs.split(",");
@@ -165,7 +165,7 @@ export class MytaskComponent implements OnInit {
         //     Values:this.array2[i][1]
         //   }
         //   this.dataSource.data=this.innerTableDT;
-        //      console.log(this.array2);
+        //      (this.array2);
 
         // }
       }
@@ -177,12 +177,12 @@ export class MytaskComponent implements OnInit {
     this.disabled = false;
     this.http.get<data>(this.apiUrlGet + "V_TXN_ID=" + txnid_sl + "&V_USR_NM=" + this.V_USR_NM + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=TaskDetail&Verb=GET").subscribe(
       res => {
-        console.log(res.PVP);
+        (res.PVP);
         this.servicedetails = res.PVP;
         this.holdreason = res.HOLD_RSN;
         this.notes = res.RELEASE_RSN;
-        console.log(this.holdreason);
-        console.log(this.notes);
+        (this.holdreason);
+        (this.notes);
         this.V_BASE_ID = res.BASE_ID;
         this.servs = this.servicedetails[0];
         this.array = this.servs.split(",");
@@ -203,7 +203,7 @@ export class MytaskComponent implements OnInit {
         //     Values:this.array2[i][1]
         //   }
         //   this.dataSource.data=this.innerTableDT;
-        //      console.log(this.array2);
+        //      (this.array2);
 
         // }
       }
@@ -219,7 +219,7 @@ export class MytaskComponent implements OnInit {
     this.http.get("https://"+this.domain_name+"/rest/E_DB/SP?V_SRC_CD=AWS1&V_APP_CD=Federal%20Contracts&V_PRCS_CD=Federal%20Opportunities&V_PARAM_NM=Type%20of%20Set%20Aside&V_SRVC_CD=Pull%20FPDS%20Contracts&REST_Service=ProcessParametersOptions&Verb=GET")
       .subscribe(
         res => {
-          console.log(res[e]);
+          (res[e]);
           this.searchResult = res[e];
           this.app.loading = false;
         }
@@ -242,7 +242,7 @@ export class MytaskComponent implements OnInit {
   functiongetgroups() {
     this.http.get<data>(this.apiUrlGet + "V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Groups&Verb=GET").subscribe(
       res => {
-        console.log(res.USR_GRP_CD);
+        (res.USR_GRP_CD);
         this.groups = res.USR_GRP_CD.sort(function (a, b) { return a.localeCompare(b); });
       }
     );
@@ -261,7 +261,7 @@ export class MytaskComponent implements OnInit {
     };
     this.http.post(this.apiUrlPost, body).subscribe(
       res => {
-        console.log(res);
+        (res);
       }
     );
     this.detailshow = false;
@@ -302,9 +302,9 @@ export class MytaskComponent implements OnInit {
     }
     if (this.selectedradiobtn.toString() == "Release") {
 
-      console.log("---------" + PVP + "----------");
-      console.log(this.hldrsnedit);
-      console.log(this.notesedit);
+      ("---------" + PVP + "----------");
+      (this.hldrsnedit);
+      (this.notesedit);
     }
     // let body={
     //   "V_USR_NM":this.V_USR_NM,
@@ -318,7 +318,7 @@ export class MytaskComponent implements OnInit {
     // };
     //     this.http.post(this.apiUrlPost , body).subscribe(
     //       res=>{
-    //         console.log(res);
+    //         (res);
 
     //       }
     //     );
@@ -353,7 +353,7 @@ export class MytaskComponent implements OnInit {
 
   ngOnInit() {
     this.functionsrvcGetData();
-    this.data.getJSON().subscribe(data => {       console.log(data.json());       this.Label=data.json();       console.log(this.Label);   })
+    this.data.getJSON().subscribe(data => {       (data.json());       this.Label=data.json();       (this.Label);   })
   }
 }
 export interface data {

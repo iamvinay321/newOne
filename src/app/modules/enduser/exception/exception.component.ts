@@ -100,8 +100,8 @@ export class ExceptionComponent implements OnInit {
 functionsrvcGetData(){
     this.http.get<data>(this.apiUrlGet+"V_SRC_CD="+this.V_SRC_CD+"&V_USR_NM="+this.V_USR_NM+"&SCREEN=Exception%20Sceen&REST_Service=HeldService&Verb=GET").subscribe(
       res=>{
-        //console.log(res.SRVC_CD);
-        console.log("DATA.....................")
+        //(res.SRVC_CD);
+        ("DATA.....................")
         this.srvcd=res.SRVC_CD;
         var get_index=-1;
         for(let i=0;i<this.srvcd.length;i++){
@@ -121,7 +121,7 @@ functionsrvcGetData(){
 
 functionATIDGetData(exc_sl){  
 
-  console.log("GET..............")
+  ("GET..............")
   if(exc_sl=="")
   {
     this.grp=null;
@@ -133,7 +133,7 @@ functionATIDGetData(exc_sl){
       this.txn_id="";
   this.http.get<data>(this.apiUrlGet+"V_SRVC_CD="+exc_sl+"&V_USR_NM="+this.V_USR_NM+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=FailedServiceTxnID&Verb=GET").subscribe(
     res=>{
-      //console.log(res.TXN_ID);
+      //(res.TXN_ID);
       this.atxnid=res.TXN_ID;
     }
   );
@@ -142,7 +142,7 @@ functionATIDGetData(exc_sl){
 //=>for getting open transaction ids
 functionOTIDGetData(exc_sl){
 
-  console.log("GET1................")
+  ("GET1................")
   if(exc_sl=="")
     {
       this.grp=null;
@@ -153,7 +153,7 @@ functionOTIDGetData(exc_sl){
         }
   this.http.get<data>(this.apiUrlGet+"V_SRVC_CD="+exc_sl+"&V_USR_NM="+this.V_USR_NM+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=FailedTransaction&Verb=GET").subscribe(
     res=>{
-     // console.log(res.TXN_ID);
+     // (res.TXN_ID);
       this.otxnid=res.TXN_ID;
     }
   );
@@ -161,11 +161,11 @@ functionOTIDGetData(exc_sl){
 
 functiongetgroups(){
 
-  console.log("GET2..................")
+  ("GET2..................")
   this.http.get<data>(this.apiUrlGet+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Groups&Verb=GET").subscribe(
     res=>{
       this.grp=res.USR_GRP_CD.sort(function (a, b) { return a.localeCompare(b);});
-      //console.log(this.grp);
+      //(this.grp);
     }
   );
 }
@@ -173,7 +173,7 @@ functiongetgroups(){
 // For getting Open Txn detail
 functionservicedetails(txn_id){
 
-  console.log("GET3....................")
+  ("GET3....................")
   this.disabled = true;
   this.array1=null;
   this.http.get<data>(this.apiUrlGet+"V_TXN_ID="+txn_id+"&V_USR_NM="+this.V_USR_NM+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=FailedTxnDetail&Verb=GET").subscribe(
@@ -199,7 +199,7 @@ functionservicedetails(txn_id){
 // For getting owned failed Txn detail
 functionownedservicedetails(txn_id){
 
-  console.log("GET4....................")
+  ("GET4....................")
   this.array1=null;
   this.disabled = false;
   this.http.get<data>(this.apiUrlGet+"V_TXN_ID="+txn_id+"&V_USR_NM="+this.V_USR_NM+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=FailedTxnOwner&Verb=GET").subscribe(
@@ -225,7 +225,7 @@ functionownedservicedetails(txn_id){
     //         Values:this.array2[i][1]
     //       }
     //       this.dataSource.data=this.innerTableDT;
-    //          console.log(this.array2);
+    //          (this.array2);
              
     // }
     });
@@ -235,13 +235,13 @@ functionownedservicedetails(txn_id){
 
 getDropDownListValue(e){
 
-  console.log("GET5.....................")
+  ("GET5.....................")
   this.app.loading=true;
   this.searchResult=[];
                     this.http.get("https://"+this.domain_name+"/rest/E_DB/SP?V_SRC_CD=AWS1&V_APP_CD=Federal%20Contracts&V_PRCS_CD=Federal%20Opportunities&V_PARAM_NM=Type%20of%20Set%20Aside&V_SRVC_CD=Pull%20FPDS%20Contracts&REST_Service=ProcessParametersOptions&Verb=GET")
                     .subscribe(
                         res=>{
-                         console.log(res[e]);
+                         (res[e]);
                        this.searchResult=res[e];
                        this.app.loading = false;
                         }
@@ -263,8 +263,8 @@ getDropDownListValue(e){
   };
         this.http.post(this.apiUrlPost , body).subscribe(
           res=>{
-            console.log(res);
-            // console.log(body);
+            (res);
+            // (body);
           }
         );
         this.functionclear();
@@ -288,7 +288,7 @@ functiontoRelease(){
   "V_OPERATION":"RELEASED"};
   this.http.post(this.apiUrlPost,body).subscribe(
     res=>{
-      console.log(res);
+      (res);
     }
   ); 
 }
@@ -330,12 +330,12 @@ agcygrpbox:boolean=false;
     }
 
   ngOnInit() {
-    console.log("Data fetch..........")
+    ("Data fetch..........")
     this.functionsrvcGetData();
     this.data.getJSON().subscribe(data => {      
-       console.log(data.json());       
+       (data.json());       
        this.Label=data.json();       
-       console.log(this.Label);   
+       (this.Label);   
       })
     
   }

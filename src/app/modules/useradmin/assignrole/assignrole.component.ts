@@ -114,7 +114,7 @@ export class AssignroleComponent implements OnInit {
     this.http.get<data>(this.apiUrlGet + "V_USR_GRP_CD=" + VV_USR_GRP_CD + "&V_ROLE_CD=&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Groups_Roles&Verb=GET").subscribe(
       res => {
         this.grp_roles = res.ROLE_CD;
-        console.log(this.grp_roles);
+        (this.grp_roles);
         for(var f=0;f<this.rol.length;f++){
           this.rol[f].selected=false;
         }
@@ -134,7 +134,7 @@ export class AssignroleComponent implements OnInit {
     this.http.get<data>(this.apiUrlGet + "V_USR_GRP_CD=&V_ROLE_CD=" + V_ROLE_CD + "&V_SRC_CD=" + this.V_SRC_CD + "&REST_Service=Groups_Roles&Verb=GET").subscribe(
       res => {
         this.role_grps = res.USR_GRP_CD;
-        console.log(this.role_grps);
+        (this.role_grps);
         // for(var f=0;f<this.grp.length;f++){
         //   this.grp[f].selected=false;
         // }
@@ -149,7 +149,7 @@ export class AssignroleComponent implements OnInit {
 
   checkroles(rl){
     this.selectedOptions1=rl.selectedOptions.selected.map(item=>item.value);
-    console.log(this.selectedOptions1);
+    (this.selectedOptions1);
   }
 
   addrole() {
@@ -162,11 +162,11 @@ export class AssignroleComponent implements OnInit {
         "REST_Service": "Group_Roles",
         "Verb": "PUT"
       }
-      console.log(body);
+      
       this.http.put(this.apiUrlPut, body).subscribe(
         res => {
-          console.log(res);
-          console.log(body);
+          (res);
+          (body);
         });
      }
   }
@@ -181,7 +181,7 @@ export class AssignroleComponent implements OnInit {
       "Verb": "DELETE",
     }}).subscribe(
       res=>{
-        console.log(res);
+        (res);
       });
     }
 }
@@ -189,9 +189,9 @@ export class AssignroleComponent implements OnInit {
     this.getgroups();
     this.getrole();
     this.data.getJSON().subscribe(data => {
-      console.log(data.json());
+      (data.json());
       this.Label = data.json();
-      console.log(this.Label);
+      (this.Label);
     })
   }
 }

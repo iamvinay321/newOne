@@ -136,7 +136,7 @@ export class MachineconnectionComponent implements OnInit {
        this.http.post(this.apiUrlPost, body).subscribe(
        res=>{
         this.toastr.success("Adding a Connection to a machine !");
-        console.log(res);
+        (res);
        });
      }
 
@@ -145,7 +145,7 @@ export class MachineconnectionComponent implements OnInit {
        this.http.get(this.apiUrlGet+"V_PLATFORM_CD="+this.machine_sl+"&V_SRC_CD="+this.V_SRC_CD+"&V_CXN_CD="+this.con_sl+"&V_CXN_TYP="+this.contype_sl+"&REST_Service=Machine_Connection&Verb=DELETE").subscribe(
         res=>{
           this.toastr.warning("Deleting a Connection from a machine !");
-         console.log(res);
+         (res);
          this.selectedcon=undefined;
         });
      }

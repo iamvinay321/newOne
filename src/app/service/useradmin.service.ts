@@ -2,25 +2,29 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpEvent, HttpEventType } from '@angular/common/http';
 import { Http, ResponseContentType } from '@angular/http';
 import { StorageSessionService } from './storage-session.service';
-import { Observable } from 'rxjs/Observable';
+import { Observable } from 'rxjs';
 import { Globals } from './globals';
 import { Headers, RequestMethod, RequestOptions } from '@angular/http';
 import { saveAs } from 'file-saver';
 @Injectable()
 export class UseradminService {
  
- private domain_name = this.globals.domain_name;
- private  V_SRC_CD: string = this.session.getSession("agency");
- private V_USR_NM: string = this.session.getSession("email");
- private columnsToDisplay = this.session.getCookies("coltodisp");
+ private domain_name : string;
+ private  V_SRC_CD: string ;
+ private V_USR_NM: string ;
+ private columnsToDisplay : string;
 
   constructor(
     private http: Http,
     private https: HttpClient,
     private globals: Globals,
     private session: StorageSessionService) {
-		console.info("The user company name :"+this.V_SRC_CD);
-		console.info("The user name is :"+this.V_USR_NM);
+
+      this.domain_name = this.globals.domain_name;
+      this.V_SRC_CD = this.session.getSession("agency");
+       this.V_USR_NM = this.session.getSession("email");
+       this.columnsToDisplay = this.session.getCookies("coltodisp");
+		
   }
 
 
@@ -140,8 +144,8 @@ export class UseradminService {
   Upload the file on API 
   */
   public fileUpload(currentFile:File,fileName:any,screen:any)  {
-    console.log("The file name is  :"+fileName);
-    console.log("The current screen is :"+screen);
+    ("The file name is  :"+fileName);
+    ("The current screen is :"+screen);
   let formData: FormData = new FormData();
   
 	let file:any={};
@@ -168,7 +172,7 @@ export class UseradminService {
 		body['USR_NM']=this.V_USR_NM;
 		this.https.post("https://"+this.domain_name+"/rest/file/upload",body).subscribe(
 			res=>{
-				console.log("File upload response : "+res);	
+				("File upload response : "+res);	
 			},
 			error=>{
 				console.error("File uploading info error :"+error);
@@ -212,11 +216,11 @@ export class UseradminService {
 		
 		this.http.post("https://"+this.domain_name+"/rest/EmailServices/email",body).subscribe(
 		res=>{
-				console.log("email send response");
-				console.log(res);
+				("email send response");
+				(res);
 				
 		},error=>{
-			console.log("email sending error :"+error);
+			("email sending error :"+error);
 		});
 		
  }
@@ -228,7 +232,7 @@ export class UseradminService {
 	this.http.get("https://"+this.domain_name+"/rest/E_DB/SP?V_USR_NM="+user.USR_NM_R+"&V_SRC_CD="+this.V_SRC_CD+"&V_USR_DSC="+user.USR_DSC_R+"&V_STS="+user.USRC_STATUS_R. toUpperCase()+"&REST_Service=User&Verb=PATCH")
 		.subscribe(
 			res=>{
-				console.log("Existing user updation : "+res);
+				("Existing user updation : "+res);
 				user.ClearField();
 			},
 			err=>{

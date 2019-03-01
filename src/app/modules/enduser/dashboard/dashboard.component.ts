@@ -102,8 +102,8 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
       this.https.post("https://"+this.domain_name+"/rest/Process/Report", body)
         .subscribe(
           res => {
-            console.log('Report...');
-            console.log(res.json());
+            ('Report...');
+            (res.json());
             //this.StorageSessionService.setCookies("report_table", res.json());
             //this.getReportData();
            // this.chart_JSON_call();
@@ -115,7 +115,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
 /*  getReportData() {
 
     //this.Table_of_Data = this.StorageSessionService.getCookies('report_table')['RESULT'];
-    //console.log(this.dataStored.getCookies('report_table'));
+    //(this.dataStored.getCookies('report_table'));
     this.SRVC_CD_Rep = this.StorageSessionService.getCookies('report_table')['SRVC_CD'][0];
     this.SRVC_ID = this.StorageSessionService.getCookies('report_table')['SRVC_ID'][0];
     var Table_of_Data1 = this.StorageSessionService.getCookies('report_table')['LOG_VAL'];
@@ -124,7 +124,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
     this.APP_ID = this.StorageSessionService.getCookies('iddata')['APP'];
     this.PRCS_ID = this.StorageSessionService.getCookies('iddata')['PRCS'];
     this.SRC_ID = this.StorageSessionService.getCookies('iddata')['SRC'];
-    console.log(Table_of_Data1);
+    (Table_of_Data1);
     var obj={
       SRVC_CD:this.SRVC_CD_Rep,
       SRVC_ID:this.SRVC_ID,
@@ -133,9 +133,9 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
       PRCS_ID:this.PRCS_ID,
       SRC_ID:this.SRC_ID
     };
-    console.log(obj);
+    (obj);
 
-    //console.log(JSON.parse(this.Table_of_Data1[0]));
+    //(JSON.parse(this.Table_of_Data1[0]));
 
     //this.columnsToDisplay = Object.keys(JSON.parse(this.Table_of_Data1[0]));
   }*/
@@ -147,7 +147,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
     this.progress = true;
     this.ID_DATA={SRC:'298',APP:'333',PRCS:'585',PRCS_TXN:'8905',UNIQUE_ID:'3855'};
     //this.chart_JSON_call();
-    //console.log(this.Exe_data);
+    //(this.Exe_data);
     if (this.selectedapp != null && this.selectedapp != 'ALL' && this.selectedprcs != null && this.selectedprcs != 'ALL') {
       let body = {
         "V_APP_CD": this.selectedapp,
@@ -161,11 +161,11 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
       this.https.post("https://"+this.domain_name+"/rest/Process/Execute", body).subscribe(
         res => {
 
-          // console.log(res.json());
-          console.log("Check this");
+          // (res.json());
+          ("Check this");
           this.Execute_res_data = res.json();
           this.ID_DATA=this.Execute_res_data;
-          console.log(res.json());
+          (res.json());
         }
       );
     }
@@ -174,7 +174,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
   chart_JSON_call(res_,elem){
     this.showCanvas=true;
     this.http.get(this.apiUrlGet + "V_SRC_ID=" + res_['V_SRC_ID'][0] + "&V_APP_ID=" + res_['V_APP_ID'][0] + "&V_PRCS_ID=" + res_['V_PRCS_ID'][0] + "&V_PRCS_TXN_ID="+elem.PTXN_ID+"&REST_Service=ProcessStatus&Verb=GET").subscribe(res => {
-      console.log(res);
+      (res);
       var start_time=[],end_time=[],Process=[];
 
       for(let i=0;i<res['INS_DT_TM'].length;i++){
@@ -196,8 +196,8 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
       var R = Math.floor(Math.random() * 200);
       var G = Math.floor(Math.random() * 200);
       var B = Math.floor(Math.random() * 200);
-      //console.log((this.time_to_sec(start_time[i]) - this.time_to_sec(start_time[0])));
-      //console.log((this.time_to_sec(end_time[i]) - this.time_to_sec(start_time[0])));
+      //((this.time_to_sec(start_time[i]) - this.time_to_sec(start_time[0])));
+      //((this.time_to_sec(end_time[i]) - this.time_to_sec(start_time[0])));
       mydataset[Process.length - i - 1]= {
         backgroundColor: "rgba(" + R + ',' + G + ',' + B + ")",
         borderColor: "rgba(" + R + ',' + G + ',' + B + ")",
@@ -270,7 +270,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
                   endstr=endstr-60*Math.floor(endstr/60);
                   begstr+=Math.floor(midstr/60);
                   midstr=midstr-60*Math.floor(midstr/60);
-                  //console.log(index);
+                  //(index);
                   
                   if (midstr < 10)
                     mid_str = '0' + midstr;
@@ -278,7 +278,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
                     end_str = '0' + endstr;
                   if (begstr < 10)
                    beg_str = '0' + begstr;
-                  //console.log(count);
+                  //(count);
                   return beg_str+':' + mid_str +':'+end_str;
                 }
                 //return value/val1;
@@ -334,8 +334,8 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
               return data['labels'][tooltipItem[0]['index']];
             },
             label: function (tooltipItem, data) {
-              //console.log(tooltipItem);
-              //console.log(data['datasets'][0]['data'][tooltipItem['index']]);
+              //(tooltipItem);
+              //(data['datasets'][0]['data'][tooltipItem['index']]);
               var ret = mydata[tooltipItem['index']];
               ret = Math.floor(ret * 100) / 100;
               return ret+' sec';
@@ -380,7 +380,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
         Process[i]=Process[i]+'...';
       var temp = this.time_to_sec(end_time[i]) - this.time_to_sec(start_time[i]);
       duration[i] = temp;
-      //console.log(duration);
+      //(duration);
       var R = Math.floor(Math.random() * 200);
       var G = Math.floor(Math.random() * 200);
       var B = Math.floor(Math.random() * 200);
@@ -419,8 +419,8 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
               return data['labels'][tooltipItem[0]['index']];
             },
             label: function (tooltipItem, data) {
-              //console.log(tooltipItem);
-              //console.log(data['datasets'][0]['data'][tooltipItem['index']]);
+              //(tooltipItem);
+              //(data['datasets'][0]['data'][tooltipItem['index']]);
               var ret = duration[tooltipItem['index']];
               ret = Math.floor(ret * 100) / 100;
               return ret+ ' sec';
@@ -449,12 +449,12 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
                   var midstr=0;
                   
                   var endstr=value;
-                  //console.log(index*value);
+                  //(index*value);
                   midstr+=Math.floor(endstr/60);
                   endstr=endstr-60*Math.floor(endstr/60);
                   begstr+=Math.floor(midstr/60);
                   midstr=midstr-60*Math.floor(midstr/60);
-                  //console.log(index);
+                  //(index);
                   let beg_str=begstr.toString(),mid_str=midstr.toString(),end_str=endstr.toString();
                   if (midstr < 10)
                     mid_str = '0' + midstr;
@@ -462,7 +462,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
                     end_str = '0' + endstr;
                   if (begstr < 10)
                     beg_str = '0' + begstr;
-                  //console.log(min);
+                  //(min);
                   return beg_str+':' + mid_str +':'+end_str;
                 }
                 //return value;
@@ -502,7 +502,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
     this.app.selected_SERVICE='ALL';
     this.app.selected_PROCESS='ALL';
     this.selectedprcs='ALL';
-    //console.log(this.selectedapp);
+    //(this.selectedapp);
     this.functionprocesslist();
   }
 
@@ -549,16 +549,16 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
       this.showInput=false;
       this.showOutput=false;
       this.showSLA=false;
-      //console.log(elem);
+      //(elem);
       this.seq=elem.NO;
       //elem.STXN_ID='78737';
       this.data.getID(elem.Application, elem.Process, elem.Service).subscribe(_res_ => {
-        console.log(_res_.json());
+        (_res_.json());
         let res_=_res_.json();
       
         this.http.get<any>(this.apiUrlGet+"V_SRC_ID="+res_['V_SRC_ID'][0]+"&V_TXN_ID="+elem.STXN_ID+"&IN_OUT_BOTH=BOTH&REST_Service=ServicePayload&Verb=GET").subscribe(
           res=>{
-            console.log(res);
+            (res);
             var start=0;
             var end=0;
             var end_=0;
@@ -566,7 +566,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
             var inp_vl=[];
             let iter=0;
             var newdate=new Date();
-            ///console.log(newdate:'dd/MM/yyyy');
+            ///(newdate:'dd/MM/yyyy');
             var inputIndex=-1,outputIndex=-1;
             if(res.LOG_NM.length>0){
               for(let i=0;i<res.LOG_NM.length;i++){
@@ -593,12 +593,12 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
                   }
                   if(res.LOG_VAL[inputIndex][i]=='='){
                     end=i;
-                    //console.log(res.LOG_VAL[0].substring(start+1,end));
+                    //(res.LOG_VAL[0].substring(start+1,end));
                     inp_nm[iter]=res.LOG_VAL[inputIndex].substring(start+1,end);
                   }
                   if((res.LOG_VAL[inputIndex][i]==',' && !braceOpened) || res.LOG_VAL[inputIndex][i]=="}"){
                     end_=i;
-                    //console.log(res.LOG_VAL[0].substring(end+1,end_));
+                    //(res.LOG_VAL[0].substring(end+1,end_));
                     inp_vl[iter]=res.LOG_VAL[inputIndex].substring(end+1,end_);
                     iter++;
                   }
@@ -607,7 +607,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
                 this.populate_inp_table(inp_nm,inp_vl);
                 for(let i=0;i<inp_nm.length;i++){
                   if(inp_vl[i].length>0){
-                    console.log(inp_nm[i]+": "+inp_vl[i]);
+                    (inp_nm[i]+": "+inp_vl[i]);
                   }
                 }
               }
@@ -629,22 +629,22 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
                   }
                   if(res.LOG_VAL[outputIndex][i]=='='){
                     end=i;
-                    //console.log(res.LOG_VAL[0].substring(start+1,end));
+                    //(res.LOG_VAL[0].substring(start+1,end));
                     oup_nm[iter]=res.LOG_VAL[outputIndex].substring(start+1,end);
                   }
                   if((res.LOG_VAL[outputIndex][i]=="," && !braceOpened) || res.LOG_VAL[outputIndex][i]=="}"){
                     end_=i;
-                    //console.log(res.LOG_VAL[0].substring(end+1,end_));
+                    //(res.LOG_VAL[0].substring(end+1,end_));
                     oup_vl[iter]=res.LOG_VAL[outputIndex].substring(end+1,end_);
                     iter++;
                   }
                 }
-                console.log("Output______");
+                ("Output______");
                 this.showOutput=true;
                 this.populate_oup_table(oup_nm,oup_vl);
                 for(let i=0;i<oup_nm.length;i++){
                   if(oup_vl[i].length>0){
-                    console.log(oup_nm[i]+": "+oup_vl[i]);
+                    (oup_nm[i]+": "+oup_vl[i]);
                   }
                 }
                 this.chart_JSON_call(res_,elem);
@@ -700,7 +700,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
       time11 = sthrs + ":" + stmin + ":" + stsec;
       this.From = date11 + ' ' + time11;
 
-      console.log(this.From);
+      (this.From);
     }else{
       this.From='';
     }
@@ -731,7 +731,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
       time11 = sthrs + ":" + stmin + ":" + stsec;
       this.To = date11 + ' ' + time11;
 
-      console.log(this.To);
+      (this.To);
     }else{
       this.To='';
     }
@@ -899,7 +899,7 @@ export class DashboardComponent extends dboard_secondary implements OnInit, Afte
     this.http.get<any>(jsonurl + jsonurl_mid + jsonurl_end).subscribe(
       res => {
         this.showLoading=false;
-        console.log(jsonurl + jsonurl_mid + jsonurl_end);
+        (jsonurl + jsonurl_mid + jsonurl_end);
         let i: number;
         if(res.APP_CD.length==0){
           this.showNotFound = true;

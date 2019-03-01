@@ -62,7 +62,7 @@ export class MembershipComponent implements OnInit {
     this.progress=true;
           this.data.AvaiableGroup().subscribe(
             res=>{
-              console.log(res);
+              (res);
         this.USR_GRP_CD=res['USR_GRP_CD'];
         this.progress=false;
             }
@@ -77,7 +77,7 @@ export class MembershipComponent implements OnInit {
     // }
             this.data.getAvailableGroup(USR_GRP_CD).subscribe(
               res=>{
-                console.log(res);
+                (res);
                 this.start_date=res['EFF_STRT_DT_TM'];
                 this.end_date=res['EFF_END_DT_TM'];
                 this.USR_GRP_CDR=res['USR_GRP_CD'];
@@ -95,7 +95,7 @@ export class MembershipComponent implements OnInit {
     this.progress=true;
         this.data.getUser().subscribe(
             res=>{
-              console.log(res.json());
+              (res.json());
               this.USR_NM=res.json()['USR_NM'];
               this.progress=false;
             }
@@ -144,9 +144,9 @@ export class MembershipComponent implements OnInit {
   Label:any[]=[];
   ngOnInit() {
     this.data.getJSON().subscribe(data => {
-      console.log(data.json());
+      (data.json());
       this.Label=data.json();
-      console.log(this.Label);
+      (this.Label);
   })
     this.getUser();
     this.AvailableGroup();

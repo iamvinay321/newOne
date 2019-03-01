@@ -63,13 +63,13 @@ for(let e of this.email_id){
   Label:any[]=[];
   ngOnInit() {
     this.data.getJSON().subscribe(data => {
-      console.log(data.json());
+      (data.json());
       this.Label=data.json();
-      console.log(this.Label);
+      (this.Label);
   })
   }
   resolved(captchaResponse: string) {
-    console.log(`Resolved captcha with response ${captchaResponse}:`);
+    (`Resolved captcha with response ${captchaResponse}:`);
 }
 
  domain_name="enablement.online";
@@ -95,7 +95,7 @@ checkUser(form:NgForm){   //1
                         let email=form.value.email;
                         let pass=form.value.pass;
                         let agency=form.value.agency;
-                        console.log(email+pass+agency);
+                        (email+pass+agency);
                         if(agency!==undefined){
                             this.CheckSrc(form);   //3
                         }else{
@@ -112,7 +112,7 @@ CheckSrc(form){   //4
 }});}
 sendConfirmation(data){    //6  "Please confirm your login..."
 this.logData.sendConfirmation(data)
-.subscribe(res=>{console.log(res);});
+.subscribe(res=>{(res);});
 }
 
 CheckUsrPw(form){     //7
@@ -120,9 +120,9 @@ CheckUsrPw(form){     //7
 if(form.value.email!=""&&form.value.pass!=""){
 this.logData.CheckUsrPw(form).subscribe(
    data=>{
-     console.log(data);
-     console.log(data.resultUsrPwd);
-    console.log(data.resultUsrOnly);
+     (data);
+     (data.resultUsrPwd);
+    (data.resultUsrOnly);
                      if(data.resultUsrOnly=="FALSE"){
                              this.srcBloc=true; //show src block
                              this.agcy=false;
@@ -176,7 +176,7 @@ sendResetPassowrdEmail(data){
   };
       this.http.patch(this.apiUrlGet+"REST_Service=Password&Verb=PATCH",body).subscribe(
         res=>{
-          console.log(res);
+          (res);
         }
       );
 }

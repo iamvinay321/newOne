@@ -174,7 +174,7 @@ export class RepeatProcessComponent implements OnInit {
     }
     var res_cron = "";
     res_cron = res_cron + sec + " " + min + " " + hrs + " " + date_of_month + " " + month + " " + day + " " + year;
-   console.log(day);
+   (day);
 
     //------------------------------------------------------
     var timezone = new Date();
@@ -224,7 +224,7 @@ export class RepeatProcessComponent implements OnInit {
     var date22 = this.End_date.getFullYear() + '-' + endmonth + '-' + enddate;
     var time22 = endhrs + ":" + endmin + ":" + endsec;
     var dateTime22 = date22 + ' ' + time22;
-    console.log(this.Exe_data['PRC_CD'].toString());
+    (this.Exe_data['PRC_CD'].toString());
     let body = {
       
         "Schedule": "Y",
@@ -239,13 +239,13 @@ export class RepeatProcessComponent implements OnInit {
         "TimeZone": Intermediatetimezone
     }
     Object.assign(body,this.tp);
-    console.log(body);
+    (body);
     this.http.post(this.Url, body).subscribe(
       res => {
         this.Execute_Later = false;
-        console.log(res);
+        (res);
 
-        //  console.log(res_cron);
+        //  (res_cron);
 
 
       }
@@ -262,7 +262,7 @@ export class RepeatProcessComponent implements OnInit {
 
     this.min = new Date(this.End_date);
     this.min_start = new Date(date);
-console.log(this.End_date);
+(this.End_date);
   }
   Redirect_to_user() {
     this.route.navigateByUrl("schd-actn");

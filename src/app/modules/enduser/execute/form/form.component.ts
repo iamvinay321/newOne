@@ -46,6 +46,8 @@ export class FormComponent implements OnInit {
     public globals: Globals,
     public app: AppComponent,
     public cdr: ChangeDetectorRef,
+    public configService: ConfigServiceService,
+
   ) { }
 
   domain_name = this.globals.domain_name;
@@ -89,17 +91,17 @@ export class FormComponent implements OnInit {
   getFormData(): any {
     this.http.get('../../../../assets/control-variable.json').subscribe(res => {
       this.ctrl_variables = res;
-      console.log(res);
+      (res);
     });
 
     this.Form_Data = this.StorageSessionService.getCookies('report_table');
-
-    console.info('The form data stored in local storage: ');
-    console.log(this.Form_Data);
+    this.configService.prepareAndGetFieldConfigurations(this.Form_Data, true);
+    
+    (this.Form_Data);
 
     this.PVP = JSON.parse(this.Form_Data['PVP'][0]);
     this.srvc_cd_sl = this.Form_Data['SRVC_CD'][0];
-    console.log(this.PVP);
+    (this.PVP);
 
     this.checkOLD_Table();
 
@@ -118,9 +120,9 @@ export class FormComponent implements OnInit {
     }
     this.set_fieldType();
     this.set_fieldWidth();
-    console.log(this.options);
-    console.log(this.formWidth);
-    console.log(this.fieldType);
+    (this.options);
+    (this.formWidth);
+    (this.fieldType);
 
   }
 
@@ -135,7 +137,7 @@ export class FormComponent implements OnInit {
       this.RVP_labels.push(this.RVP_Keys[i].replace(new RegExp('_', 'g'), ' '));
       // }
     }
-    console.log(this.RVP_labels);
+    (this.RVP_labels);
   }
 
   // updateLabelForDisplay(label: string){
@@ -148,36 +150,16 @@ export class FormComponent implements OnInit {
     if (this.V_TABLE_NAME.length > 0) {
       this.rewriteOld_data();
     }
-    console.log("Field Data 1:");
-    console.log(JSON.parse(this.RVP_Data));
+    ("Field Data 1:");
+    (JSON.parse(this.RVP_Data));
     this.RVP_DataObj = JSON.parse(this.RVP_Data);
     this.updateInitialFieldNameAndValues();
   }
 
   updateInitialFieldNameAndValues() {
-    console.log(this.RVP_DataObj);
+    (this.RVP_DataObj);
     var key_array = Object.keys(this.RVP_DataObj);
-
-    // //----------Field Names & Field Values as {"str1"|"str2"}-----------//
-    // this.Field_Names = '';
-    // this.Field_Values = "";
-    // for (let i = 0; i < key_array.length; i++) {
-    //   if (i != 0) {
-    //     this.Field_Names += '|';
-    //     this.Field_Values += '|';
-    //   }
-    //   this.Field_Names += "`" + key_array[i] + "`";
-    //   this.Field_Values += "'" + this.RVP_DataObj[key_array[i]] + "'";
-    // }
-    // // this.RVP_Data.push('V_abcd');
-    // // this.Field_Names += '|\"V_abcd\"';
-    // // this.Field_Values += '|\"\"';
-
-    // console.log("Field_Names");
-    // console.log(this.Field_Names);
-    // console.log("Field_Values");
-    // console.log(this.Field_Values);
-    console.log(this.StorageSessionService.getCookies('App_Prcs'));
+    (this.StorageSessionService.getCookies('App_Prcs'));
   }
 
   registerDataChangeHandler(handler: any) {
@@ -222,7 +204,7 @@ export class FormComponent implements OnInit {
       if (this.V_TABLE_NAME == null) {
         this.V_TABLE_NAME = '';
       }
-      console.log(this.V_TABLE_NAME);
+      (this.V_TABLE_NAME);
     } else {
       this.V_TABLE_NAME = '';
     }
@@ -231,7 +213,7 @@ export class FormComponent implements OnInit {
       if (this.V_SCHEMA_NAME == null) {
         this.V_SCHEMA_NAME = '';
       }
-      console.log(this.V_SCHEMA_NAME);
+      (this.V_SCHEMA_NAME);
     } else {
       this.V_SCHEMA_NAME = '';
     }
@@ -255,8 +237,8 @@ export class FormComponent implements OnInit {
     this.V_KEY_NAME = key_name_ar.join("|");
     this.V_KEY_VALUE = key_val_ar.join("|");
 
-    console.info('This is completed data of V_TABLE_NAME parameter :');
-    console.log('V_SRVC_CD=>' + this.V_SRVC_CD + 'V_TABLE_NAME=>' + this.V_TABLE_NAME + 'V_KEY_NAME=>' + this.V_KEY_NAME + 'V_KEY_VALUE=>' + this.V_KEY_VALUE + 'V_SCHEMA_NAME=>' + this.V_SCHEMA_NAME);
+   
+    ('V_SRVC_CD=>' + this.V_SRVC_CD + 'V_TABLE_NAME=>' + this.V_TABLE_NAME + 'V_KEY_NAME=>' + this.V_KEY_NAME + 'V_KEY_VALUE=>' + this.V_KEY_VALUE + 'V_SCHEMA_NAME=>' + this.V_SCHEMA_NAME);
   }
 
   invoke_router(res) {
@@ -265,12 +247,12 @@ export class FormComponent implements OnInit {
       this.router.navigate(["/EndUser/Execute"]);
     } else {
       var timeout = res['RESULT'][0].toString().substring(0, 7) == "TIMEOUT";
-      console.log(timeout);
+      (timeout);
       if (timeout && this.ctrl_variables.call_repeat_on_TIMEOUT) {
         this.app.fromNonRepForm = true;
         this.router.navigate(["/EndUser/Execute"]);
       } else {
-        console.log('https://' + this.domain_name + '/rest/Submit/FormSubmit');
+        ('https://' + this.domain_name + '/rest/Submit/FormSubmit');
         this.StorageSessionService.setCookies('report_table', res);
         if (res['RESULT'] == 'INPUT_ARTFCT_TASK') {
           this.router.navigateByUrl('InputArtForm');
@@ -290,11 +272,11 @@ export class FormComponent implements OnInit {
     var allWidths = this.Form_Data["MAX_COL_PER_PAGE"][0].split(",");
     var total = 0;
 
-    console.log(allWidths);
+    (allWidths);
     for (let i = 0; i < allWidths.length; i++) {
-      console.log(allWidths[i]);
+      (allWidths[i]);
       allWidths[i] = allWidths[i].split('\'').join('');
-      console.log(allWidths[i]);
+      (allWidths[i]);
       total += (100 / (parseInt(allWidths[i])));
       this.formWidth[this.RVP_labels[i]] = (100 / (parseInt(allWidths[i]))) - 2.5;
       this.totalWidth_rep += (100 / (parseInt(allWidths[i]))) - 2.5;
@@ -306,14 +288,14 @@ export class FormComponent implements OnInit {
 
   }
   onChange_PhoneDash(event): any {
-    console.log("Value changed");
+    ("Value changed");
     var setVal = event.toString();
     if (setVal.length < 11) {
       let noDash = setVal.split('-').join('');
       if (noDash.length > 0) {
         noDash = noDash.match(new RegExp('.{1,3}', 'g')).join('-');
       }
-      console.log(noDash);
+      (noDash);
       this.phoneDash_Input = noDash;
     }
 
@@ -338,10 +320,10 @@ export class FormComponent implements OnInit {
   rewriteOld_data() {
     const url = this.apiUrlGet + 'V_Table_Name=' + this.V_TABLE_NAME + '&V_Schema_Name=' + this.V_SCHEMA_NAME + '&V_Key_Names=' + this.V_KEY_NAME + '&V_Key_Values=' + this.V_KEY_VALUE + '&V_SRVC_CD=' + this.V_SRVC_CD + '&V_USR_NM=' + this.V_USR_NM + '&V_SRC_CD=' + this.V_SRC_CD + '&V_PRCS_ID=' + this.V_PRCS_ID + '&REST_Service=Forms_Record&Verb=GET';
     const encoded_url = encodeURI(url);
-    console.log(encoded_url);
+    (encoded_url);
     this.http.get(encoded_url).subscribe(
       res => {
-        console.log(res);
+        (res);
         if (CommonUtils.isValidValue(res['V_ID']) && res['V_ID'].length > 0) {
           this.V_ID = res['V_ID'];
         }
@@ -377,11 +359,11 @@ export class FormComponent implements OnInit {
   getOptional_values(V_PARAM_NM, display_label) {
     const url = this.apiUrlGet + 'V_SRC_CD=' + this.V_SRC_CD + '&V_APP_CD=' + this.SL_APP_CD + '&V_PRCS_CD=' + this.SL_PRC_CD + '&V_PARAM_NM=' + V_PARAM_NM + '&V_SRVC_CD=' + this.V_SRVC_CD + '&REST_Service=ProcessParametersOptions&Verb=GET';
     const encoded_url = encodeURI(url);
-    console.log(encoded_url);
-    console.log("Option Values: " + V_PARAM_NM);
+    (encoded_url);
+    ("Option Values: " + V_PARAM_NM);
     this.http.get(encoded_url).subscribe(
       res => {
-        console.log(res);
+        (res);
         this.options[display_label] = res[V_PARAM_NM];
       });
   }
@@ -391,11 +373,11 @@ export class FormComponent implements OnInit {
     parameter = parameter.replace(new RegExp(' ', 'g'), '_');
     parameter = parameter.toLowerCase();
     if (parameter.startsWith("date_") || parameter.endsWith("_date")) {
-      console.log("Field type : Date");
+      ("Field type : Date");
       this.fieldType[initParam] = 'date';
     }
     else if (parameter.includes("password")) {
-      console.log("Field Type: Password");
+      ("Field Type: Password");
       this.fieldType[initParam] = 'password';
     }
     else {

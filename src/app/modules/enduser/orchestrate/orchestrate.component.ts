@@ -84,7 +84,7 @@ export class OrchestrateComponent implements OnInit {
   functionapplist(){
       this.http.get<data>(this.apiUrlGet+"V_SRC_CD="+this.V_SRC_CD+"&V_USR_NM="+this.V_USR_NM+"&REST_Service=SourceApps&Verb=GET").subscribe(
         res=>{
-          // console.log(res.APP_CD);
+          // (res.APP_CD);
           this.app_cd=res.APP_CD.sort(function (a, b) { return a.localeCompare(b);});
           if(this.predapp_sl.length==0 && this.app.selected_APPLICATION!='ALL'){
             this.predapp_sl=this.app.selected_APPLICATION;
@@ -115,12 +115,12 @@ export class OrchestrateComponent implements OnInit {
     this.srvc_cd=null;  
     this.http.get<data>(this.apiUrlGet+"V_APP_CD="+this.predapp_sl+"&V_SRC_CD="+this.V_SRC_CD+"&V_USR_NM="+this.V_USR_NM+"&REST_Service=AppProcesses&Verb=GET").subscribe(
       res=>{
-        // console.log(res.PRCS_CD);
+        // (res.PRCS_CD);
         if(res.CREATE[0]=="Y" && res.DELETE[0]=="Y" && res.UPDATE[0]=="Y")
         {         
         this.prcs_cd=res.PRCS_CD.sort(function (a, b) { return a.localeCompare(b);});     
         if(this.predpro_sl.length==0 && this.app.selected_PROCESS!='ALL' && this.app_flag){
-    //      console.log("here");
+    //      ("here");
           this.predpro_sl=this.app.selected_PROCESS;
           this.proc_flag=true;
           this.functionserviceslist();
@@ -151,12 +151,12 @@ export class OrchestrateComponent implements OnInit {
     this.srvc_cd=null;
       this.http.get<data>(this.apiUrlGet+"V_APP_CD="+this.predapp_sl+"&V_SRC_CD="+this.V_SRC_CD+"&V_PRCS_CD="+this.predpro_sl+"&V_USR_NM="+this.V_USR_NM+"&REST_Service=ProcessServices&Verb=GET").subscribe(
         res=>{
-          // console.log(res.SRVC_CD);
+          // (res.SRVC_CD);
           
           if(res.SRVC_CD.includes('START'))
           {            
             var index = res.SRVC_CD.indexOf('START');
-            // console.log("index of Start = "+index);
+            // ("index of Start = "+index);
             this.predsvc_sl=res.SRVC_CD[index];
           }
           this.srvc_cd=res.SRVC_CD.sort(function (a, b) { return a.localeCompare(b);});
@@ -183,7 +183,7 @@ export class OrchestrateComponent implements OnInit {
 functionsuccapplist(){
   this.http.get<data>(this.apiUrlGet+"V_SRC_CD="+this.V_SRC_CD+"&V_USR_NM="+this.V_USR_NM+"&REST_Service=SourceApps&Verb=GET").subscribe(
     res=>{
-      // console.log(res.APP_CD);
+      // (res.APP_CD);
       this.succapp_cd=res.APP_CD.sort(function (a, b) { return a.localeCompare(b);});
     }
   );
@@ -195,7 +195,7 @@ functionsuccprocesslist(){
     this.succsrvc_cd=null; 
 this.http.get<data>(this.apiUrlGet+"V_APP_CD="+this.succapp_sl+"&V_SRC_CD="+this.V_SRC_CD+"&V_USR_NM="+this.V_USR_NM+"&REST_Service=AppProcesses&Verb=GET").subscribe(
   res=>{
-    // console.log(res.PRCS_CD);
+    // (res.PRCS_CD);
     if(res.CREATE[0]=="Y" && res.DELETE[0]=="Y" && res.UPDATE[0]=="Y")
         {
          
@@ -218,7 +218,7 @@ functionsuccserviceslist(){
       res.SRVC_CD = res.SRVC_CD.filter(function(item) { 
         return item !== value
     })
-      // console.log(res.SRVC_CD);
+      // (res.SRVC_CD);
       this.succsrvc_cd=res.SRVC_CD.sort(function (a, b) { return a.localeCompare(b);});
     }
     
@@ -226,7 +226,7 @@ functionsuccserviceslist(){
       if(this.app.selected_SERVICE!='ALL' && this.succsvc_s2.length==0){
           this.succsvc_sl=this.app.selected_SERVICE;
           this.succsvc_s2=this.succsvc_sl;
-          console.log("Gotcha");
+          ("Gotcha");
       }
      }
      );   
@@ -260,14 +260,14 @@ this.V_DIRECTION="A";
   }
   this.http.get<data>(this.apiUrlGet+"&V_PRDCR_SRC_CD="+this.V_SRC_CD+"&V_PRDCR_APP_CD="+this.predapp_sl+"&V_PRDCR_PRCS_CD="+this.predpro_sl+"&V_PRDCR_SRVC_CD="+this.predsvc_sl+"&V_DIRECTION="+this.V_DIRECTION+"&REST_Service=Orchestration&Verb=GET").subscribe(
     res=>{
-      // console.log(res.PRDCR_SRVC_CD);
-      // console.log(res.SRVC_CD);
-      // console.log(res.TRNSN_CND);
-      // console.log(res.CONT_ON_ERR_FLG);
+      // (res.PRDCR_SRVC_CD);
+      // (res.SRVC_CD);
+      // (res.TRNSN_CND);
+      // (res.CONT_ON_ERR_FLG);
       
       this.F1 = res.PRDCR_SRVC_CD;
-      // console.log(this.F1);
-      // console.log(this.F1.length);
+      // (this.F1);
+      // (this.F1.length);
 
       for (let i = 0; i < this.F1.length; i++) {
         this.innerTableDT[i] = {
@@ -310,7 +310,7 @@ selection = new SelectionModel<data>(true, []);
   //_____________________________________CLOSE____________________________________________
   
   onRowClick(row) {
-    console.log('Row clicked: ', row);
+    
     var index;
     var checked;
     for(let i=0;i<this.row_arr.length;i++){
@@ -328,7 +328,7 @@ selection = new SelectionModel<data>(true, []);
       this.disableddelete=true;
     else
       this.disableddelete=false;
-    // console.log(row['status']);
+    // (row['status']);
   }
   row_arr=[];
   onRowCheck(row){
@@ -338,7 +338,7 @@ selection = new SelectionModel<data>(true, []);
       if(this.row_arr[i]==row){
         checked=true;
         index=i;
-        console.log(i);
+        (i);
         break;
       }
     }
@@ -360,16 +360,16 @@ selection = new SelectionModel<data>(true, []);
 
       numSelected === numRows;
 
-    console.log('Deleting');
+    ('Deleting');
     for (let j = 0; j < this.data1.length; j++) {
       this.TriggerKey[j] = this.data1[j].autoid;
     }
-    console.log('Trigger Key', this.TriggerKey);
+    
     for(let k=0;k < this.TriggerKey.length;k++){
         this.http.get(this.apiUrlGet+"V_AUTO_ID="+this.TriggerKey[k]+"&REST_Service=Orchetration&Verb=DELETE").subscribe(
           res=>{
  
-           console.log("***"+res+"***");
+           ("***"+res+"***");
          }
          
        );
@@ -405,12 +405,12 @@ functionadd() {
      "REST_Service":"Orchetration",
      "Verb":"PUT" 
    };
-   console.log(this.trnsn_sl);
-   console.log(a);
-   console.log(this.contonerr_sl);
+   (this.trnsn_sl);
+   (a);
+   (this.contonerr_sl);
        this.http.put(this.apiUrlAdd , body).subscribe(
          res=>{
-          console.log("***"+res+"***");
+          ("***"+res+"***");
           
         }
       );
@@ -425,9 +425,9 @@ enabledisable(){
       this.functionapplist();
       this.functionsuccapplist();  
       this.data.getJSON().subscribe(data => {
-              //  console.log(data.json());       
+              //  (data.json());       
                this.Label=data.json();       
-              //  console.log(this.Label);  
+              //  (this.Label);  
                }) 
      
   

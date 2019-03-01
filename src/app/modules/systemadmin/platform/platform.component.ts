@@ -77,14 +77,14 @@ export class PlatformComponent implements OnInit {
   };
   this.http.put(this.apiUrlPut,body).subscribe(
     res=>{
-      console.log(res);
-      console.log(body);
+      (res);
+      (body);
     });
   }
   deleteplat(){
   this.http.delete(this.apiUrlGet+"V_SERVER_CD="+this.p_plat+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Platform_Master&Verb=DELETE").subscribe(
     res=>{
-      console.log(res);
+      (res);
     });
   }
   ngOnInit() {

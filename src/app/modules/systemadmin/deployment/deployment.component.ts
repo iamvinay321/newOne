@@ -45,7 +45,7 @@ export class DeploymentComponent implements OnInit {
         
       }
         this.onmselect = function(index){
-          console.log(this.executable_sl);
+          (this.executable_sl);
           this.selectedexe = index;
         }
       this.onconselect = function(index){
@@ -106,11 +106,11 @@ setexecutable_sl(b){
           }
           //for getting helper text for executables 
           for(let k=0;k<=this.executables.length;k++) {
-            console.log(this.executables[k]);
+            (this.executables[k]);
             this.http.get<data>(this.apiUrlGet+"V_UNIQUE_ID=&V_EXE_TYP="+a+"&V_EXE_CD="+this.executables[k]+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Exe_Detail&Verb=GET")
             .subscribe(res=>{
-              console.log(res.EXE_TYP);
-              console.log(res.EXE_DSC);
+              (res.EXE_TYP);
+              (res.EXE_DSC);
              var name=res.EXE_CD;
              var tip=res.EXE_DSC;
               for (var i = 0; i < tip.length; i++) {
@@ -171,28 +171,28 @@ setexecutable_sl(b){
          "REST_Service":"Exe_Connection",
          "Verb":"PUT"
         }
-console.log(body);
+
         this.http.put(this.apiUrlPost, body).subscribe(
         res=>{
          this.toastr.success("Adding a Connection to Executable !");
-         console.log(res);
+         (res);
         });
      }
 
      //function to delete a connection  
      Delink(){
-       console.log(this.exetype_sl+" + "+this.executable_sl+" + "+this.con_sl);
+       (this.exetype_sl+" + "+this.executable_sl+" + "+this.con_sl);
         this.http.get(this.apiUrlGet+"V_EXE_CD="+this.executable_sl+"&V_EXE_TYP="+this.exetype_sl+"&V_CXN_CD="+this.con_sl+"&V_CXN_TYP="+this.exetype_sl+"&V_SRC_CD="+this.V_SRC_CD+"&REST_Service=Executable_Connection&Verb=DELETE").subscribe(
          res=>{
            this.toastr.warning("Deleting a Connection from Executable !");
-          console.log(res);
+          (res);
           this.selectedcon=undefined;
          });
      }
   ngOnInit() {
-console.log(this.V_SRC_CD);
+(this.V_SRC_CD);
       this.getexetypes();
-console.log(this.executablestips);
+(this.executablestips);
       this.data.getJSON().subscribe(data => {
                      
                 this.Label=data.json();       

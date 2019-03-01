@@ -56,7 +56,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   getReportData() {
 
     this.Table_of_Data = this.dataStored.getCookies('report_table')['RESULT'];
-    //console.log(this.dataStored.getCookies('report_table'));
+    //(this.dataStored.getCookies('report_table'));
     this.SRVC_CD = this.dataStored.getCookies('report_table')['SRVC_CD'][0];
     this.SRVC_ID = this.dataStored.getCookies('report_table')['SRVC_ID'][0];
     this.Table_of_Data1 = this.dataStored.getCookies('report_table')['LOG_VAL'];
@@ -66,7 +66,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.PRCS_ID = this.dataStored.getCookies('iddata')['V_PRCS_ID'][0];
     this.SRC_ID = this.dataStored.getCookies('iddata')['V_SRC_ID'][0];
 
-    //console.log(JSON.parse(this.Table_of_Data1[0]));
+    //(JSON.parse(this.Table_of_Data1[0]));
 
     this.columnsToDisplay = Object.keys(JSON.parse(this.Table_of_Data1[0]));
   }
@@ -445,7 +445,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         pointHoverBorderColor: this._borderColor
       }
     ];
-    //console.log(this.yaxis_data1);
+    //(this.yaxis_data1);
     this.barChartData[0].data = this.yaxis_data1;
     this.barChartData[1].data = this.yaxis_data2;
     this.barChartData[0].label = this._yaxis1_sel;
@@ -465,7 +465,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   getchartstyling() {
     this.data.getchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID).subscribe(
       res => {
-        console.log(res.json());
+        (res.json());
         var result = res.json();
         var name = result.PRF_NM;
         var value = result.PRF_VAL;
@@ -504,12 +504,12 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
     this.V_PRF_NM = Object.keys(this.chartconfig);
     this.V_PRF_VAL = Object.values(this.chartconfig);
-    //console.log(this.V_PRF_NM);
-    //console.log(this.V_PRF_VAL);
+    //(this.V_PRF_NM);
+    //(this.V_PRF_VAL);
     for (let j = 0; j < this.V_PRF_NM.length; j++) {
       this.data.setchartstyling(this.APP_ID, this.PRCS_ID, this.SRC_ID, this.V_PRF_NM[j], this.V_PRF_VAL[j]).subscribe(
         res => {
-          //console.log(res);
+          //(res);
         });
     }
   }
@@ -524,13 +524,13 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
 
 
     this.Table_of_Data5 = JSON.parse(this.Table_of_Data1[0]);
-    //console.log(this.Table_of_Data5);
+    //(this.Table_of_Data5);
     var keyy = [];
     keyy = Object.keys(this.Table_of_Data5);
     var vals = [];
     vals = Object.values(this.Table_of_Data5);
-    //console.log(keyy);
-    //console.log(vals);
+    //(keyy);
+    //(vals);
 
     for (let j = 0; j < vals.length; j++) {
       while (vals[j].indexOf(" ") != -1) {
@@ -543,10 +543,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     for (let i = 0; i < keyy.length; i++) {
       this.tabledata[keyy[i]] = vals[i];
     }
-    //console.log(vals);
+    //(vals);
     this.Table_of_Data5 = this.tabledata;
-    //console.log(this.Table_of_Data5);
-    //console.log(this.Table_of_Data5['PIID']);
+    //(this.Table_of_Data5);
+    //(this.Table_of_Data5['PIID']);
     this.F1 = this.Table_of_Data5[this.columnsToDisplay[0]];
     let rowData1 = {};
     for (let i = 0; i < this.F1.length; i++) {
@@ -557,7 +557,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         rowData[key + ""] = this.Table_of_Data5[key + ""][i];
       }
       this.Table_of_Data4[i] = rowData;
-      //console.log(this.Table_of_Data4);
+      //(this.Table_of_Data4);
     }
 
     for (let j = 0; j <= this.columnsToDisplay.length; j++) {
@@ -597,10 +597,10 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     //     "REST_Service":"Form_Report",
     //     "Verb":"PUT"
     //   };
-    //   //console.log(body);
+    //   //(body);
     //    this.https.put("https://"+this.domain_name+"/rest/Process/Submit/FormSubmit", body).subscribe(
     //     res => {
-    //       //console.log(res);
+    //       //(res);
 
     //  });
     this.route.navigateByUrl("End_User");
@@ -614,7 +614,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
         this.columnsToDisplay.splice(index, 1);
       }
     }
-    //console.log(this.columnsToDisplay);
+    //(this.columnsToDisplay);
   }
   //__________________________________________________________
   Execute_res_data: any[];
@@ -633,16 +633,16 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.https.post("https://" + this.domain_name + "/rest/Process/Report", body).subscribe(
       res => {
 
-        //console.log(res.json());
+        //(res.json());
         this.Execute_res_data = res.json();
-        //console.log(this.Execute_res_data);
+        //(this.Execute_res_data);
 
         this.GenerateReportTable();
       }
     );
   }
   GenerateReportTable() {
-    //console.log("in GenerateReportTable");
+    //("in GenerateReportTable");
 
     //"&V_DSPLY_WAIT_SEC=100&V_MNL_WAIT_SEC=180&REST_Service=Report&Verb=GET
     let body = {
@@ -660,7 +660,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
     this.https.post(this.aptUrlPost_report, body)
       .subscribe(
         res => {
-          //console.log(res.json());
+          //(res.json());
           this.dataStored.setCookies("report_table", res.json());
 
         }
@@ -671,7 +671,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   dialogOpen=false;
   dialogRef:any;
   ganttChart(){
-    console.log("Gantt Chart");
+    ("Gantt Chart");
     if(!this.dialogOpen){
       this.dialogOpen=true;
       this.dialogRef= this.dialog.open(DialogChartsComponent,{
@@ -688,7 +688,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   }
 
   barChart(){
-    console.log("Bar Chart");
+    ("Bar Chart");
     if(!this.dialogOpen){
       this.dialogOpen=true;
       this.dialogRef= this.dialog.open(DialogChartsComponent,{
@@ -704,7 +704,7 @@ export class ReportTableComponent implements OnInit, AfterViewInit {
   }
 
   pieChart(){
-    console.log("Pie Chart");
+    ("Pie Chart");
     if(!this.dialogOpen){
       this.dialogOpen=true;
       this.dialogRef= this.dialog.open(DialogChartsComponent,{

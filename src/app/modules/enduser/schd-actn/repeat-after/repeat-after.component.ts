@@ -64,7 +64,7 @@ Execute(){
           }
         this.http.post(this.Url,body).subscribe(
         res=>{
-              console.log(res);
+              (res);
         }
         );			
 }

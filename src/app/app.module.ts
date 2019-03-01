@@ -84,9 +84,7 @@ import { UseradminComponent } from './modules/useradmin/useradmin.component';
 import {EndUserService } from './service/EndUser-service';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { RepeatableFormComponent} from './modules/enduser/execute/repeatable-form/repeatable-form.component';
-import {NgxWebstorageModule} from 'ngx-webstorage';
-import { CookieService } from 'ngx-cookie-service';
-import { WebStorageModule } from 'ngx-store';
+
 import {NonRepeatableFormComponent} from './modules/enduser/execute/non-repeatable-form/non-repeatable-form.component';
 import { SplitFormsPipe } from './split-forms.pipe';
 import {InputArtComponent} from './modules/enduser/execute/Input_Art/InputArt.component';
@@ -147,7 +145,6 @@ const appRoutes: Routes = [
   { path: 'Machine', component: MachineComponent },
   { path: 'Machinespecs', component: MachinespecsComponent },
   { path: 'Platform', component: PlatformComponent },
-
 
   { path: 'Developer', component: DeveloperComponent }, // developer app-dialog-schedule
   { path: 'Parameters', component: ParametersComponent },
@@ -237,9 +234,7 @@ const appRoutes: Routes = [
     ColorPickerModule,
     NgbModule.forRoot(),
     BsDropdownModule.forRoot(),
-    NgxWebstorageModule.forRoot(),
     MatCardModule,
-    WebStorageModule,
     BrowserModule,
     MatButtonToggleModule,
     MatSlideToggleModule,
@@ -271,11 +266,11 @@ const appRoutes: Routes = [
     JsonpModule,
     RouterModule.forRoot(
       appRoutes,
-      { enableTracing: true }, // <-- debugging purposes only
+      { enableTracing: false }, // <-- debugging purposes only
     ),
   ],
 
-  providers: [StorageSessionService,CookieService, ConfigServiceService, LoginServiceService, FormDataService, RollserviceService,
+  providers: [StorageSessionService, ConfigServiceService, LoginServiceService, FormDataService, RollserviceService,
     UseradminService, GetMessageService, WebSocketService, Globals, EndUserService, EnduserComponent,
     {provide: MAT_DIALOG_DEFAULT_OPTIONS, useValue: {hasBackdrop: false}}],
   bootstrap: [AppComponent],
