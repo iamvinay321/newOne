@@ -3,6 +3,16 @@ mat-checkbox{
     list-style: none;
     font-size: 13px;
 }
+mat-header-row {
+    background-color: #b5b5b5;
+}
+mat-header-cell{
+    background-color:#b5b5b5;
+    font-size: 16px !important;
+}
+.mat-elevation-z8 {
+    text-align:center;
+}
 *{
     font-size: 14px;
 }

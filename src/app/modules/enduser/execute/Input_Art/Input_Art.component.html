@@ -1,5 +1,7 @@
+// workspace
+
 <div fxLayout="row" fxLayout.lt-sm="column">
-    <div fxFlex="9">
+    <div fxFlex="18">
     </div>
     <div fxFlex="82">
         <mat-card class="CustomeLayout">
@@ -9,33 +11,155 @@
                 <hr />
             </mat-card-title>
             <mat-card-content>
-                <h3>Limit Scope At-</h3>
-                    <mat-radio-group>
-                        
-                            <mat-radio-button (click)="makeurl('agency')" value="agency">
-                              <div style="display: inline-block;padding-right: 5px">Agency</div>
-                              <div style="display: inline-block;font-weight: 400;">({{agencyName}})</div>
-                            </mat-radio-button>
-              
-                            <mat-radio-button (click)="makeurl('application')" value="application">
-                              <div style="display: inline-block;padding-right: 5px">Application</div>
-                              <div style="display: inline-block;font-weight: 400">({{application}})</div>
-                            </mat-radio-button>
-              
-                            <mat-radio-button (click)="makeurl('arocess')" value="arocess">
-                              <div style="display: inline-block;padding-right: 5px">Process</div>
-                              <div style="display: inline-block;font-weight: 400">({{process}})</div>
-                            </mat-radio-button>
-              
-                            <mat-radio-button (click)="makeurl('service')" value="service">
-                              <div style="display: inline-block;padding-right: 5px">Service</div>
-                              <div style="display: inline-block;font-weight: 400">({{service}})</div>
-                            </mat-radio-button>
-              
-                          </mat-radio-group>
-                          <button title="Upload file" mat-raised-button color="primary" (click)="uploadBtnClick()">
-                                <i class="fas fa-upload"></i> Upload
-                            </button>
+                <!--<h3>Limit Scope At-</h3>-->
+                    <!--<mat-radio-group>-->
+
+                            <!--<mat-radio-button (click)="makeurl('agency')" value="agency">-->
+                              <!--<div style="display: inline-block;padding-right: 5px">Agency</div>-->
+                              <!--<div style="display: inline-block;font-weight: 400;">({{agencyName}})</div>-->
+                            <!--</mat-radio-button>-->
+
+                            <!--<mat-radio-button (click)="makeurl('application')" value="application">-->
+                              <!--<div style="display: inline-block;padding-right: 5px">Application</div>-->
+                              <!--<div style="display: inline-block;font-weight: 400">({{application}})</div>-->
+                            <!--</mat-radio-button>-->
+
+                            <!--<mat-radio-button (click)="makeurl('arocess')" value="arocess">-->
+                              <!--<div style="display: inline-block;padding-right: 5px">Process</div>-->
+                              <!--<div style="display: inline-block;font-weight: 400">({{process}})</div>-->
+                            <!--</mat-radio-button>-->
+
+                            <!--<mat-radio-button (click)="makeurl('service')" value="service">-->
+                              <!--<div style="display: inline-block;padding-right: 5px">Service</div>-->
+                              <!--<div style="display: inline-block;font-weight: 400">({{service}})</div>-->
+                            <!--</mat-radio-button>-->
+
+                          <!--</mat-radio-group>-->
+
+
+
+                <mat-table #table [dataSource]="dataSource1" class="mat-elevation-z8">
+                    <!-- select -->
+                    <ng-container matColumnDef="select">
+                        <mat-header-cell #matheadercell *matHeaderCellDef>
+                            <mat-checkbox (change)="$event ? masterToggle() : null"
+                                          [checked]="selection.hasValue() && isAllSelected()"
+                                          [indeterminate]="selection.hasValue() && !isAllSelected()">
+                            </mat-checkbox>
+                        </mat-header-cell>
+                        <mat-cell #matcell *matCellDef="let row">
+                            <mat-checkbox (click)="$event.stopPropagation()"
+                                          (change)="$event ? selection.toggle(row) : null"
+                                          [checked]="selection.isSelected(row)">
+                            </mat-checkbox>
+                        </mat-cell>
+                    </ng-container>
+                    <!-- File Column -->
+                    <ng-container matColumnDef="File">
+                        <mat-header-cell #matheadercell01 *matHeaderCellDef> File </mat-header-cell>
+                        <mat-cell #matcell01 *matCellDef="let element"> {{element.File}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Description Column -->
+                    <ng-container matColumnDef="Description">
+                        <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+                        <mat-cell *matCellDef="let element ">
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="" [(ngModel)]="element.Description">
+                            </mat-form-field>
+                            <!--element.Description}} -->
+                        </mat-cell>
+                    </ng-container>
+
+                    <!-- SizeinMB Column -->
+                    <ng-container matColumnDef="SizeinMB">
+                        <mat-header-cell *matHeaderCellDef> Size in MB</mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.SizeinMB}} </mat-cell>
+                    </ng-container>
+
+                    <!-- Date Uploaded Column -->
+                    <ng-container matColumnDef="DateUploaded">
+                        <mat-header-cell *matHeaderCellDef> Date Uploaded </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> {{element.DateUploaded}} </mat-cell>
+                    </ng-container>
+                    <!-- File Scope Column -->
+                    <ng-container matColumnDef="FileScope">
+                        <mat-header-cell *matHeaderCellDef> File Scope </mat-header-cell>
+                        <mat-cell *matCellDef="let element">
+                            <mat-form-field class="example-full-width">
+                                <input matInput placeholder="" [(ngModel)]="element.FileScope">
+                            </mat-form-field>
+                        </mat-cell>
+                    </ng-container>
+                    <!-- Date Include Column -->
+                    <ng-container matColumnDef="Include">
+                        <mat-header-cell *matHeaderCellDef> Include </mat-header-cell>
+                        <mat-cell *matCellDef="let element"><mat-icon style="font-size:30px;">{{'crop_square'||element.Include}}</mat-icon> </mat-cell>
+                    </ng-container>
+                    <!-- Date Delete Column -->
+                    <ng-container matColumnDef="Delete">
+                        <mat-header-cell *matHeaderCellDef> <button (click)="addfunction()" style="display:contents"> <mat-icon style="font-size:25px">add</mat-icon></button> </mat-header-cell>
+                        <mat-cell *matCellDef="let element"> <mat-icon style="font-size:30px;">{{'close'||element.Delete}}</mat-icon> </mat-cell>
+                    </ng-container>
+
+
+                    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                    <mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"></mat-row>
+                </mat-table>
+                <!--<mat-paginator-->
+                        <!--[pageSizeOptions]="[5, 10, 20]"-->
+                        <!--showFirstLastButtons-->
+                        <!--first-->
+                <!--&gt;</mat-paginator>-->
+
+                <!--<mat-table [dataSource]="dataSource1" class="mat-elevation-z8">-->
+
+                    <!--&lt;!&ndash; Checkbox Column &ndash;&gt;-->
+                    <!--<ng-container matColumnDef="select">-->
+                        <!--<mat-header-cell #matheadercell *matHeaderCellDef>-->
+                            <!--<mat-checkbox (change)="$event ? masterToggle() : null"-->
+                                          <!--[checked]="selection.hasValue() && isAllSelected()"-->
+                                          <!--[indeterminate]="selection.hasValue() && !isAllSelected()">-->
+                            <!--</mat-checkbox>-->
+                        <!--</mat-header-cell>-->
+                        <!--<mat-cell #matcell *matCellDef="let row">-->
+                            <!--<mat-checkbox (click)="$event.stopPropagation()"-->
+                                          <!--(change)="$event ? selection.toggle(row) : null"-->
+                                          <!--[checked]="selection.isSelected(row)">-->
+                            <!--</mat-checkbox>-->
+                        <!--</mat-cell>-->
+                    <!--</ng-container>-->
+
+                    <!--&lt;!&ndash; Position Column &ndash;&gt;-->
+                    <!--<ng-container matColumnDef="position">-->
+                        <!--<mat-header-cell  *matHeaderCellDef> No. </mat-header-cell>-->
+                        <!--<mat-cell *matCellDef="let element"> {{element.position}} </mat-cell>-->
+                    <!--</ng-container>-->
+
+                    <!--&lt;!&ndash; Name Column &ndash;&gt;-->
+                    <!--<ng-container matColumnDef="name">-->
+                        <!--<mat-header-cell *matHeaderCellDef> Name </mat-header-cell>-->
+                        <!--<mat-cell *matCellDef="let element"> {{element.name}} </mat-cell>-->
+                    <!--</ng-container>-->
+
+                    <!--&lt;!&ndash;&lt;!&ndash; Weight Column &ndash;&gt;&ndash;&gt;-->
+                    <!--<ng-container matColumnDef="weight">-->
+                        <!--<mat-header-cell *matHeaderCellDef> Weight </mat-header-cell>-->
+                        <!--<mat-cell *matCellDef="let element"> {{element.weight}} </mat-cell>-->
+                    <!--</ng-container>-->
+
+                    <!--&lt;!&ndash; Symbol Column &ndash;&gt;-->
+                    <!--<ng-container matColumnDef="symbol">-->
+                        <!--<mat-header-cell *matHeaderCellDef> Symbol </mat-header-cell>-->
+                        <!--<mat-cell *matCellDef="let element"> {{element.symbol}} </mat-cell>-->
+                    <!--</ng-container>-->
+
+                    <!--<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>-->
+                    <!--<mat-row *matRowDef="let row; columns: displayedColumns;"-->
+                        <!--(click)="selection.toggle(row)">-->
+                    <!--</mat-row>-->
+                <!--</mat-table>-->
+
                 <hr />
                 <div fxLayout="row" fxLayout.lt-sm="column">
                     <div fxFlex="30">
@@ -48,14 +172,18 @@
                     </div>
                 </div>
                 <div class="adventColor" flex fxLayout="row" fxLayoutAlign="center">
-                        <button mat-raised-button (click)="addbtn_click();" id="add">
-                          <mat-icon class="iconmod">add</mat-icon>Add</button>
+                        <button title="Upload file" mat-raised-button color="primary" (click)="uploadBtnClick()">
+                            <i class="fas fa-upload"></i> Upload
+                        </button>
                         <div flex fxFlex="5"></div>
-            
+                        <!--<button mat-raised-button (click)="addbtn_click();" id="add">-->
+                          <!--<mat-icon class="iconmod">add</mat-icon>Add</button>-->
+                        <!--<div flex fxFlex="5"></div>-->
+
                         <button mat-raised-button (click)="cancelbtn_click();" id="cancel">
                           <mat-icon class="iconmod">clear</mat-icon>Cancel</button>
                         <div flex fxFlex="5"></div>
-            
+
                         <button mat-raised-button (click)="artfct_submitbtn_click();" id="submit">
                           <mat-icon class="iconmod">done_all</mat-icon>Submit</button>
                         <div flex fxFlex="5"></div>

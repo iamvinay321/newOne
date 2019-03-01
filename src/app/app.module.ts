@@ -92,6 +92,8 @@ import { SplitFormsPipe } from './split-forms.pipe';
 import {InputArtComponent} from './modules/enduser/execute/Input_Art/InputArt.component';
 const appRoutes: Routes = [
   { path: '', component: LoginComponent },
+    // { path: '', component: InputArtComponent },
+
 	  {path: 'Profile', component: ProfileComponent},
   {path: 'User_Admin', redirectTo: 'UserAdmin', pathMatch: 'full'},
     { path: 'UserAdmin', component: UseradminComponent,
@@ -254,7 +256,7 @@ const appRoutes: Routes = [
     MatSnackBarModule,
     MatSliderModule,
     ngfModule,
-    FlexLayoutModule, 
+    FlexLayoutModule,
     ToastrModule.forRoot(),
     MatProgressSpinnerModule,
     LoadingModule.forRoot({
