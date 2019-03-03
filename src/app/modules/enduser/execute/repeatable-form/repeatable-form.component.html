@@ -2,7 +2,7 @@
 	<div fxFlex="9">
 	</div>
 	<div fxFlex="82">
-		<mat-card class="CustomeLayout">
+		<mat-card class="CustomeLayout repeatable-form-background">
 			<mat-card-title>
 				<div fxLayout="row" fxLayout.lt-sm="column">
 					<div fxFlex="40">
@@ -122,7 +122,7 @@
 														 [value]="item">
 															{{ item }}
 														</mat-option>
-													</mat-autocomplete>													
+													</mat-autocomplete>
 												</mat-form-field>
 												<div [style.visibility]="configService.isFieldInvalid(name) ? 'visible': 'hidden'">
 													{{configService.getFieldInValidMsg(name, label)}}

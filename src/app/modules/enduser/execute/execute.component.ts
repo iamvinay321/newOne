@@ -242,7 +242,7 @@ export class ExecuteComponent implements OnInit {
 
           this.data_form = new Form_data(this.SL_APP_CD, this.SL_PRC_CD);
 
-          // this.Execute_AP_PR();
+          // this.Execute_AP_PR();getDropDownListValue
 
         }
       });
@@ -311,7 +311,7 @@ export class ExecuteComponent implements OnInit {
           // //(this.SRVC_CD);
 
           this.executedata = { SL_APP_CD: this.SL_APP_CD, SL_PRC_CD: this.SL_PRC_CD };
-          
+
           this.StorageSessionService.setCookies('executedata', this.executedata);
           this.ID_DATA = res.json();
           this.StorageSessionService.setCookies('iddata', this.ID_DATA);
@@ -655,16 +655,16 @@ export class ExecuteComponent implements OnInit {
     //---------Balraj Code--------
 
 
-    // this.http.get(this.apiUrlGet + "V_SRC_CD=" + this.V_SRC_CD + "&V_APP_CD=" + this.SL_APP_CD + "&V_PRCS_CD=" + this.SL_PRC_CD + "&V_PARAM_NM=" + e + "&V_SRVC_CD="+this.SL_SRVC_CD+"&REST_Service=ProcessParametersOptions&Verb=GET")
-    //   .subscribe(
-    //     res => {
-    //       (res[e]);
-    //       this.searchResult = res[e];
-    //       this.app.loading = false;
+    this.http.get(this.apiUrlGet + "V_SRC_CD=" + this.V_SRC_CD + "&V_APP_CD=" + this.SL_APP_CD + "&V_PRCS_CD=" + this.SL_PRC_CD + "&V_PARAM_NM=" + e + "&V_SRVC_CD="+this.SL_SRVC_CD+"&REST_Service=ProcessParametersOptions&Verb=GET")
+      .subscribe(
+        res => {
+          console.log('===>', (res[e]), e);
+          this.searchResult = res[e];
+          this.app.loading = false;
 
 
-    //     }
-    //   );
+        }
+      );
 
 
   }
@@ -701,7 +701,7 @@ export class ExecuteComponent implements OnInit {
           (res);
           //
           this.executedata = { SL_APP_CD: this.SL_APP_CD, SL_PRC_CD: this.SL_PRC_CD };
-          
+
           this.StorageSessionService.setCookies('executedata', this.executedata);
           this.Execute_res_data = res.json();
           this.StorageSessionService.setCookies('executeresdata', this.Execute_res_data);
@@ -759,9 +759,9 @@ export class ExecuteComponent implements OnInit {
         this.check_data = res.json();
         this.app.loadingCharts = false;
         this.report = res.json();
-      
+
         (this.report);
-       
+
         (this.report.RESULT);
         (res.json());
         var timeout = res.json().RESULT.toString().substring(0, 7) == "TIMEOUT";

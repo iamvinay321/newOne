@@ -16,7 +16,7 @@ import { ConfigServiceService } from '../../../../service/config-service.service
 @Component({
   selector: 'app-repeatable-form',
   templateUrl: './repeatable-form.component.html',
-  styleUrls: ['./repeatable-form.component.css']
+  styleUrls: ['./../../../../../assets/css/threepage.css']
 })
 export class RepeatableFormComponent extends FormComponent implements OnInit {
   // domain_name = this.globals.domain_name;
@@ -155,7 +155,7 @@ export class RepeatableFormComponent extends FormComponent implements OnInit {
       "V_UNIQUE_ID": this.V_UNIQUE_ID,
       "TimeZone": this.currentDate
     }
-    
+
 
     this.http.post("https://" + this.domain_name + "/rest/Submit/FormSubmit", body_buildPVP).subscribe(
       res => {

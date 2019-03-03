@@ -159,7 +159,25 @@ export class FormComponent implements OnInit {
   updateInitialFieldNameAndValues() {
     (this.RVP_DataObj);
     var key_array = Object.keys(this.RVP_DataObj);
-    (this.StorageSessionService.getCookies('App_Prcs'));
+     // //----------Field Names & Field Values as {"str1"|"str2"}-----------//
+    // this.Field_Names = '';
+    // this.Field_Values = "";
+    // for (let i = 0; i < key_array.length; i++) {
+    //   if (i != 0) {
+    //     this.Field_Names += '|';
+    //     this.Field_Values += '|';
+    //   }
+    //   this.Field_Names += "`" + key_array[i] + "`";
+    //   this.Field_Values += "'" + this.RVP_DataObj[key_array[i]] + "'";
+    // }
+    // // this.RVP_Data.push('V_abcd');
+    // // this.Field_Names += '|\"V_abcd\"';
+    // // this.Field_Values += '|\"\"';
+
+    // console.log("Field_Names");
+    // console.log(this.Field_Names);
+    // console.log("Field_Values");
+    // console.log(this.Field_Values);
   }
 
   registerDataChangeHandler(handler: any) {

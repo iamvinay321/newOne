@@ -16,10 +16,12 @@ import { getISODayOfWeek } from 'ngx-bootstrap/chronos/units/day-of-week';
 import { encode } from 'punycode';
 import { CommonUtils } from '../../../../common/utils';
 import { ConfigServiceService } from '../../../../service/config-service.service';
+import { ConfigServiceService } from '../../../../../assets';
+
 @Component({
   selector: 'app-non-repeatable-form',
   templateUrl: './non-repeatable-form.component.html',
-  styleUrls: ['./non-repeatable-form.component.css']
+  styleUrls: ['./../../../../../assets/css/threepage.css']
 })
 export class NonRepeatableFormComponent extends FormComponent implements OnInit {
 
@@ -168,8 +170,8 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
       "V_UNIQUE_ID": this.V_UNIQUE_ID,
       "TimeZone": this.currentDate
     }
-    
-    
+
+
     this.http.post("https://" + this.domain_name + "/rest/Submit/FormSubmit", body_buildPVP).subscribe(
       res => {
         (res);
