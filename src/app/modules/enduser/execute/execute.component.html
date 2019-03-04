@@ -57,10 +57,10 @@
 
       </div>
       <!-- <div fxFlex="5"></div>
-  
+
         <div fxFlex="30" *ngIf="Service_box">
-  
-  
+
+
           <label style="text-align:center;width:100%;">
             <strong>Undeployed {{Label['service']}}</strong>
           </label>
@@ -69,7 +69,7 @@
               <div>{{ser}}</div>
             </mat-list-item>
           </mat-list>
-  
+
         </div> -->
       <!-- <div *ngIf="Process_label">
           <label>{{PRC_CD['PRCS_CD']}}</label>
@@ -118,10 +118,17 @@
             </ng-container>
             <ng-container *ngSwitchCase="'date'">
               <mat-form-field class="form_input">
-                <input #name="ngModel" [required]="data.isFieldMendatory()" [disabled]="data.isFieldDisabled()" [name]="pr.name"
-                  [value]="pr.value" (change)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value"
-                  matInput [matDatepicker]="picker" class="f_inp">
+                <input
+                        #name="ngModel"
+                        [required]="data.isFieldMendatory()"
+                        [disabled]="data.isFieldDisabled()"
+                        [name]="pr.name"
+                        [value]="pr.value"
+                        (keyup)="Update_value($event.target.value,pr.placeholder)"
+                        [(ngModel)]="pr.value"
+                        matInput [matDatepicker]="picker" class="f_inp">
                 <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <!--INPUT-->
                 <mat-datepicker #picker></mat-datepicker>
               </mat-form-field>
               <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
@@ -185,14 +192,14 @@
               <mat-form-field class="form_input">
                 <input matInput [required]="data.isFieldMendatory(pr.name)" maxlength="data.getMaxLengthForField(pr.type)"
                   [name]="pr.name" (value)="pr.value" (change)="Update_value($event.target.value,pr.placeholder)"
-                  (change)="data.transformFieldValueOnChange($event,pr.type)" [(ngModel)]="pr.value" 
+                  (change)="data.transformFieldValueOnChange($event,pr.type)" [(ngModel)]="pr.value"
                   class="f_inp" #name="ngModel">
                 <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
                   <mat-option style="text-align:center;" (click)="Update_value(pr.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue"
                     [value]="item">
                     {{ item }}
                   </mat-option>
-                </mat-autocomplete>               
+                </mat-autocomplete>
               </mat-form-field>
               <div [style.visibility]="data.isFieldInvalid(name) ? 'visible': 'hidden'">
                 {{data.getFieldInValidMsg(name, pr.name)}}
@@ -200,10 +207,17 @@
             </ng-container>
             <ng-container *ngSwitchCase="'Zip'">
               <mat-form-field class="form_input">
-                <input type="text" pattern="^[0-9]{5}?$" [required]="data.isFieldMendatory(pr.name)" maxlength="5"
-                  matInput [disabled]="data.isFieldDisabled(pr.name)" [name]="pr.name" (value)="pr.value"
-                  [matAutocomplete]="auto" (click)="getDropDownListValue(pr.name)" (change)="Update_value($event.target.value,pr.placeholder)"
-                  [(ngModel)]="pr.value" class="f_inp" #name="ngModel">
+                <input type="text" pattern="^[0-9]{5}?$"
+                       [required]="data.isFieldMendatory(pr.name)"
+                       maxlength="5"
+                       matInput
+                       [disabled]="data.isFieldDisabled(pr.name)"
+                       [name]="pr.name"
+                       (value)="pr.value"
+                       [matAutocomplete]="auto"
+                       (click)="getDropDownListValue(pr.name)"
+                       (key)="Update_value($event.target.value,pr.placeholder)"
+                       [(ngModel)]="pr.value" class="f_inp" #name="ngModel">
 
                 <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
                   <mat-option style="text-align:center;" (click)="Update_value(pr.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue"
@@ -238,7 +252,7 @@
               <mat-form-field class="form_input">
                 <input matInput [name]="pr.name" [required]="data.isFieldMendatory(pr.name)" #name="ngModel" [disabled]="data.isFieldDisabled(pr.name)"
                   [maxLength]="data.getFieldMaxLength(pr.name)" (value)="pr.value" [matAutocomplete]="auto" (click)="getDropDownListValue(pr.name)"
-                  (change)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" class="f_inp">
+                  (keyup)="Update_value($event.target.value,pr.placeholder)" [(ngModel)]="pr.value" class="f_inp">
                 <mat-autocomplete class="autoCompletes" #auto="matAutocomplete">
                   <mat-option style="text-align:center;" (click)="Update_value(pr.value ,pr.placeholder)" *ngFor="let item of searchResult | myfilter:FilterAutoValue"
                     [value]="item">
@@ -258,14 +272,14 @@
 
 </div>
 <!-- <div flex fxLayout="row" fxLayout.lt-sm="column" *ngIf="b==true">
-  
+
                  <div fxFlex="10" ></div>
                   <div fxFlex="40" >
-  
-  
-  
+
+
+
               </div>
-  
+
                   </div> -->
 
 <!-- close auto -->

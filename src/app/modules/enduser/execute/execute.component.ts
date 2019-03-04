@@ -631,10 +631,13 @@ export class ExecuteComponent implements OnInit {
     this.FilterAutoValue = v;
     this.http.get(this.apiUrlGet + 'V_APP_CD=' + this.SL_APP_CD + '&V_PRCS_CD=' + this.SL_PRC_CD + '&V_SRC_CD=' + this.V_SRC_CD + '&V_USR_NM=' + this.V_USR_NM + '&V_PARAM_NM=' + n + '&V_PARAM_VAL=' + v + '&REST_Service=ProcessParameters&Verb=PATCH').subscribe(
       res => {
-        (res);
+
       }
     );
   }
+  Update_value1(v: any) { //v=value and n=paramter name
+        console.log('keyup',v);
+    }
   filteredOptions: Observable<string[]>;
 
   getListOptions(parameterName: string) {
@@ -660,7 +663,6 @@ export class ExecuteComponent implements OnInit {
         res => {
           this.searchResult = res[e];
           this.app.loading = false;
-          console.log('===>', (res[e]), e, this.app.loading);
         }
       );
 
