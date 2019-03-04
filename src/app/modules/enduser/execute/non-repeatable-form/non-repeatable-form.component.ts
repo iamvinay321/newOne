@@ -16,7 +16,6 @@ import { getISODayOfWeek } from 'ngx-bootstrap/chronos/units/day-of-week';
 import { encode } from 'punycode';
 import { CommonUtils } from '../../../../common/utils';
 import { ConfigServiceService } from '../../../../service/config-service.service';
-import { ConfigServiceService } from '../../../../../assets';
 
 @Component({
   selector: 'app-non-repeatable-form',
