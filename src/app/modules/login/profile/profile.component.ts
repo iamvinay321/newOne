@@ -29,27 +29,29 @@ export class ProfileComponent implements OnInit {
 chooworkingProfile(){
   this.http.get<data>("https://"+this.domain_name+"/rest/E_DB/SP?V_SRC_CD="+this.agency+"&V_USR_NM="+this.V_USR_NM+"&REST_Service=UserRoles&Verb=GET").subscribe(
       data=>{
-        (data);
-       for(let i=0;i<data.ROLE_CD.length;i++){
-        (data.ROLE_CD[i]);
-        if(data.ROLE_CD[i]=="Developer Role"){
-              this.options.push("Developer");
-        }else if(data.ROLE_CD[i]=="End User Role"){
-            this.options.push("End_User");
-        }else if(data.ROLE_CD[i]=='System Admin Role'){
-          this.options.push("System_Admin");
-        }else if(data.ROLE_CD[i]=='Finance Role'){
-          this.options.push("Cost");
-        }
-        else if(data.ROLE_CD[i]=='IT Asset Role'){
-          this.options.push("Assets");
-        }else if(data.ROLE_CD[i]=='User Admin Role'){
-          this.options.push("User_Admin");
-        }
+        // (data);
+       if(data.ROLE_CD){
+           for(let i=0;i<data.ROLE_CD.length;i++){
+               // (data.ROLE_CD[i]);
+               if(data.ROLE_CD[i]=="Developer Role"){
+                   this.options.push("Developer");
+               }else if(data.ROLE_CD[i]=="End User Role"){
+                   this.options.push("End_User");
+               }else if(data.ROLE_CD[i]=='System Admin Role'){
+                   this.options.push("System_Admin");
+               }else if(data.ROLE_CD[i]=='Finance Role'){
+                   this.options.push("Cost");
+               }
+               else if(data.ROLE_CD[i]=='IT Asset Role'){
+                   this.options.push("Assets");
+               }else if(data.ROLE_CD[i]=='User Admin Role'){
+                   this.options.push("User_Admin");
+               }
 
-      }
+           }
+       }
+
       //navigate when the lenght is 1
-      ("length"+this.options.length);
       // this.StorageSessionService.setLocatS("profileopt",this.options);
       if(this.options.length==1){
         // this.StorageSessionService.setLocatS("profileopt",this.options);

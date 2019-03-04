@@ -75,7 +75,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
       this.mobileView = false;
       this.desktopView = true;
     }
-    this.getFormData();
+    setTimeout(()=>{ this.getFormData();}, 500);
     this.updateInput();
 
   }
@@ -87,13 +87,15 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
 
     this.Field_Names = '';
     this.Field_Values = "";
-    for (let i = 0; i < this.RVP_Keys.length; i++) {
-      if (i != 0) {
-        this.Field_Names += '|';
-        this.Field_Values += '|';
-      }
-      this.Field_Names += "`" + this.RVP_Keys[i] + "`";
-      this.Field_Values += "'" + this.RVP_DataObj[this.RVP_Keys[i]] + "'";
+    if(this.RVP_Keys){
+      for (let i = 0; i < this.RVP_Keys.length; i++) {
+        if (i != 0) {
+                this.Field_Names += '|';
+                this.Field_Values += '|';
+            }
+            this.Field_Names += "`" + this.RVP_Keys[i] + "`";
+            this.Field_Values += "'" + this.RVP_DataObj[this.RVP_Keys[i]] + "'";
+        }
     }
   }
 
@@ -131,6 +133,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
       "REST_Service": "Forms_Record",
       "Verb": "POST"
     }
+    console.log('submit'); // igor
     this.http.post(this.apiUrlGet, body_FORMrec).subscribe(
       res => {
         ("Response:\n" + res);
@@ -173,7 +176,7 @@ export class NonRepeatableFormComponent extends FormComponent implements OnInit 
 
     this.http.post("https://" + this.domain_name + "/rest/Submit/FormSubmit", body_buildPVP).subscribe(
       res => {
-        (res);
+        console.log(res); //igor
         this.invoke_router(res);
       });
   }

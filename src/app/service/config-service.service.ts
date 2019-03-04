@@ -246,7 +246,7 @@ export class ConfigServiceService {
 
   private prepareArrayFromFormDataKey(form_data, key, hasArrayOfArr) {
     let arrayToReturn = [];
-    if (CommonUtils.isValidValue(form_data[key]) && CommonUtils.isValidValue(form_data[key][0])) {
+    if (key && CommonUtils.isValidValue(form_data[key]) && CommonUtils.isValidValue(form_data[key][0])) {
       const stringSequence = hasArrayOfArr ? form_data[key][0].replace(/'/g, '') : form_data[key];
       arrayToReturn = hasArrayOfArr ? stringSequence.split(",") : stringSequence;
       arrayToReturn = arrayToReturn.map(s => s.trim());
@@ -576,7 +576,7 @@ export class ConfigServiceService {
         fieldObj.type = "input";
       }
       if (fieldObj.type === "Checkbox" || fieldObj.type === "openlist") {
-        // need value as array 
+        // need value as array
         fieldObj.value = [currentVal[0]];
       } else {
         fieldObj.value = currentVal[0];

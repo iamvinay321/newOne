@@ -31,8 +31,7 @@ export class HeaderComponent implements OnInit {
   }
   ngOnInit() {
     this.options=this.StorageSessionService.getLocalS("profileopt");
-    (this.options);
-this.options.length==0 ? this.showprofilebtn=false:this.showprofilebtn=true;
+    if(this.options)this.options.length==0 ? this.showprofilebtn=false:this.showprofilebtn=true;
 
   }
 
@@ -40,7 +39,7 @@ this.options.length==0 ? this.showprofilebtn=false:this.showprofilebtn=true;
   // this.cookieService.removeAll();
   this.StorageSessionService.ClearSession("email");
   this.StorageSessionService.ClearSession("agency");
- 
+
    this.router.navigate(['']);
   }
 

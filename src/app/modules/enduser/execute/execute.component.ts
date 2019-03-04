@@ -300,7 +300,7 @@ export class ExecuteComponent implements OnInit {
     this.p = 0;
     this.c = 0;
     this.q = 0;
-    if (this.ctrl_variables.checkDeployement) {
+    if (this.ctrl_variables && this.ctrl_variables.checkDeployement) {
       for (let j = 0; j < this.SRVC_CD.length; j++) {
         this.SL_SRVC_CD = this.SRVC_CD[j];
         // (this.SL_SRVC_CD);
@@ -658,11 +658,9 @@ export class ExecuteComponent implements OnInit {
     this.http.get(this.apiUrlGet + "V_SRC_CD=" + this.V_SRC_CD + "&V_APP_CD=" + this.SL_APP_CD + "&V_PRCS_CD=" + this.SL_PRC_CD + "&V_PARAM_NM=" + e + "&V_SRVC_CD="+this.SL_SRVC_CD+"&REST_Service=ProcessParametersOptions&Verb=GET")
       .subscribe(
         res => {
-          console.log('===>', (res[e]), e);
           this.searchResult = res[e];
           this.app.loading = false;
-
-
+          console.log('===>', (res[e]), e, this.app.loading);
         }
       );
 

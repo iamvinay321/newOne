@@ -91,13 +91,11 @@ export class FormComponent implements OnInit {
   getFormData(): any {
     this.http.get('../../../../assets/control-variable.json').subscribe(res => {
       this.ctrl_variables = res;
-      (res);
+      console.log(res);
     });
-
     this.Form_Data = this.StorageSessionService.getCookies('report_table');
+    console.log('this.Form_date', this.Form_Data);
     this.configService.prepareAndGetFieldConfigurations(this.Form_Data, true);
-    
-    (this.Form_Data);
 
     this.PVP = JSON.parse(this.Form_Data['PVP'][0]);
     this.srvc_cd_sl = this.Form_Data['SRVC_CD'][0];
@@ -255,23 +253,25 @@ export class FormComponent implements OnInit {
     this.V_KEY_NAME = key_name_ar.join("|");
     this.V_KEY_VALUE = key_val_ar.join("|");
 
-   
+
     ('V_SRVC_CD=>' + this.V_SRVC_CD + 'V_TABLE_NAME=>' + this.V_TABLE_NAME + 'V_KEY_NAME=>' + this.V_KEY_NAME + 'V_KEY_VALUE=>' + this.V_KEY_VALUE + 'V_SCHEMA_NAME=>' + this.V_SCHEMA_NAME);
   }
 
   invoke_router(res) {
+    console.log('setCookies');
     let serviceCode = null;
     if (CommonUtils.isValidValue(res['SRVC_CD']) && res['SRVC_CD'][0] === "END") {
       this.router.navigate(["/EndUser/Execute"]);
     } else {
       var timeout = res['RESULT'][0].toString().substring(0, 7) == "TIMEOUT";
-      (timeout);
+      // (timeout);
       if (timeout && this.ctrl_variables.call_repeat_on_TIMEOUT) {
         this.app.fromNonRepForm = true;
         this.router.navigate(["/EndUser/Execute"]);
       } else {
-        ('https://' + this.domain_name + '/rest/Submit/FormSubmit');
+        console.log('https://' + this.domain_name + '/rest/Submit/FormSubmit');
         this.StorageSessionService.setCookies('report_table', res);
+        console.log('setCookies');
         if (res['RESULT'] == 'INPUT_ARTFCT_TASK') {
           this.router.navigateByUrl('InputArtForm');
         } else if (res['V_EXE_CD'][0] == 'NONREPEATABLE_MANUAL_TASK') {
